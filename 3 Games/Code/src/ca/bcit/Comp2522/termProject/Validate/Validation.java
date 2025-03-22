@@ -3,21 +3,24 @@ import java.util.Scanner;
 
 public class Validation
 {
+    private static final int MAX_INPUT_LENGTH = 1;
+    private static final int FIRST_CHAR       = 0;
 
     public static char getValidInput()
     {
         String gameChoiceInput;
         char choice;
-        Scanner sc;
+        final Scanner sc;
 
         sc = new Scanner(System.in);
+
         while(true)
         {
             gameChoiceInput = sc.nextLine().trim();
 
-            if(gameChoiceInput.length() == 1)
+            if(gameChoiceInput.length() == MAX_INPUT_LENGTH)
             {
-                choice = Character.toUpperCase(gameChoiceInput.charAt(0));
+                choice = Character.toUpperCase(gameChoiceInput.charAt(FIRST_CHAR));
 
                 switch(choice)
                 {
@@ -35,6 +38,7 @@ public class Validation
                         break;
                     case 'Q':
                         System.out.println("Quitting the game. Goodbye!");
+                        break;
                     default:
                         System.out.println("Invalid input. Please enter W, N, M, or Q.");
                 }
