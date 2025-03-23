@@ -1,25 +1,27 @@
 package ca.bcit.Comp2522.termProject;
-import java.util.Random;
-//import java.nio.file.Path;
-//import java.nio.file.Paths;
-//import java.util.List;
-//import java.util.Scanner;
-//import java.util.Arrays;
 
+import java.util.Random;
 
 public class Country
 {
-    private  String name;
-    private String capitalCityName;
-    private  String[]  facts;
+    private final String   name;
+    private final String   capitalCityName;
+    private final String[] facts;
+    private final Random   random;
 
-    public Country(String name, String capitalCityName, String[] facts) {
-        this.name = name;
+    public Country(final String name,
+                   final String capitalCityName,
+                   final String[] facts,
+                  final Random random)
+    {
+        this.name            = name;
         this.capitalCityName = capitalCityName;
-        this.facts = facts;
+        this.facts           = facts;
+        this.random          = random;
     }
 
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 
@@ -28,15 +30,8 @@ public class Country
         return capitalCityName;
     }
 
-    public String[] getFacts()
-    {
-        return facts;
-    }
-
     public String getRandomFact()
     {
-        Random rand;
-        rand = new Random();
-        return facts[rand.nextInt(facts.length)];
+        return facts[random.nextInt(facts.length)];
     }
 }
