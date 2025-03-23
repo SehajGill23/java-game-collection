@@ -12,7 +12,7 @@ public class Country
     public Country(final String name,
                    final String capitalCityName,
                    final String[] facts,
-                  final Random random)
+                   final Random random)
     {
         this.name            = name;
         this.capitalCityName = capitalCityName;

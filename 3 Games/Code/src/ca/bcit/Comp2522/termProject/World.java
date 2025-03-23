@@ -48,7 +48,7 @@ public class World
                     continue;
                 }
 
-                List<String> lines = Files.readAllLines(Paths.get("Resources",
+                List<String> lines = Files.readAllLines(Paths.get("Resources/",
                                                                   filename));
 
                 if(lines.isEmpty())
@@ -77,15 +77,15 @@ public class World
                         countryName    = split[0].trim();
                         countryCapital = split[1].trim();
 
-                        // Collect facts
+
                         StringBuilder facts = new StringBuilder();
-                        int j = i + 1;
+                        int           j     = i + 1;
                         while(j < lines.size() && !lines.get(j).contains(":"))
                         {
                             facts.append(lines.get(j).trim()).append("\n");
                             j++;
                         }
-                        i = j - 1; // Move to the last processed line
+                        i = j - 1;
 
                         String[] countryFacts = facts.toString().split("\n");
 

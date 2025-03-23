@@ -1,95 +1,3 @@
-//package ca.bcit.Comp2522.termProject;
-//
-//import java.text.SimpleDateFormat;
-//import java.util.Date;
-//
-//public class Score
-//{
-//    private String dateTimePlayed;
-//    private int    numGamesPlayed;
-//    private int    numCorrectFirstAttempt;
-//    private int    numCorrectSecondAttempt;
-//    private int    numIncorrectTwoAttempts;
-//    private int    totalScore;
-//
-//    // Constructor
-//    public Score(String dateTimePlayed,
-//                 int numGamesPlayed,
-//                 int numCorrectFirstAttempt,
-//                 int numCorrectSecondAttempt,
-//                 int numIncorrectTwoAttempts)
-//    {
-//        this.dateTimePlayed          = dateTimePlayed;
-//        this.numGamesPlayed          = numGamesPlayed;
-//        this.numCorrectFirstAttempt  = numCorrectFirstAttempt;
-//        this.numCorrectSecondAttempt = numCorrectSecondAttempt;
-//        this.numIncorrectTwoAttempts = numIncorrectTwoAttempts;
-//        this.totalScore              = (numCorrectFirstAttempt * 2) + (numCorrectSecondAttempt * 1);
-//    }
-//
-//    // Overloaded constructor for saving the score to file
-//    public Score(String dateTimePlayed,
-//                 int numGamesPlayed,
-//                 int numCorrectFirstAttempt,
-//                 int numCorrectSecondAttempt,
-//                 int numIncorrectTwoAttempts,
-//                 int totalScore)
-//    {
-//        this.dateTimePlayed          = dateTimePlayed;
-//        this.numGamesPlayed          = numGamesPlayed;
-//        this.numCorrectFirstAttempt  = numCorrectFirstAttempt;
-//        this.numCorrectSecondAttempt = numCorrectSecondAttempt;
-//        this.numIncorrectTwoAttempts = numIncorrectTwoAttempts;
-//        this.totalScore              = totalScore;
-//    }
-//
-//    public Score (int score, int firstAttempts, int secondAttempts, int incorrectAttempts)
-//    {
-//        this.totalScore = score;
-//        this.numCorrectFirstAttempt = firstAttempts;
-//        this.numCorrectSecondAttempt = secondAttempts;
-//        this.numIncorrectTwoAttempts = incorrectAttempts;
-//        this.numGamesPlayed = numGamesPlayed;
-//        this.dateTimePlayed = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()); // Setting the current date and time
-//    }
-//    // Method to create a Score object from a string (from file)
-//    public static Score fromString(String str)
-//    {
-//        String[] parts = str.split(",");
-//        return new Score(parts[0],
-//                         Integer.parseInt(parts[1]),
-//                         Integer.parseInt(parts[2]),
-//                         Integer.parseInt(parts[3]),
-//                         Integer.parseInt(parts[4]));
-//    }
-//
-//    // Method to get the average score per game
-//    public double getAverageScore()
-//    {
-//        return (double) totalScore / numGamesPlayed;
-//    }
-//
-//    // Getters and setters
-//    public int getTotalScore()
-//    {
-//        return totalScore;
-//    }
-//
-//    public String getDateTimePlayed()
-//    {
-//        return dateTimePlayed;
-//    }
-//
-//
-//
-//    @Override
-//    public String toString()
-//    {
-//        return dateTimePlayed + ", " + numGamesPlayed + ", " + numCorrectFirstAttempt + ", " + numCorrectSecondAttempt + ", " + numIncorrectTwoAttempts + ", " + totalScore;
-//    }
-//}
-
-
 package ca.bcit.Comp2522.termProject;
 
 import java.time.LocalDateTime;
@@ -97,62 +5,77 @@ import java.time.format.DateTimeFormatter;
 
 public class Score
 {
-    private String dateTimePlayed;
-    private int    numGamesPlayed;
-    private int    numCorrectFirstAttempt;
-    private int    numCorrectSecondAttempt;
-    private int    numIncorrectTwoAttempts;
-    private int    totalScore;
+    private final int           score;
+    private final int           firstAttempts;
+    private final int           secondAttempts;
+    private final int           incorrectAttempts;
+    private final int           totalGamesPlayed;
+    private final LocalDateTime timestamp;
 
     public Score(int score,
                  int firstAttempts,
                  int secondAttempts,
                  int incorrectAttempts,
-                 int numGamesPlayed)
+                 int totalGamesPlayed)
     {
-        this.totalScore              = score;
-        this.numCorrectFirstAttempt  = firstAttempts;
-        this.numCorrectSecondAttempt = secondAttempts;
-        this.numIncorrectTwoAttempts = incorrectAttempts;
-        this.numGamesPlayed          = numGamesPlayed;
-        LocalDateTime     currentTime = LocalDateTime.now();
-        DateTimeFormatter formatter   = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        this.dateTimePlayed = currentTime.format(formatter);
+        this.score             = score;
+        this.firstAttempts     = firstAttempts;
+        this.secondAttempts    = secondAttempts;
+        this.incorrectAttempts = incorrectAttempts;
+        this.totalGamesPlayed  = totalGamesPlayed;
+        this.timestamp         = LocalDateTime.now();
     }
 
-    public static Score fromString(String str)
+    //new
+    public String toFileString() {
+        return String.format("%d,%d,%d,%d,%d", score, firstAttempts, secondAttempts, incorrectAttempts, totalGamesPlayed);
+    }
+
+    // Updated the toString() method to match the correct format
+    @Override
+    public String toString()
     {
-        String[] parts = str.split(",");
-        return new Score(Integer.parseInt(parts[5].trim()),
-                         // totalScore
-                         Integer.parseInt(parts[2].trim()),
-                         // numCorrectFirstAttempt
-                         Integer.parseInt(parts[3].trim()),
-                         // numCorrectSecondAttempt
-                         Integer.parseInt(parts[4].trim()),
-                         // numIncorrectTwoAttempts
-                         Integer.parseInt(parts[1].trim())); // numGamesPlayed
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return String.format("Date and Time: %s\nGames Played: %d\nCorrect First Attempts: " +
+                             "%d\nCorrect Second Attempts: %d\nIncorrect Attempts: %d\nTotal Score: %d points\n",
+                             timestamp.format(formatter),
+                             totalGamesPlayed,
+                             firstAttempts,
+                             secondAttempts,
+                             incorrectAttempts,
+                             score);
+    }
+
+    public static Score fromString(String line)
+    {
+        String[] parts = line.split(",");
+        if(parts.length < 5)
+        {
+            return new Score(0,
+                             0,
+                             0,
+                             0,
+                             1);
+        }
+        return new Score(Integer.parseInt(parts[0]),
+                         Integer.parseInt(parts[1]),
+                         Integer.parseInt(parts[2]),
+                         Integer.parseInt(parts[3]),
+                         Integer.parseInt(parts[4]));
+    }
+
+    //debug
+    public int getScore() {
+        return score;
     }
 
     public double getAverageScore()
     {
-        return (numGamesPlayed == 0) ? 0 : (double) totalScore / numGamesPlayed;
+        return totalGamesPlayed == 0 ? 0 : (double) score / totalGamesPlayed;
     }
 
-    public int getTotalScore()
-    {
-        return totalScore;
-    }
-
-    public String getDateTimePlayed()
-    {
-        return dateTimePlayed;
-    }
-
-    @Override
-    public String toString()
-    {
-        return dateTimePlayed + ", " + numGamesPlayed + ", " + numCorrectFirstAttempt +
-                ", " + numCorrectSecondAttempt + ", " + numIncorrectTwoAttempts + ", " + totalScore;
+    //debug
+    public int getTotalGamesPlayed() {
+        return totalGamesPlayed;
     }
 }
