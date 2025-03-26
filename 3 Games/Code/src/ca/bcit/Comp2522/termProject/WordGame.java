@@ -4,6 +4,14 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
+/**
+ * The WordGame class implements the word-based game mode for the Geography Trivia Game.
+ * It asks the player a series of questions about countries, tracks their score and attempts,
+ * and provides game statistics at the end of each game.
+ *
+ * @author Sehaj Gill
+ * @version 1.0
+ */
 public class WordGame
 {
     private static final int INITIAL_SCORE      = 0;
@@ -28,6 +36,14 @@ public class WordGame
     private       Country country;
 
 
+    /**
+     * Constructs a new WordGame instance, initializing the game world and resources.
+     * Loads country data from the specified resource directory and file names.
+     *
+     * @param resourceDir the directory containing the country data files
+     * @param fileNames   the list of file names to load country data from
+     * @throws RuntimeException if country data cannot be loaded
+     */
     public WordGame(String resourceDir,
                     List<String> fileNames)
     {
@@ -55,31 +71,61 @@ public class WordGame
         scanner                = new Scanner(System.in);
     }
 
+    /**
+     * Returns the player's score for the current game.
+     *
+     * @return the current game score
+     */
     public int getScore()
     {
         return score;
     }
 
+    /**
+     * Returns the number of questions answered correctly on the first attempt in the current game.
+     *
+     * @return the number of first attempts
+     */
     public int getFirstAttempts()
     {
         return firstAttempts;
     }
 
+    /**
+     * Returns the number of questions answered correctly on the second attempt in the current game.
+     *
+     * @return the number of second attempts
+     */
     public int getSecondAttempts()
     {
         return secondAttempts;
     }
 
+    /**
+     * Returns the number of questions answered incorrectly after two attempts in the current game.
+     *
+     * @return the number of incorrect attempts
+     */
     public int getIncorrectAttempts()
     {
         return incorrectAttempts;
     }
 
+    /**
+     * Returns the total number of word games played across all sessions.
+     *
+     * @return the total number of games played
+     */
     public int getTotalGamesPlayed()
     {
         return totalGamesPlayed;
     }
 
+    /**
+     * Starts a new word game session, asking the player 10 random questions about countries.
+     * Tracks the player's score, attempts, and provides game statistics at the end.
+     * If no countries are loaded, the game will not proceed and an error message will be displayed.
+     */
     public void playWordGame()
     {
         firstAttempts     = INITIAL_SCORE;
@@ -145,6 +191,14 @@ public class WordGame
         System.out.println("- " + totalIncorrectAttempts + " incorrect answers on two attempts each");
     }
 
+    /*
+     * Asks a random question about the current country based on the question type.
+     * The question can be about the country's capital, the country given the capital,
+     * or the country given a fact.
+     *
+     * @param questionType the type of question to ask (0: capital to country, 1: country to capital, 2: fact to country)
+     * @return the result of the user's answer (1 for first attempt, 2 for second attempt, 0 for incorrect)
+     */
     private int askQuestion(int questionType)
     {
         String correctAnswer = "";
@@ -166,6 +220,13 @@ public class WordGame
         return getUserAnswer(correctAnswer);
     }
 
+    /*
+     * Prompts the user for an answer and checks it against the correct answer.
+     * Allows up to two attempts to answer correctly.
+     *
+     * @param correctAnswer the correct answer to the question
+     * @return 1 if correct on the first attempt, 2 if correct on the second attempt, 0 if incorrect after two attempts
+     */
     private int getUserAnswer(String correctAnswer)
     {
         for(int attempt = FIRST_ATTEMPT; attempt <= SECOND_ATTEMPT; attempt++)
@@ -193,6 +254,9 @@ public class WordGame
         return 0;
     }
 
+    /**
+     * Closes the resources used by the WordGame instance.
+     */
     public void close()
     {
         scanner.close();

@@ -12,6 +12,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The Score class represents a player's score in the Geography Trivia Game.
+ * It stores the score, attempt counts, games played, and a timestamp, and provides
+ * methods to calculate the average score, save scores to a file, and read scores from a file.
+ *
+ * @author Sehaj Gill
+ * @version 1.0
+ */
 public class Score
 {
     private final int           score;
@@ -21,7 +29,16 @@ public class Score
     private final int           totalGamesPlayed;
     private final LocalDateTime timestamp;
 
-    // Constructor for ScoreTest
+    /**
+     * Constructs a new Score instance with the specified timestamp and game statistics.
+     * This constructor is primarily used for testing purposes.
+     *
+     * @param timestamp         the timestamp of the score
+     * @param totalGamesPlayed  the total number of games played
+     * @param firstAttempts     the number of correct answers on the first attempt
+     * @param secondAttempts    the number of correct answers on the second attempt
+     * @param incorrectAttempts the number of incorrect answers after two attempts
+     */
     public Score(LocalDateTime timestamp,
                  int totalGamesPlayed,
                  int firstAttempts,
@@ -36,7 +53,16 @@ public class Score
         this.score             = firstAttempts * 2 + secondAttempts * 1;
     }
 
-    // Constructor for the application
+    /**
+     * Constructs a new Score instance with the specified game statistics and the current timestamp.
+     * This constructor is used by the application to record a new score.
+     *
+     * @param score             the total score for the game
+     * @param firstAttempts     the number of correct answers on the first attempt
+     * @param secondAttempts    the number of correct answers on the second attempt
+     * @param incorrectAttempts the number of incorrect answers after two attempts
+     * @param totalGamesPlayed  the total number of games played
+     */
     public Score(int score,
                  int firstAttempts,
                  int secondAttempts,
@@ -51,16 +77,33 @@ public class Score
         this.timestamp         = LocalDateTime.now();
     }
 
+    /**
+     * Returns the total score for the game.
+     *
+     * @return the total score
+     */
     public int getScore()
     {
         return score;
     }
 
+    /**
+     * Calculates and returns the average score per game.
+     * If no games have been played, returns 0.
+     *
+     * @return the average score per game
+     */
     public double getAverageScore()
     {
         return totalGamesPlayed == 0 ? 0 : (double) score / totalGamesPlayed;
     }
 
+    /**
+     * Returns a string representation of the score, including the timestamp, games played,
+     * attempt counts, and total score.
+     *
+     * @return a formatted string representing the score
+     */
     @Override
     public String toString()
     {
@@ -74,6 +117,13 @@ public class Score
                              score);
     }
 
+    /**
+     * Appends the specified score to the given file.
+     *
+     * @param score    the Score object to save
+     * @param filePath the path to the file where the score will be saved
+     * @throws IOException if an error occurs while writing to the file
+     */
     public static void appendScoreToFile(Score score,
                                          String filePath) throws IOException
     {
@@ -89,6 +139,14 @@ public class Score
         }
     }
 
+    /**
+     * Reads all scores from the specified file and returns them as a list.
+     * If the file does not exist, returns an empty list.
+     *
+     * @param filePath the path to the file containing the scores
+     * @return a list of Score objects read from the file
+     * @throws IOException if an error occurs while reading the file
+     */
     public static List<Score> readScoresFromFile(String filePath) throws IOException
     {
         List<Score> scoreList = new ArrayList<>();
@@ -128,6 +186,13 @@ public class Score
         return scoreList;
     }
 
+    /**
+     * Parses a string representation of a score and returns a corresponding Score object.
+     * If the string is malformed, logs an error and returns a default Score object.
+     *
+     * @param line the string representation of the score
+     * @return a Score object parsed from the string, or a default Score if parsing fails
+     */
     public static Score fromString(String line)
     {
         String[] parts = line.split("\n");
@@ -168,7 +233,7 @@ public class Score
                 System.out.println("Warning: Parsed score (" + parsedScore + ") does not match calculated score (" + calculatedScore + ")");
             }
 
-            
+
             return new Score(timestamp,
                              gamesPlayed,
                              firstAttempts,

@@ -8,6 +8,14 @@ import java.util.Random;
 import java.util.List;
 
 
+/**
+ * The World class manages a collection of countries for the Geography Trivia Game.
+ * It loads country data from text files in the specified resource directory and provides
+ * access to the country data through a HashMap.
+ *
+ * @author Sehaj Gill
+ * @version 1.0
+ */
 public class World
 {
     HashMap<String, Country> countries;
@@ -16,6 +24,12 @@ public class World
     private final Random       random = new Random();
 
 
+    /**
+     * Constructs a new World instance with the specified resource directory and list of file names.
+     *
+     * @param resourceDir the directory containing the country data files
+     * @param fileNames   the list of file names to load country data from
+     */
     public World(String resourceDir,
                  List<String> fileNames)
     {
@@ -24,6 +38,12 @@ public class World
         countries        = new HashMap<>();
     }
 
+    /**
+     * Loads country data from text files in the resource directory.
+     * Each file is expected to be named [a-z].txt (excluding w.txt and x.txt) and contain
+     * country data in the format "Country:Capital" followed by facts.
+     * Skips files that do not exist, are empty, or have an incorrect format.
+     */
     public void loadCountries()
     {
         String countryName;
@@ -106,6 +126,12 @@ public class World
         }
     }
 
+    /**
+     * Returns the HashMap containing all loaded countries, with country names as keys
+     * and Country objects as values.
+     *
+     * @return the HashMap of countries
+     */
     public HashMap<String, Country> getCountries()
     {
         return countries;

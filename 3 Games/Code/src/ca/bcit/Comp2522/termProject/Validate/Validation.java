@@ -3,20 +3,37 @@ package ca.bcit.Comp2522.termProject.Validate;
 import ca.bcit.Comp2522.termProject.WordGame;
 import ca.bcit.Comp2522.termProject.Score;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.*;
 
+/**
+ * The Validation class manages user input validation and game flow for the Geography Trivia Game.
+ * It handles game mode selection, score tracking, and saving high scores to a file.
+ *
+ * @author Sehaj Gill
+ * @version 1.0
+ */
 public class Validation
 {
+    private static final String         SCORE_FILE_PATH  = "Resources/score.txt";
+    private static final Set<Character> VALID_GAME_MODES = Set.of('W',
+                                                                  'N',
+                                                                  'M',
+                                                                  'Q');
+    private static final Set<String>    YES_RESPONSES    = Set.of("YES",
+                                                                  "Y");
+    private static final Set<String>    NO_RESPONSES     = Set.of("NO",
+                                                                  "N");
+
     private WordGame game;
     private Scanner  sc;
 
+    /**
+     * Constructs a new Validation instance, initializing the WordGame and Scanner for user input.
+     *
+     * @param resourceDir the directory containing the country data files
+     * @param fileNames   the list of file names to load country data from
+     */
     public Validation(String resourceDir,
                       List<String> fileNames)
     {
@@ -25,6 +42,13 @@ public class Validation
         sc   = new Scanner(System.in);
     }
 
+    /**
+     * Prompts the user to select a game mode and validates the input.
+     * The user can choose to play the Word Game (W), Number Game (N), Custom Game (M), or Quit (Q).
+     * Returns the validated choice, or 'Q' if the user chooses not to play again after a game.
+     *
+     * @return the validated user choice ('W', 'N', 'M', or 'Q')
+     */
     public char getValidInput()
     {
         String gameChoiceInput;
@@ -35,6 +59,11 @@ public class Validation
             if(gameChoiceInput.length() == 1)
             {
                 char choice = Character.toUpperCase(gameChoiceInput.charAt(0));
+                if(!VALID_GAME_MODES.contains(choice))
+                {
+                    System.out.println("Invalid input. Please enter W, N, M, or Q.");
+                    continue;
+                }
                 switch(choice)
                 {
                     case 'W':
@@ -46,16 +75,14 @@ public class Validation
                         }
                         break;
                     case 'N':
-                        System.out.println("Starting Number Game...");
+                        System.out.println("Starting Number Game... (Not yet implemented)");
                         break;
                     case 'M':
-                        System.out.println("Starting Custom Game...");
+                        System.out.println("Starting Custom Game... (Not yet implemented)");
                         break;
                     case 'Q':
                         System.out.println("Quitting game...");
                         return choice;
-                    default:
-                        System.out.println("Invalid input. Please enter W, N, M, or Q.");
                 }
             }
             else
@@ -65,6 +92,13 @@ public class Validation
         }
     }
 
+    /**
+     * Prompts the user to decide if they want to play another game.
+     * Accepts "Yes", "Y", "No", or "N" (case-insensitive) as valid inputs.
+     * If the user chooses not to play again, saves and prints the high score.
+     *
+     * @return true if the user wants to play again, false otherwise
+     */
     public boolean playAgain()
     {
         String response;
@@ -72,11 +106,11 @@ public class Validation
         {
             System.out.print("Do you want to play again? (Yes/No): ");
             response = sc.nextLine().trim().toUpperCase();
-            if(response.equals("YES") || response.equals("Y"))
+            if(YES_RESPONSES.contains(response))
             {
                 return true;
             }
-            else if(response.equals("NO") || response.equals("N"))
+            else if(NO_RESPONSES.contains(response))
             {
                 saveAndPrintHighScore();
                 return false;
@@ -88,7 +122,12 @@ public class Validation
         }
     }
 
-
+    /*
+     * Calculates, displays, and compares the current game score with the highest score.
+     * Prints the raw score, games played, current average score, and highest average score,
+     * and provides feedback on whether a new high score was achieved.
+     * Saves the current score to the score file.
+     */
     private void saveAndPrintHighScore()
     {
         int rawScore    = game.getScore();
@@ -117,35 +156,34 @@ public class Validation
         {
             System.out.println("No new high score this time.");
         }
-        saveScoreToFile(currentScore);
-    }
 
-
-    private void saveScoreToFile(Score score)
-    {
-        File scoreFile = new File("Resources/",
-                                  "score.txt");
-        try(BufferedWriter writer = new BufferedWriter(new FileWriter(scoreFile,
-                                                                      true)))
+        try
         {
-            writer.write(score.toString() + "\n");
+            Score.appendScoreToFile(currentScore,
+                                    SCORE_FILE_PATH);
         }
         catch(IOException e)
         {
-            System.out.println("Error: Unable to save score to " + scoreFile.getAbsolutePath() + ": " + e.getMessage());
+            System.out.println("Error: Unable to save score to " + SCORE_FILE_PATH + ": " + e.getMessage());
         }
     }
 
-
+    /*
+     * Retrieves the highest score from the score file based on the average score.
+     * If the file does not exist or an error occurs, returns a default Score object.
+     *
+     * @return the Score object with the highest average score, or a default Score if none are found
+     */
     private Score getHighestScore()
     {
-        List<Score> scoreList = new ArrayList<>();
-        File scoreFile = new File("Resources/",
-                                  "score.txt");
-
-        if(!scoreFile.exists())
+        List<Score> scoreList;
+        try
         {
-            System.out.println("Score file not found at: " + scoreFile.getAbsolutePath());
+            scoreList = Score.readScoresFromFile(SCORE_FILE_PATH);
+        }
+        catch(IOException e)
+        {
+            System.out.println("Error reading score file: " + e.getMessage());
             return new Score(0,
                              0,
                              0,
@@ -153,51 +191,18 @@ public class Validation
                              1);
         }
 
-        try(BufferedReader reader = Files.newBufferedReader(scoreFile.toPath(),
-                                                            StandardCharsets.UTF_8))
-        {
-            String        line;
-            StringBuilder scoreEntry = new StringBuilder();
-            int           entryCount = 0;
-            while((line = reader.readLine()) != null)
-            {
-                if(line.trim().isEmpty() && scoreEntry.length() > 0)
-                {
-                    entryCount++;
-                    Score score = Score.fromString(scoreEntry.toString());
-                    scoreList.add(score);
-                    scoreEntry.setLength(0);
-                }
-                else if(!line.trim().isEmpty())
-                {
-                    scoreEntry.append(line).append("\n");
-                }
-            }
-            if(scoreEntry.length() > 0)
-            {
-                entryCount++;
-                Score score = Score.fromString(scoreEntry.toString());
-                scoreList.add(score);
-            }
-            System.out.println("Total entries read: " + entryCount);
-        }
-        catch(IOException e)
-        {
-            System.out.println("Error reading score file: " + e.getMessage());
-        }
-
-        Score highestScore = scoreList.stream().max(Comparator.comparingDouble(Score::getAverageScore)).orElse(new Score(0,
-                                                                                                                         0,
-                                                                                                                         0,
-                                                                                                                         0,
-                                                                                                                         1));
-        return highestScore;
+        return scoreList.stream().max(Comparator.comparingDouble(Score::getAverageScore)).orElse(new Score(0,
+                                                                                                           0,
+                                                                                                           0,
+                                                                                                           0,
+                                                                                                           1));
     }
 
+    /**
+     * Closes the resources used by the Validation instance, including the WordGame.
+     */
     public void close()
     {
         game.close();
-        sc.close();
     }
-
 }
