@@ -39,7 +39,7 @@ public class WordGame
         }
         catch(IllegalStateException e)
         {
-            // Replaced logger with System.out.println (Issue 14)
+
             System.out.println(e.getMessage());
             throw new RuntimeException("Game cannot start due to data loading failure.");
         }
@@ -86,6 +86,8 @@ public class WordGame
         secondAttempts    = INITIAL_SCORE;
         incorrectAttempts = INITIAL_SCORE;
         score             = INITIAL_SCORE;
+
+        System.out.println("Starting new game with score: " + score);
 
         System.out.println("Welcome to the Geography Trivia Game!");
         System.out.println("You will be asked 10 random questions. Try to answer correctly!");

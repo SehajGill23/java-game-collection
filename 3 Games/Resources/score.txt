@@ -1,0 +1,182 @@
+Date and Time: 2025-03-25 02:24:34
+Games Played: 1
+Correct First Attempts: 0
+Correct Second Attempts: 0
+Incorrect Attempts: 10
+Total Score: 0 points
+
+Date and Time: 2025-03-25 02:25:36
+Games Played: 1
+Correct First Attempts: 1
+Correct Second Attempts: 0
+Incorrect Attempts: 9
+Total Score: 2 points
+
+Date and Time: 2025-03-25 02:26:30
+Games Played: 1
+Correct First Attempts: 0
+Correct Second Attempts: 0
+Incorrect Attempts: 10
+Total Score: 0 points
+
+Date and Time: 2025-03-25 02:29:29
+Games Played: 1
+Correct First Attempts: 0
+Correct Second Attempts: 0
+Incorrect Attempts: 10
+Total Score: 0 points
+
+Date and Time: 2025-03-25 02:30:39
+Games Played: 1
+Correct First Attempts: 0
+Correct Second Attempts: 2
+Incorrect Attempts: 8
+Total Score: 2 points
+
+Date and Time: 2025-03-25 02:32:10
+Games Played: 1
+Correct First Attempts: 0
+Correct Second Attempts: 0
+Incorrect Attempts: 10
+Total Score: 0 points
+
+Date and Time: 2025-03-25 02:33:36
+Games Played: 1
+Correct First Attempts: 0
+Correct Second Attempts: 0
+Incorrect Attempts: 10
+Total Score: 0 points
+
+Date and Time: 2025-03-25 02:35:11
+Games Played: 1
+Correct First Attempts: 2
+Correct Second Attempts: 0
+Incorrect Attempts: 8
+Total Score: 4 points
+
+Date and Time: 2025-03-25 10:29:56
+Games Played: 1
+Correct First Attempts: 0
+Correct Second Attempts: 0
+Incorrect Attempts: 10
+Total Score: 0 points
+
+Date and Time: 2025-03-25 10:44:50
+Games Played: 1
+Correct First Attempts: 2
+Correct Second Attempts: 0
+Incorrect Attempts: 8
+Total Score: 4 points
+
+Date and Time: 2025-03-25 10:48:55
+Games Played: 1
+Correct First Attempts: 0
+Correct Second Attempts: 0
+Incorrect Attempts: 10
+Total Score: 0 points
+
+Date and Time: 2025-03-25 11:23:30
+Games Played: 1
+Correct First Attempts: 0
+Correct Second Attempts: 0
+Incorrect Attempts: 10
+Total Score: 0 points
+
+Date and Time: 2025-03-25 11:24:09
+Games Played: 1
+Correct First Attempts: 0
+Correct Second Attempts: 0
+Incorrect Attempts: 10
+Total Score: 0 points
+
+Date and Time: 2025-03-25 11:24:54
+Games Played: 1
+Correct First Attempts: 0
+Correct Second Attempts: 0
+Incorrect Attempts: 10
+Total Score: 0 points
+
+Date and Time: 2025-03-25 11:25:29
+Games Played: 1
+Correct First Attempts: 1
+Correct Second Attempts: 1
+Incorrect Attempts: 8
+Total Score: 3 points
+
+Date and Time: 2025-03-25 11:25:58
+Games Played: 1
+Correct First Attempts: 0
+Correct Second Attempts: 0
+Incorrect Attempts: 10
+Total Score: 0 points
+
+Date and Time: 2025-03-25 11:37:15
+Games Played: 1
+Correct First Attempts: 0
+Correct Second Attempts: 0
+Incorrect Attempts: 10
+Total Score: 0 points
+
+Date and Time: 2025-03-25 11:45:50
+Games Played: 1
+Correct First Attempts: 1
+Correct Second Attempts: 0
+Incorrect Attempts: 9
+Total Score: 2 points
+
+Date and Time: 2025-03-25 11:53:15
+Games Played: 1
+Correct First Attempts: 0
+Correct Second Attempts: 2
+Incorrect Attempts: 8
+Total Score: 2 points
+
+Date and Time: 2025-03-25 11:58:13
+Games Played: 1
+Correct First Attempts: 1
+Correct Second Attempts: 0
+Incorrect Attempts: 9
+Total Score: 2 points
+
+Date and Time: 2025-03-25 12:03:05
+Games Played: 1
+Correct First Attempts: 0
+Correct Second Attempts: 0
+Incorrect Attempts: 10
+Total Score: 0 points
+
+Date and Time: 2025-03-25 12:05:03
+Games Played: 1
+Correct First Attempts: 2
+Correct Second Attempts: 0
+Incorrect Attempts: 8
+Total Score: 4 points
+
+Date and Time: 2025-03-25 12:07:43
+Games Played: 1
+Correct First Attempts: 0
+Correct Second Attempts: 1
+Incorrect Attempts: 9
+Total Score: 1 points
+
+Date and Time: 2025-03-25 12:14:21
+Games Played: 3
+Correct First Attempts: 5
+Correct Second Attempts: 0
+Incorrect Attempts: 5
+Total Score: 10 points
+
+Date and Time: 2025-03-25 17:33:02
+Games Played: 1
+Correct First Attempts: 5
+Correct Second Attempts: 3
+Incorrect Attempts: 2
+Total Score: 13 points
+
+Date and Time: 2025-03-25 17:33:35
+Games Played: 1
+Correct First Attempts: 0
+Correct Second Attempts: 0
+Incorrect Attempts: 10
+Total Score: 0 points
+

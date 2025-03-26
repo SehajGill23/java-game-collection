@@ -10,7 +10,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 
 public class Validation
@@ -92,31 +91,31 @@ public class Validation
 
     private void saveAndPrintHighScore()
     {
-        // Get the current score from the game
-        Score currentScore = new Score(game.getScore(),
+        int rawScore    = game.getScore();
+        int gamesPlayed = game.getTotalGamesPlayed();
+
+        System.out.println("\nRaw score from game: " + rawScore);
+        System.out.println("Games played: " + gamesPlayed);
+        Score currentScore = new Score(rawScore,
                                        game.getFirstAttempts(),
                                        game.getSecondAttempts(),
                                        game.getIncorrectAttempts(),
-                                       game.getTotalGamesPlayed());
-
-        // Retrieve the highest score ever recorded
+                                       gamesPlayed);
         Score highestScore = getHighestScore();
-
-        System.out.println("Current Score: " + currentScore.getAverageScore());
-        System.out.println("Highest Score: " + highestScore.getAverageScore());
-
-        // Check if the current score is higher, equal, or lower than the highest score
+        System.out.println("\nCurrent Average Score: " + currentScore.getAverageScore());
+        System.out.println("Highest Average Score: " + highestScore.getAverageScore());
         if(currentScore.getAverageScore() > highestScore.getAverageScore())
         {
             System.out.println("Congratulations! You've set a new high score!");
         }
+        else if(currentScore.getAverageScore() == highestScore.getAverageScore())
+        {
+            System.out.println("You have matched the high score!");
+        }
         else
         {
-            // The player did not surpass the highest score
             System.out.println("No new high score this time.");
         }
-
-        // Save the current score to the score file
         saveScoreToFile(currentScore);
     }
 
@@ -140,22 +139,12 @@ public class Validation
     private Score getHighestScore()
     {
         List<Score> scoreList = new ArrayList<>();
-
-        File scoreFile = new File("Resources/score.txt");
+        File scoreFile = new File("Resources/",
+                                  "score.txt");
 
         if(!scoreFile.exists())
         {
-            System.out.println("No previous scores found. Creating a new score file.");
-            try
-            {
-                // Create the file manually
-                scoreFile.createNewFile();
-                System.out.println("New score file created at: " + scoreFile.getAbsolutePath());
-            }
-            catch(IOException e)
-            {
-                System.out.println("Error creating score file: " + e.getMessage());
-            }
+            System.out.println("Score file not found at: " + scoreFile.getAbsolutePath());
             return new Score(0,
                              0,
                              0,
@@ -163,31 +152,46 @@ public class Validation
                              1);
         }
 
-
-        try(BufferedReader reader = Files.newBufferedReader(Paths.get("Resources/score.txt"),
+        try(BufferedReader reader = Files.newBufferedReader(scoreFile.toPath(),
                                                             StandardCharsets.UTF_8))
         {
-            String line;
+            String        line;
+            StringBuilder scoreEntry = new StringBuilder();
+            int           entryCount = 0;
             while((line = reader.readLine()) != null)
             {
-                if(!line.trim().isEmpty())
+                if(line.trim().isEmpty() && scoreEntry.length() > 0)
                 {
-                    scoreList.add(Score.fromString(line));
+                    entryCount++;
+                    Score score = Score.fromString(scoreEntry.toString());
+                    scoreList.add(score);
+                    scoreEntry.setLength(0);
+                }
+                else if(!line.trim().isEmpty())
+                {
+                    scoreEntry.append(line).append("\n");
                 }
             }
+            if(scoreEntry.length() > 0)
+            {
+                entryCount++;
+                Score score = Score.fromString(scoreEntry.toString());
+                scoreList.add(score);
+            }
+            System.out.println("Total entries read: " + entryCount);
         }
         catch(IOException e)
         {
-            System.out.println("Error: Unable to read scores from score.txt: " + e.getMessage());
+            System.out.println("Error reading score file: " + e.getMessage());
         }
 
-        return scoreList.stream().max(Comparator.comparingDouble(Score::getAverageScore)).orElse(new Score(0,
-                                                                                                           0,
-                                                                                                           0,
-                                                                                                           0,
-                                                                                                           1));
+        Score highestScore = scoreList.stream().max(Comparator.comparingDouble(Score::getAverageScore)).orElse(new Score(0,
+                                                                                                                         0,
+                                                                                                                         0,
+                                                                                                                         0,
+                                                                                                                         1));
+        return highestScore;
     }
-
 
     public void close()
     {

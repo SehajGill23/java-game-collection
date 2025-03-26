@@ -11,8 +11,8 @@ import java.util.List;
 public class World
 {
     HashMap<String, Country> countries;
-    private final String       resourceDir;
-    private final List<String> fileNames;
+    public final  String       resourceDir;
+    public final  List<String> fileNames;
     private final Random       random = new Random();
 
 
