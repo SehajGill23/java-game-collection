@@ -104,6 +104,7 @@ public class Validation
         Score highestScore = getHighestScore();
         System.out.println("\nCurrent Average Score: " + currentScore.getAverageScore());
         System.out.println("Highest Average Score: " + highestScore.getAverageScore());
+
         if(currentScore.getAverageScore() > highestScore.getAverageScore())
         {
             System.out.println("Congratulations! You've set a new high score!");

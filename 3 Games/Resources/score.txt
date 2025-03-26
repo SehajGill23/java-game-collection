@@ -180,3 +180,10 @@ Correct Second Attempts: 0
 Incorrect Attempts: 10
 Total Score: 0 points
 
+Date and Time: 2025-03-25 18:46:48
+Games Played: 1
+Correct First Attempts: 0
+Correct Second Attempts: 0
+Incorrect Attempts: 10
+Score: 0 points
+
