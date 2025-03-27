@@ -1,10 +1,11 @@
-package ca.bcit.Comp2522.termProject.Validate;
-
-import ca.bcit.Comp2522.termProject.WordGame;
-import ca.bcit.Comp2522.termProject.Score;
+package ca.bcit.Comp2522.termProject.WordGame;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Scanner;
+import java.util.Set;
+
 
 /**
  * The Validation class manages user input validation and game flow for the Geography Trivia Game.

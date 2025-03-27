@@ -1,4 +1,4 @@
-import ca.bcit.Comp2522.termProject.Score;
+import ca.bcit.Comp2522.termProject.WordGame.Score;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -46,11 +46,11 @@ class ScoreTest
     {
         // Testing the formatting of the toString() method
         LocalDateTime dateTime = LocalDateTime.now();
-        Score         score    = new Score(dateTime,
-                                           1,
-                                           6,
-                                           2,
-                                           1);
+        Score score    = new Score(dateTime,
+                                   1,
+                                   6,
+                                   2,
+                                   1);
 
         String expected = String.format("Date and Time: %s\nGames Played: 1\nCorrect First Attempts: 6\nCorrect Second Attempts: 2\nIncorrect Attempts: 1\nScore: 14 points\n",
                                         dateTime.format(formatter));

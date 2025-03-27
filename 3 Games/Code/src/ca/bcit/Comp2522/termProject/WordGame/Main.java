@@ -1,6 +1,5 @@
-package ca.bcit.Comp2522.termProject;
+package ca.bcit.Comp2522.termProject.WordGame;
 
-import ca.bcit.Comp2522.termProject.Validate.Validation;
 
 import java.io.File;
 import java.util.Arrays;
@@ -59,7 +58,7 @@ public class Main
      *
      * @param resourceDir the directory path where the data files are located
      * @return a sorted list of file names matching the pattern [a-z].txt (excluding w.txt and x.txt),
-     *         or an empty list if the directory doesn't exist or contains no valid files
+     * or an empty list if the directory doesn't exist or contains no valid files
      */
     private static List<String> getTextFilesInDirectory(String resourceDir)
     {
@@ -70,7 +69,7 @@ public class Main
             return List.of();
         }
 
-        // Get files that match [a-z].txt, excluding w.txt and x.txt
+
         return Arrays.stream(Objects.requireNonNull(res.listFiles((_, name) -> name.toLowerCase()
                                                                                    .matches("[a-z]\\.txt")
                                                                                && !name.equalsIgnoreCase("w.txt")

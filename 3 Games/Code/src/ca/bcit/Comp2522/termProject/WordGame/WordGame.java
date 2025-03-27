@@ -1,4 +1,4 @@
-package ca.bcit.Comp2522.termProject;
+package ca.bcit.Comp2522.termProject.WordGame;
 
 import java.util.List;
 import java.util.Random;
@@ -15,13 +15,16 @@ import java.util.Scanner;
 public class WordGame
 {
     private static final int INITIAL_SCORE      = 0;
-    private static final int INITIAL_LENGTH     = 0;
+    private static final int COUNTRY_LENGTH     = 0;
     private static final int QUESTIONS_PER_GAME = 10;
     private static final int RANDOM_QUESTION    = 3;
     private static final int FIRST_ATTEMPT      = 1;
     private static final int SECOND_ATTEMPT     = 2;
+    private static final int FIRST_ATTEMPT_SCORE = 2;
+    private static final int SECOND_ATTEMPT_SCORE = 1;
+    private static final int GAMES_PLAYED = 1;
 
-    private int score;
+    private int  score;
     private int firstAttempts;
     private int secondAttempts;
     private int incorrectAttempts;
@@ -30,8 +33,8 @@ public class WordGame
     private int totalSecondAttempts;
     private int totalIncorrectAttempts;
 
-    private final World   world;
-    private final Random  random;
+    private final World  world;
+    private final Random random;
     private final Scanner scanner;
     private       Country country;
 
@@ -139,14 +142,14 @@ public class WordGame
         System.out.println("You will be asked 10 random questions. Try to answer correctly!");
 
         String[] countryNames = world.getCountries().keySet().toArray(new String[0]);
-        if(countryNames.length == INITIAL_LENGTH)
+        if(countryNames.length == COUNTRY_LENGTH)
         {
-            // Replaced logger with System.out.println (Issue 14)
+
             System.out.println("Error: No countries loaded. Please check the Resources directory and files.");
             return;
         }
 
-        for(int i = INITIAL_LENGTH; i < QUESTIONS_PER_GAME; i++)
+        for(int i = COUNTRY_LENGTH; i < QUESTIONS_PER_GAME; i++)
         {
             String randomCountryName = countryNames[random.nextInt(countryNames.length)];
             country = world.getCountries().get(randomCountryName);
@@ -157,13 +160,13 @@ public class WordGame
             if(result == FIRST_ATTEMPT)
             {
                 firstAttempts++;
-                score += 2;
+                score += FIRST_ATTEMPT_SCORE;
                 System.out.println("Correct First Attempts:\n" + firstAttempts);
             }
             else if(result == SECOND_ATTEMPT)
             {
                 secondAttempts++;
-                score += 1;
+                score += SECOND_ATTEMPT_SCORE;
                 System.out.println("Correct Second Attempts:\n" + secondAttempts);
             }
             else
@@ -179,13 +182,15 @@ public class WordGame
         totalIncorrectAttempts += incorrectAttempts;
 
         System.out.println("\nGame Over! Here are your stats for this game:");
-        System.out.println("- " + totalGamesPlayed + " word game" + (totalGamesPlayed == 1 ? "" : "s") + " played");
+        System.out.println("- " + totalGamesPlayed + " word game" +
+                           (totalGamesPlayed == GAMES_PLAYED ? "" : "s") + " played");
         System.out.println("- " + firstAttempts + " correct answers on the first attempt");
         System.out.println("- " + secondAttempts + " correct answers on the second attempt");
         System.out.println("- " + incorrectAttempts + " incorrect answers on two attempts each");
 
         System.out.println("\nTotal stats across all games:");
-        System.out.println("- " + totalGamesPlayed + " word game" + (totalGamesPlayed == 1 ? "" : "s") + " played");
+        System.out.println("- " + totalGamesPlayed + " word game" +
+                           (totalGamesPlayed == GAMES_PLAYED ? "" : "s") + " played");
         System.out.println("- " + totalFirstAttempts + " correct answers on the first attempt");
         System.out.println("- " + totalSecondAttempts + " correct answers on the second attempt");
         System.out.println("- " + totalIncorrectAttempts + " incorrect answers on two attempts each");
@@ -229,10 +234,11 @@ public class WordGame
      */
     private int getUserAnswer(String correctAnswer)
     {
+        String userAnswer;
         for(int attempt = FIRST_ATTEMPT; attempt <= SECOND_ATTEMPT; attempt++)
         {
             System.out.print("Your answer: ");
-            String userAnswer = scanner.nextLine().trim();
+            userAnswer = scanner.nextLine().trim();
 
             if(userAnswer.isEmpty())
             {

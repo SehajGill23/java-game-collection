@@ -1,4 +1,4 @@
-package ca.bcit.Comp2522.termProject;
+package ca.bcit.Comp2522.termProject.WordGame;
 
 import java.util.Random;
 
@@ -20,18 +20,18 @@ public class Country
     /**
      * Constructs a new Country instance with the specified name, capital city, facts, and random number generator.
      *
-     * @param name            the name of the country
+     * @param countryName            the name of the country
      * @param capitalCityName the name of the country's capital city
      * @param facts           an array of facts about the country
      * @param random          a Random instance for selecting random facts
-     * @throws IllegalArgumentException if name, capitalCityName, facts, or random is null, or if facts is empty
+     * @throws IllegalArgumentException if countryName, capitalCityName, facts, or random is null, or if facts is empty
      */
-    public Country(final String name,
+    public Country(final String countryName,
                    final String capitalCityName,
                    final String[] facts,
                    final Random random)
     {
-        this.name            = name;
+        this.name            = countryName;
         this.capitalCityName = capitalCityName;
         this.facts           = facts;
         this.random          = random;

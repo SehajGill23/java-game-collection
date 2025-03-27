@@ -1,4 +1,4 @@
-package ca.bcit.Comp2522.termProject;
+package ca.bcit.Comp2522.termProject.WordGame;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -226,13 +226,12 @@ public class Score
             int               parsedScore       = Integer.parseInt(scorePart.replaceAll("[^0-9]",
                                                                                         ""));
 
-            // Recalculate the score to ensure consistency
+
             int calculatedScore = firstAttempts * 2 + secondAttempts * 1;
             if(parsedScore != calculatedScore)
             {
                 System.out.println("Warning: Parsed score (" + parsedScore + ") does not match calculated score (" + calculatedScore + ")");
             }
-
 
             return new Score(timestamp,
                              gamesPlayed,
