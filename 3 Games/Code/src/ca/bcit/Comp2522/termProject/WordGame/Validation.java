@@ -1,120 +1,106 @@
 package ca.bcit.Comp2522.termProject.WordGame;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.Set;
-
+import java.util.stream.Collectors;
 
 /**
- * The Validation class manages user input validation and game flow for the Geography Trivia Game.
- * It handles game mode selection, score tracking, and saving high scores to a file.
+ * The Validation class manages game logic, validation, and score tracking for the Geography Trivia Game.
+ * It handles input validation, game execution, and resource initialization.
  *
  * @author Sehaj Gill
  * @version 1.0
  */
 public class Validation
 {
-    private static final String         SCORE_FILE_PATH  = "Resources/score.txt";
-    private static final Set<Character> VALID_GAME_MODES = Set.of('W',
-                                                                  'N',
-                                                                  'M',
-                                                                  'Q');
-    private static final Set<String>    YES_RESPONSES    = Set.of("YES",
-                                                                  "Y");
-    private static final Set<String>    NO_RESPONSES     = Set.of("NO",
-                                                                  "N");
+    private static final String      SCORE_FILE_PATH      = "Resources/score.txt";
+    private static final String      WORD_GAME_MODE       = "W";
+    private static final String      NUMBER_GAME_MODE     = "N";
+    private static final String      CUSTOM_GAME_MODE     = "M";
+    private static final String      QUIT_MODE            = "Q";
+    private static final Set<String> VALID_GAME_MODES     = Set.of(WORD_GAME_MODE,
+                                                                   NUMBER_GAME_MODE,
+                                                                   CUSTOM_GAME_MODE,
+                                                                   QUIT_MODE);
+    private static final Set<String> YES_RESPONSES        = Set.of("YES",
+                                                                   "Y");
+    private static final Set<String> NO_RESPONSES         = Set.of("NO",
+                                                                   "N");
+    private static final String      INVALID_MODE_MESSAGE = "Invalid input. Please enter " + WORD_GAME_MODE +
+                                                            ", " + NUMBER_GAME_MODE + ", " + CUSTOM_GAME_MODE +
+                                                            ", or " + QUIT_MODE + ".";
 
-    private WordGame game;
-    private Scanner  sc;
+    private final WordGame game;
 
     /**
-     * Constructs a new Validation instance, initializing the WordGame and Scanner for user input.
+     * Constructs a new Validation instance, initializing the WordGame with files from the resource directory.
      *
      * @param resourceDir the directory containing the country data files
-     * @param fileNames   the list of file names to load country data from
      */
-    public Validation(String resourceDir,
-                      List<String> fileNames)
+    public Validation(final String resourceDir)
     {
-        game = new WordGame(resourceDir,
-                            fileNames);
-        sc   = new Scanner(System.in);
+        final List<String> fileNames = getTextFilesInDirectory(resourceDir);
+        this.game = new WordGame(resourceDir,
+                                 fileNames);
     }
 
     /**
-     * Prompts the user to select a game mode and validates the input.
-     * The user can choose to play the Word Game (W), Number Game (N), Custom Game (M), or Quit (Q).
-     * Returns the validated choice, or 'Q' if the user chooses not to play again after a game.
+     * Validates the user's game mode input.
      *
-     * @return the validated user choice ('W', 'N', 'M', or 'Q')
+     * @param input the raw input from the user (trimmed and uppercased)
+     * @return true if the input is valid, false otherwise
      */
-    public char getValidInput()
+    public boolean isValidInput(final String input)
     {
-        String gameChoiceInput;
-        while(true)
+        if(input.length() != 1)
         {
-            System.out.print("Please choose a game (W = Word Game, N = Number Game, M = Custom Game, Q = Quit): ");
-            gameChoiceInput = sc.nextLine().trim();
-            if(gameChoiceInput.length() == 1)
-            {
-                char choice = Character.toUpperCase(gameChoiceInput.charAt(0));
-                if(!VALID_GAME_MODES.contains(choice))
-                {
-                    System.out.println("Invalid input. Please enter W, N, M, or Q.");
-                    continue;
-                }
-                switch(choice)
-                {
-                    case 'W':
-                        System.out.println("Starting Word Game...");
-                        game.playWordGame();
-                        if(!playAgain())
-                        {
-                            return 'Q';
-                        }
-                        break;
-                    case 'N':
-                        System.out.println("Starting Number Game... (Not yet implemented)");
-                        break;
-                    case 'M':
-                        System.out.println("Starting Custom Game... (Not yet implemented)");
-                        break;
-                    case 'Q':
-                        System.out.println("Quitting game...");
-                        return choice;
-                }
-            }
-            else
-            {
-                System.out.println("Invalid input. Please enter a single character.");
-            }
+            System.out.println("Invalid input. Please enter a single character.");
+            return false;
         }
+        if(!VALID_GAME_MODES.contains(input))
+        {
+            System.out.println(INVALID_MODE_MESSAGE);
+            return false;
+        }
+        return true;
     }
 
     /**
-     * Prompts the user to decide if they want to play another game.
-     * Accepts "Yes", "Y", "No", or "N" (case-insensitive) as valid inputs.
-     * If the user chooses not to play again, saves and prints the high score.
-     *
-     * @return true if the user wants to play again, false otherwise
+     * Starts the Word Game by invoking the playWordGame method on the WordGame instance.
      */
-    public boolean playAgain()
+    public void startWordGame()
     {
-        String response;
+        game.playWordGame();
+    }
+
+    /**
+     * Prompts the user to decide if they want to play another Word Game.
+     * If Yes, starts a new Word Game; if No, returns to the main menu.
+     *
+     * @param sc the Scanner instance to read user input
+     */
+    public void handlePlayAgain(final Scanner sc)
+    {
         while(true)
         {
             System.out.print("Do you want to play again? (Yes/No): ");
-            response = sc.nextLine().trim().toUpperCase();
+            final String response = sc.nextLine().trim().toUpperCase();
             if(YES_RESPONSES.contains(response))
             {
-                return true;
+                System.out.println("Starting Word Game...");
+                startWordGame();
+                return;
             }
             else if(NO_RESPONSES.contains(response))
             {
                 saveAndPrintHighScore();
-                return false;
+                return; // Back to main menu
             }
             else
             {
@@ -123,7 +109,7 @@ public class Validation
         }
     }
 
-    /*
+    /**
      * Calculates, displays, and compares the current game score with the highest score.
      * Prints the raw score, games played, current average score, and highest average score,
      * and provides feedback on whether a new high score was achieved.
@@ -131,17 +117,17 @@ public class Validation
      */
     private void saveAndPrintHighScore()
     {
-        int rawScore    = game.getScore();
-        int gamesPlayed = game.getTotalGamesPlayed();
+        final int rawScore    = game.getScore();
+        final int gamesPlayed = game.getTotalGamesPlayed();
 
         System.out.println("\nRaw score from game: " + rawScore);
         System.out.println("Games played: " + gamesPlayed);
-        Score currentScore = new Score(rawScore,
-                                       game.getFirstAttempts(),
-                                       game.getSecondAttempts(),
-                                       game.getIncorrectAttempts(),
-                                       gamesPlayed);
-        Score highestScore = getHighestScore();
+        final Score currentScore = new Score(rawScore,
+                                             game.getFirstAttempts(),
+                                             game.getSecondAttempts(),
+                                             game.getIncorrectAttempts(),
+                                             gamesPlayed);
+        final Score highestScore = getHighestScore();
         System.out.println("\nCurrent Average Score: " + currentScore.getAverageScore());
         System.out.println("Highest Average Score: " + highestScore.getAverageScore());
 
@@ -169,7 +155,7 @@ public class Validation
         }
     }
 
-    /*
+    /**
      * Retrieves the highest score from the score file based on the average score.
      * If the file does not exist or an error occurs, returns a default Score object.
      *
@@ -177,7 +163,7 @@ public class Validation
      */
     private Score getHighestScore()
     {
-        List<Score> scoreList;
+        final List<Score> scoreList;
         try
         {
             scoreList = Score.readScoresFromFile(SCORE_FILE_PATH);
@@ -205,5 +191,32 @@ public class Validation
     public void close()
     {
         game.close();
+    }
+
+    /**
+     * Retrieves a list of text file names from the specified Resources directory.
+     * Only includes files matching the pattern [a-z].txt, excluding w.txt and x.txt,
+     * to ensure only valid country data files are loaded.
+     *
+     * @param resourceDir the directory path where the data files are located
+     * @return a sorted list of file names matching the pattern [a-z].txt (excluding w.txt and x.txt),
+     * or an empty list if the directory doesn't exist or contains no valid files
+     */
+    private static List<String> getTextFilesInDirectory(final String resourceDir)
+    {
+        final File res = new File(resourceDir);
+        if(!res.exists() || !res.isDirectory())
+        {
+            System.out.println("Resources directory not found: " + resourceDir);
+            return List.of();
+        }
+
+        return Arrays.stream(Objects.requireNonNull(res.listFiles((_, name) -> name.toLowerCase()
+                                                                              .matches("[a-z]\\.txt") &&
+                                                                          !name.equalsIgnoreCase("w.txt") &&
+                                                                          !name.equalsIgnoreCase("x.txt"))))
+                     .map(File::getName)
+                     .sorted()
+                     .collect(Collectors.toList());
     }
 }

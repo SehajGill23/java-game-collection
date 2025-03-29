@@ -10,7 +10,7 @@ import java.util.Random;
  * @author Sehaj Gill
  * @version 1.0
  */
-public class Country
+final class Country
 {
     private final String   name;
     private final String   capitalCityName;
@@ -26,7 +26,7 @@ public class Country
      * @param random          a Random instance for selecting random facts
      * @throws IllegalArgumentException if countryName, capitalCityName, facts, or random is null, or if facts is empty
      */
-    public Country(final String countryName,
+    Country(final String countryName,
                    final String capitalCityName,
                    final String[] facts,
                    final Random random)

@@ -1,82 +1,69 @@
 package ca.bcit.Comp2522.termProject.WordGame;
+import  ca.bcit.Comp2522.termProject.NumberGame.MainMenu;
 
-
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.Scanner;
 
 /**
  * The Main class serves as the entry point for the Geography Trivia Game application.
- * It initializes the game by dynamically loading data files from the Resources directory
- * and provides a menu for the user to select different game modes or quit the application.
+ * It handles user input, game mode selection, and delegates validation and game logic to the Validation class.
  *
  * @author Sehaj Gill
  * @version 1.0
  */
-public class Main
+public final class Main
 {
-    public static void main(String[] args)
+    private static final String RESOURCE_DIR = "Resources";
+    private static final String      WORD_GAME_MODE       = "W";
+    private static final String      NUMBER_GAME_MODE     = "N";
+    private static final String      CUSTOM_GAME_MODE     = "M";
+    private static final String      QUIT_MODE            = "Q";
+
+    public static void main(final String[] args)
     {
+        final Validation validator = new Validation(RESOURCE_DIR);
+        final Scanner    sc        = new Scanner(System.in);
 
-        String       resourceDir = "Resources";
-        List<String> fileNames   = getTextFilesInDirectory(resourceDir);
-
-        Validation validator = new Validation(resourceDir,
-                                              fileNames);
-
+        System.out.println("---------------MAIN MENU------------------");
         System.out.println("Welcome to the Geography Trivia Game!");
-        System.out.println("Press W to play the Word game.");
-        System.out.println("Press N to play the Number game.");
-        System.out.println("Press M to play the Custom game.");
-        System.out.println("Press Q to quit.");
+        System.out.println("Press " + WORD_GAME_MODE + " to play the Word game.");
+        System.out.println("Press " + NUMBER_GAME_MODE + " to play the Number game.");
+        System.out.println("Press " + CUSTOM_GAME_MODE   + " to play the Custom game.");
+        System.out.println("Press "  + QUIT_MODE  + " to quit.");
 
         try
         {
             while(true)
             {
-                char choice = validator.getValidInput();
-                if(choice == 'Q')
+                System.out.print("\nEnter your Choice: ");
+                final String input = sc.nextLine().trim().toUpperCase();
+
+                if(validator.isValidInput(input))
                 {
-                    break;
+                    switch(input)
+                    {
+                        case WORD_GAME_MODE:
+                            System.out.println("Starting Word Game...");
+                            validator.startWordGame();
+                            validator.handlePlayAgain(sc);
+                            break;
+                        case NUMBER_GAME_MODE:
+                            System.out.println("Starting Number Game...");
+                            final MainMenu mainMenu = new MainMenu();
+                            break;
+                        case CUSTOM_GAME_MODE :
+                            System.out.println("Starting Custom Game... (Not yet implemented)");
+                            break;
+                        case QUIT_MODE:
+                            System.out.println("Quiting the Game...");
+                            System.exit(0);
+                    }
                 }
             }
         }
         finally
         {
-
+            sc.close();
             validator.close();
         }
-
     }
-
-    /*
-     * Retrieves a list of text file names from the specified Resources directory.
-     * Only includes files matching the pattern [a-z].txt, excluding w.txt and x.txt,
-     * to ensure only valid country data files are loaded.
-     *
-     * @param resourceDir the directory path where the data files are located
-     * @return a sorted list of file names matching the pattern [a-z].txt (excluding w.txt and x.txt),
-     * or an empty list if the directory doesn't exist or contains no valid files
-     */
-    private static List<String> getTextFilesInDirectory(String resourceDir)
-    {
-        File res = new File(resourceDir);
-        if(!res.exists() || !res.isDirectory())
-        {
-            System.out.println("Resources directory not found: " + resourceDir);
-            return List.of();
-        }
-
-
-        return Arrays.stream(Objects.requireNonNull(res.listFiles((_, name) -> name.toLowerCase()
-                                                                                   .matches("[a-z]\\.txt")
-                                                                               && !name.equalsIgnoreCase("w.txt")
-                                                                               && !name.equalsIgnoreCase("x.txt"))))
-                     .map(File::getName)
-                     .sorted()
-                     .collect(Collectors.toList());
-    }
-
 }

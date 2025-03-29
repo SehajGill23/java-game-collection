@@ -122,7 +122,7 @@ public class Score
      *
      * @param score    the Score object to save
      * @param filePath the path to the file where the score will be saved
-     * @throws IOException if an error occurs while writing to the file
+     * @throw IOException if an error occurs while writing to the file
      */
     public static void appendScoreToFile(Score score,
                                          String filePath) throws IOException
