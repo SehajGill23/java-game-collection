@@ -6,7 +6,7 @@ import java.util.Random;
  * Implements the game where numbers must be placed in ascending order in a 4x5 grid.
  * Implements GameController for game flow.
  */
-public class AscendingOrderGame implements GameController
+public class AscendingOrderGame  extends GameBoard implements GameController
 {
 
     protected            int[][] grid;
@@ -49,20 +49,27 @@ public class AscendingOrderGame implements GameController
         printPossibleSlots();
     }
 
-    protected void generateNumbers()
+    public void generateNumbers()
     {
         Random random = new Random();
         for(int i = 0; i < TOTAL_NUMBERS; i++)
         {
-            numbers[i] = random.nextInt(1000) + 1; // 1 to 1000 inclusive
+            numbers[i] = random.nextInt(1000) + 1;
         }
     }
 
-    protected void placeNumberInGrid(final int row,
+    @Override
+    public void placeNumberInGrid(final int row,
                                      final int col,
                                      final int number)
     {
-        grid[row][col] = number;
+        if(isValidPlacement(row,
+                            col))
+        {
+            grid[row][col] = number;
+        }
+
+//        grid[row][col] = number;
     }
 
     @Override
@@ -232,7 +239,7 @@ public class AscendingOrderGame implements GameController
     {
         if(grid[row][col] != -1)
         {
-            return false; // Slot already occupied
+            return false;
         }
         final int currentNum = numbers[currentIndex];
 
@@ -254,7 +261,10 @@ public class AscendingOrderGame implements GameController
             return false; // Below neighbor must be larger
         }
 
-        return true;
+        grid[row][col] = currentNum; // Temporarily place the number
+        boolean isSorted = checkIfSorted();
+        grid[row][col] = -1; // Undo the placement
+        return isSorted;
     }
 
     @Override

@@ -19,10 +19,10 @@ public class GameGUI
     private final        JButton        tryAgainButton;
     private final        JButton        quitButton;
     private final        JFrame         frame;
-    private static final int            ROWS = 4;
-    private static final int            COLS = 5;
     private final        MainMenu       mainMenu;
     private              boolean        gameOver;
+    private static final int            ROWS = 4;
+    private static final int            COLS = 5;
 
     public GameGUI(final GameController controller,
                    final MainMenu mainMenu)
@@ -207,12 +207,14 @@ public class GameGUI
             else if(result == 2)
             {
                 gameOver = true;
-                showGameOver("Game Over! Impossible to place the next number: " + controller.getCurrentNumber() + ". Try again or Quit?");
+                showGameOver("Game Over! Impossible to place the next number: " + controller.getCurrentNumber() +
+                             ". Try again or Quit?");
             }
             else if(result == 3)
             {
                 gameOver = true;
-                showGameOver("Game Over! Numbers are not in ascending order. Try again or Quit?");
+                showGameOver("Game Over! Impossible to place the number: " + controller.getGrid()[row][col]+
+                             " in slot " + ((row * COLS) + col + 1) + ". Try again or Quit?");
             }
         }
     }
