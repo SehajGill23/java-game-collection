@@ -8,8 +8,7 @@ public abstract class GameBoard
 {
     private static final int NUM_OF_ROWS    = 4;
     private static final int NUM_OF_COLUMNS = 5;
-    private static final int NUM_OF_RANDOM_INT = 20;
-    private static final int MAX_RANDOM_NUM = 1000;
+    private static final int MAX_RAND_NUMS = 20;
 
     protected int[][] grid;
 
@@ -31,7 +30,7 @@ public abstract class GameBoard
                 grid[i][j] = -1; // -1 indicates empty
             }
         }
-        numbers      = new int[NUM_OF_RANDOM_INT];
+        numbers      = new int[MAX_RAND_NUMS];
         currentIndex = 0;
     }
 

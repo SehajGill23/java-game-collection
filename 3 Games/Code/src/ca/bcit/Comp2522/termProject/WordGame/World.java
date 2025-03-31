@@ -91,7 +91,7 @@ public class World
                         if(split.length != 2)
                         {
                             System.out.println("Skipping file with incorrect format: " + filename);
-                            break;  // Exit this file's processing
+                            break;
                         }
 
                         countryName    = split[0].trim();

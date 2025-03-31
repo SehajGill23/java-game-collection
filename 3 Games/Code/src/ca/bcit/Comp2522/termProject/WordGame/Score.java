@@ -135,7 +135,8 @@ public class Score
         }
         catch(IOException e)
         {
-            throw new IOException("Error: Unable to save score to " + scoreFile.getAbsolutePath() + ": " + e.getMessage());
+            throw new IOException("Error: Unable to save score to " + scoreFile.getAbsolutePath()
+                                  + ": " + e.getMessage());
         }
     }
 
