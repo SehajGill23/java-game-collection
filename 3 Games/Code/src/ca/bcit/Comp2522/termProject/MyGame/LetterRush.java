@@ -143,20 +143,20 @@ private Pane root;
         root.getChildren().addAll(engine.getGamePane(), ui.getUIPane());
 
         // Add buttons below the game canvas
-        final Button restartButton = new Button("Restart");
-        restartButton.setLayoutX(200);
+        final Button restartButton = new Button("Restart Current Level");
+        restartButton.setLayoutX(90);
         restartButton.setLayoutY(WINDOW_HEIGHT - 80);
         restartButton.getStyleClass().add("game-button");
         restartButton.setOnAction(event -> resetGame());
 
-        final Button quitButton = new Button("Quit");
-        quitButton.setLayoutX(350);
+        final Button quitButton = new Button("Return to Game Menu");
+        quitButton.setLayoutX(420);
         quitButton.setLayoutY(WINDOW_HEIGHT - 80);
         quitButton.getStyleClass().add("game-button");
         quitButton.setOnAction(event -> stopGame());
 
-        final Button themeButton = new Button("Change Theme");
-        themeButton.setLayoutX(500);
+        final Button themeButton = new Button("Change Current theme");
+        themeButton.setLayoutX(737);
         themeButton.setLayoutY(WINDOW_HEIGHT - 80);
         themeButton.getStyleClass().add("game-button");
         themeButton.setOnAction(event -> changeTheme());

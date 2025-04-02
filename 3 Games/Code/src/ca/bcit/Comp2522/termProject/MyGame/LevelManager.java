@@ -1,15 +1,13 @@
 package ca.bcit.Comp2522.termProject.MyGame;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 public class LevelManager
 {
     private static final String WORDS_FILE_PATH = "/words.txt";
-    private static final int[] OBSTACLE_COUNTS = {5, 6, 7, 8, 10}; // Increased for Level 1
-    private static final double[] TIMERS = {30.0, 25.0, 20.0, 15.0, 10.0};
+    private static final int[] OBSTACLE_COUNTS = {9, 12, 15, 18, 21}; // Increased for Level 1
+    private static final double[] TIMERS = {25.0, 20.0, 15.0, 10.0, 5.0};
     private static final int[] LEVEL_LINES = {6, 7, 8, 9, 12};
     private static final double SPEED_FACTOR = 1.5;
 
@@ -56,12 +54,6 @@ public class LevelManager
 
     public void reset() {
 
-
-
-//        currentLevel = 0;
-
-
-
     }
 
     public boolean updateTimer(final long now, final GameUI ui) {
@@ -98,14 +90,6 @@ public class LevelManager
                 config.add(ObstacleType.values()[i % 3]);
             }
             return config;
-        }
-
-        public double getTimer() {
-            return timer;
-        }
-
-        public double getSpeedMultiplier() {
-            return speedMultiplier;
         }
     }
 

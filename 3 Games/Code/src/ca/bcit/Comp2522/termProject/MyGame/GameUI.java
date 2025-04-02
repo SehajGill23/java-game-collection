@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class GameUI {
-    private static final int UI_WIDTH = 250;
-    private static final int UI_HEIGHT = 150;
+    private static final int UI_WIDTH = 150;
+    private static final int UI_HEIGHT = 100;
 
     private final Pane uiPane = new Pane();
     private final Text scoreText = new Text("Score: 0");

@@ -66,7 +66,7 @@
 
 /* Game Buttons (Restart, Quit, Change Theme) */
 .game-button {
-    -fx-background-color: #4facfe;
+    -fx-background-color: #a10505;
     -fx-text-fill: #ffffff;
     -fx-font-family: "Arial";
     -fx-font-size: 14px;
@@ -112,9 +112,9 @@
     -fx-background-color: rgba(0, 0, 0, 0.7);
     -fx-padding: 10;
     -fx-border-color: #ffffff;
-    -fx-border-width: 2;
-    -fx-border-radius: 5;
-    -fx-background-radius: 5;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
 }
 
 .ui-text {
@@ -149,7 +149,7 @@
 }
 
 .alert .button-bar .button {
-    -fx-background-color: #4facfe;
+    -fx-background-color: #a10505;
     -fx-text-fill: #ffffff;
     -fx-font-family: "Arial";
     -fx-font-size: 14px;
