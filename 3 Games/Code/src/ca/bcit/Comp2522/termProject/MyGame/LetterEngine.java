@@ -29,7 +29,6 @@ public class LetterEngine
 
 
 
-
     public boolean isGameOver = false;
 
 
@@ -189,46 +188,10 @@ public class LetterEngine
                         }
 
 
-                        //pehle se tha ye
                         letters.forEach(letter -> letter.updatePosition(windowWidth,
                                                                         windowHeight));
                         obstacles.forEach(obstacle -> obstacle.update(windowWidth,
                                                                       windowHeight));
-
-                        //
-                        //                if (checkObstacleCollision()) {
-                        //                        timer.stop();
-                        //                        if (game != null) {
-                        //                                game.showLossAlert("","");
-                        //                        } else {
-                        //                                System.err.println("Cannot show loss alert: game is null");
-                        //                        }
-                        //                        return;
-                        //                }
-                        //
-                        //                if (levelManager.updateTimer(now, ui)) {
-                        //                        timer.stop();
-                        //                        if (game != null) {
-                        //                                game.showLossAlert("","");
-                        //                        } else {
-                        //                                System.err.println("Cannot show loss alert: game is null");
-                        //                        }
-                        //                        return;
-                        //                }
-                        //
-                        //                if (player.hasCompletedTargetWord(targetWord)) {
-                        //                        timer.stop();
-                        //                        int currentLevel = levelManager.getCurrentLevelNumber();
-                        //                        levelManager.advanceLevel();
-                        //                        if (game != null) {
-                        //                                game.showWinAlert(currentLevel);
-                        //                        } else {
-                        //                                System.err.println("Cannot show win alert: game is null");
-                        //                        }
-                        //                }
-                        //        }
-
-
 
                         if (!bonusFound && player.hasCompletedBonusWord(bonusWord)) {
                                 System.out.println("Bonus word completed!");
@@ -336,15 +299,9 @@ public class LetterEngine
                         return;
                 }
 
-
-//added
                 if (timer != null) {
                         timer.stop();
                 }
-
-
-
-
 
                 letters.clear();
                 obstacles.clear();
@@ -361,17 +318,8 @@ public class LetterEngine
                 System.out.println("Restarting level: " + levelManager.getCurrentLevelNumber());
 
 
-                
+
                 startLevel(player, ui, levelManager);
-        }
-
-
-        public Player getPlayer() {
-                return player;
-        }
-
-        public String getTargetWord() {
-                return targetWord;
         }
 
 }

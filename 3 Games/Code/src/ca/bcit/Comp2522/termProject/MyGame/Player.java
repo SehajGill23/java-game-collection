@@ -1,14 +1,17 @@
 package ca.bcit.Comp2522.termProject.MyGame;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Player
 {
+    // In Player class
+    private static final String HIGH_SCORE_FILE_PATH = "/highScore.txt";
     private static final int TARGET_POINTS = 10;
     private static final int BONUS_POINTS = 20;
     private static final double CURSOR_SIZE = 10.0;
-
+    private int highScore;
     private double cursorX;
     private double cursorY;
     private List<Character> collectedTarget = new ArrayList<>();
@@ -16,6 +19,14 @@ public class Player
     private int score = 0;
     private int bonusPoints = 0;
     private  int incorrectClicks = 0;
+
+
+    public Player() {
+        score = 0;
+        highScore = loadHighScore();
+        collectedTarget = new ArrayList<>();
+        collectedBonus = new ArrayList<>();
+    }
 
     public void updateCursorPosition(final double x, final double y) {
         cursorX = x;
@@ -61,14 +72,10 @@ public class Player
 
         if (isCorrectClick) {
             collectedTarget.add(c);
+            addTargetPoints();
         } else {
             incorrectClicks++;
         }
-
-
-//        if (targetWord.contains(String.valueOf(c))) {
-//            collectedTarget.add(c);
-//        }
 
 
         if (bonusWord.contains(String.valueOf(c))) {
@@ -106,20 +113,36 @@ public class Player
 
 
 
-//
-//    public boolean hasFailed(final String targetWord) {
-//        if (collectedTarget.size() > targetWord.length()) {
-//            return true;
-//        }
-//        StringBuilder collected = new StringBuilder();
-//        for (char c : collectedTarget) {
-//            collected.append(c);
-//        }
-//        return !targetWord.startsWith(collected.toString());
-//    }
-//
-//
+    private int loadHighScore() {
+        try (BufferedReader reader = new BufferedReader(new FileReader(HIGH_SCORE_FILE_PATH))) {
+            String line = reader.readLine();
+            if (line != null && !line.trim().isEmpty()) {
+                return Integer.parseInt(line.trim());
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("High score file not found, starting with 0: " + HIGH_SCORE_FILE_PATH);
+        } catch (IOException | NumberFormatException e) {
+            System.err.println("Error loading high score: " + e.getMessage());
+        }
+        return 0; // Default high score if file doesn’t exist or is invalid
+    }
 
+
+
+    private void saveHighScore() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(HIGH_SCORE_FILE_PATH))) {
+            writer.write(String.valueOf(highScore));
+        } catch (IOException e) {
+            System.err.println("Error saving high score: " + e.getMessage());
+        }
+    }
+
+    private void updateHighScore() {
+        if (score > highScore) {
+            highScore = score;
+            saveHighScore();
+        }
+    }
 
 
     public boolean hasFailed(final String targetWord) {
@@ -147,12 +170,15 @@ public class Player
         }
         boolean startsWith = targetWord.startsWith(collected.toString());
         System.out.println("hasFailed: Collected: " + collected.toString() + ", Target: " + targetWord + ", Starts with: " + startsWith);
-//        return !targetWord.startsWith(collected.toString());
         return !startsWith;
     }
 
     public int getIncorrectClicks() {
         return incorrectClicks;
+    }
+
+    public int getHighScore() {
+        return highScore;
     }
 
 
@@ -167,11 +193,13 @@ public class Player
 
     public void addTargetPoints() {
         score += TARGET_POINTS;
+        updateHighScore();
     }
 
     public void addBonusPoints() {
         score += BONUS_POINTS;
         bonusPoints += BONUS_POINTS;
+        updateHighScore();
     }
 
     public void reset() {

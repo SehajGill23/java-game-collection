@@ -26,7 +26,7 @@ public class LetterRush {
             "/background2.png",
             "/background1.png",
             "/background3.png",};
-//
+
 private static LetterRush instance;
 private final LetterEngine engine;
 private final Player player;
@@ -37,8 +37,11 @@ private boolean isRunning = false;
 private Scene menuScene;
 private Scene gameScene;
 private Text scoreText;
+private Text bonusScoreText;
+private Text highScoreText;
 private int currentThemeIndex = 0;
-private Pane root; // To update theme
+private Pane root;
+
 
     public LetterRush() {
         this.engine = new LetterEngine(WINDOW_WIDTH, WINDOW_HEIGHT - 100); // Adjust game area
@@ -76,6 +79,12 @@ private Pane root; // To update theme
         scoreText = new Text(300, 150, "Score: " + player.getScore());
         scoreText.getStyleClass().add("score-text");
 
+        bonusScoreText = new Text(300, 180, "Bonus Score: " + player.getBonusPoints());
+        bonusScoreText.getStyleClass().add("score-text");
+
+        highScoreText = new Text(300, 210, "High Score: " + player.getHighScore());
+        highScoreText.getStyleClass().add("score-text");
+
         // Instructions
         final Text instructionsText = new Text(150, 450,
                                                "Instructions:\n" +
@@ -96,13 +105,14 @@ private Pane root; // To update theme
 
         // Return to Main Menu Button
         final Rectangle returnButton = new Rectangle(300, 350, 200, 50);
-
         returnButton.setArcHeight(20);
         returnButton.getStyleClass().add("menu-button");
         final Text returnText = new Text(320, 380, "Return to Main Menu");
         returnText.getStyleClass().add("menu-text");
 
-        menuPane.getChildren().addAll(scoreText, instructionsText, startButton, startText, returnButton, returnText);
+        menuPane.getChildren().addAll(scoreText, bonusScoreText, highScoreText, instructionsText, startButton, startText, returnButton, returnText);
+
+        startButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> startGame());
 
         startButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> startGame());
         returnButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
@@ -217,6 +227,8 @@ private Pane root; // To update theme
         isRunning = false;
         System.out.println("Stopping game. Player collectedTarget: " + player.getCollectedTarget());
         scoreText.setText("Score: " + player.getScore());
+        bonusScoreText.setText("Bonus Score: " + player.getBonusPoints());
+        highScoreText.setText("High Score: " + player.getHighScore());
         stage.setScene(menuScene);
     }
 
