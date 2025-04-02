@@ -76,3 +76,6 @@ import javafx.scene.image.ImageView;
             dy = (Math.random() * 2 - 1) * SPEED;
         }
     }
+
+
+

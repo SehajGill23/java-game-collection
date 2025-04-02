@@ -15,11 +15,18 @@ public class Player
     private List<Character> collectedBonus = new ArrayList<>();
     private int score = 0;
     private int bonusPoints = 0;
+    private  int incorrectClicks = 0;
 
     public void updateCursorPosition(final double x, final double y) {
         cursorX = x;
         cursorY = y;
     }
+
+    //helper method
+    public List<Character> getCollectedTarget() {
+        return new ArrayList<>(collectedTarget);
+    }
+
 
     public double getCursorX() {
         return cursorX;
@@ -36,18 +43,41 @@ public class Player
     public void clickLetter(final Letter letter, final String targetWord, final String bonusWord) {
         if (letter.isLocked()) return;
 
-        final char c = letter.getValue();
+        final char c;
+        c = letter.getValue();
         letter.lock();
 
-        if (targetWord.contains(String.valueOf(c))) {
-            collectedTarget.add(c);
+        StringBuilder collected;
+        collected = new StringBuilder();
+
+        for  (char ch : collectedTarget) {
+            collected.append(ch);
         }
+
+        collected.append(c);
+        boolean isCorrectClick;
+        isCorrectClick = targetWord.startsWith(collected.toString());
+
+
+        if (isCorrectClick) {
+            collectedTarget.add(c);
+        } else {
+            incorrectClicks++;
+        }
+
+
+//        if (targetWord.contains(String.valueOf(c))) {
+//            collectedTarget.add(c);
+//        }
+
+
         if (bonusWord.contains(String.valueOf(c))) {
             collectedBonus.add(c);
         }
 
         System.out.println("Clicked letter: " + c + " | Target so far: " + collectedTarget + " | Bonus so far: " + collectedBonus);
     }
+
 
     public boolean hasCompletedTargetWord(final String targetWord) {
         if (collectedTarget.size() != targetWord.length()) {
@@ -73,16 +103,59 @@ public class Player
         return collected.toString().equals(bonusWord);
     }
 
+
+
+
+//
+//    public boolean hasFailed(final String targetWord) {
+//        if (collectedTarget.size() > targetWord.length()) {
+//            return true;
+//        }
+//        StringBuilder collected = new StringBuilder();
+//        for (char c : collectedTarget) {
+//            collected.append(c);
+//        }
+//        return !targetWord.startsWith(collected.toString());
+//    }
+//
+//
+
+
+
     public boolean hasFailed(final String targetWord) {
-        if (collectedTarget.size() > targetWord.length()) {
+        // If the target word is already completed, don't mark as failed
+        if (hasCompletedTargetWord(targetWord)) {
+            System.out.println("hasFailed: Target word completed, returning false.");
+            return false;
+        }
+
+        if(incorrectClicks > 1 ) {
+            System.out.println("hasFailed: Too many incorrect clicks: " + incorrectClicks);
             return true;
         }
+
+        // Check if too many letters have been clicked
+        if (collectedTarget.size() > targetWord.length()) {
+            System.out.println("hasFailed: Too many letters clicked: " + collectedTarget.size() + " > " + targetWord.length());
+            return true;
+        }
+
+        // Check if the collected letters match the start of the target word
         StringBuilder collected = new StringBuilder();
         for (char c : collectedTarget) {
             collected.append(c);
         }
-        return !targetWord.startsWith(collected.toString());
+        boolean startsWith = targetWord.startsWith(collected.toString());
+        System.out.println("hasFailed: Collected: " + collected.toString() + ", Target: " + targetWord + ", Starts with: " + startsWith);
+//        return !targetWord.startsWith(collected.toString());
+        return !startsWith;
     }
+
+    public int getIncorrectClicks() {
+        return incorrectClicks;
+    }
+
+
 
     public int getScore() {
         return score;
@@ -106,5 +179,10 @@ public class Player
         collectedBonus.clear();
         score = 0;
         bonusPoints = 0;
+        incorrectClicks = 0;
     }
+
 }
+
+
+
