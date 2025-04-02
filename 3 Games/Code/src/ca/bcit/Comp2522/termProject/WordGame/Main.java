@@ -1,5 +1,6 @@
 package ca.bcit.Comp2522.termProject.WordGame;
 
+import ca.bcit.Comp2522.termProject.MyGame.LetterRush;
 import ca.bcit.Comp2522.termProject.NumberGame.GameMenu;
 
 import java.util.Scanner;
@@ -30,6 +31,7 @@ public final class Main
         System.out.println("Press " + NUMBER_GAME_MODE + " to play the Number game.");
         System.out.println("Press " + CUSTOM_GAME_MODE + " to play the Custom game.");
         System.out.println("Press " + QUIT_MODE + " to quit.");
+        System.out.print("\nEnter your Choice: ");
     }
 
     public static void runMainMenu(final String[] args)
@@ -49,7 +51,6 @@ public final class Main
 
                 if(waitingForConsoleInput)
                 {
-                    System.out.print("\nEnter your Choice: ");
                     final String input = sc.nextLine().trim().toUpperCase();
 
                     if(validator.isValidInput(input))
@@ -67,7 +68,8 @@ public final class Main
                                 GameMenu.showNumberGameMenu();
                                 break;
                             case CUSTOM_GAME_MODE:
-                                System.out.println("Starting Custom Game... (Not yet implemented)");
+                                System.out.println("Starting Custom Game... ");
+                                LetterRush.launchGame();
                                 break;
                             case QUIT_MODE:
                                 System.out.println("Quitting the Game...");

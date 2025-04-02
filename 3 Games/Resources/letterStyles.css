@@ -1,0 +1,162 @@
+.main-menu {
+    -fx-background-color: linear-gradient(to bottom, #2c3e50, #3498db);
+}
+
+/* Game Menu */
+.root {
+    -fx-background-color: linear-gradient(to bottom, #1e3c72, #2a5298);
+    -fx-background-image: url("/ThanosBackground.png");
+    -fx-background-size: cover;
+    -fx-background-position: center;
+}
+
+/* Menu Buttons */
+.menu-button {
+    -fx-fill: #4facfe;
+    -fx-stroke: #ffffff;
+    -fx-stroke-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0.5, 2, 2);
+}
+
+.menu-button:hover {
+    -fx-fill: #00f2fe;
+    -fx-cursor: hand;
+}
+
+/* Menu Button Text */
+.menu-text {
+    -fx-font-family: "Arial";
+    -fx-font-size: 18px;
+    -fx-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.5, 1, 1);
+}
+
+/* Score Text */
+.score-text {
+    -fx-font-family: "Arial";
+    -fx-font-size: 24px;
+    -fx-fill: #ffd700;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 5, 0.5, 2, 2);
+}
+
+/* Instructions Text */
+.instructions-text {
+    -fx-font-family: "Arial";
+    -fx-font-size: 16px;
+    -fx-fill: #ffffff;
+    -fx-font-weight: normal;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 3, 0.5, 1, 1);
+}
+
+/* Rules Text on Main Menu */
+.rules-text {
+    -fx-font-family: "Arial";
+    -fx-font-size: 16px;
+    -fx-fill: #ffffff;
+    -fx-font-weight: normal;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 3, 0.5, 1, 1);
+}
+
+/* Game Scene */
+.game-pane {
+    -fx-background-color: #0f2027;
+}
+
+/* Game Buttons (Restart, Quit, Change Theme) */
+.game-button {
+    -fx-background-color: #4facfe;
+    -fx-text-fill: #ffffff;
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 5, 0.5, 1, 1);
+}
+
+.game-button:hover {
+    -fx-background-color: #00f2fe;
+    -fx-cursor: hand;
+}
+
+/* Letters */
+.letter {
+    -fx-font-family: "Verdana";
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 3, 0.5, 1, 1);
+}
+
+.letter-regular {
+    -fx-fill: #ffffff;
+}
+
+.letter-locked {
+    -fx-fill: #888888;
+}
+
+.letter:hover {
+    -fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;
+    -fx-cursor: hand;
+}
+
+/* Obstacles */
+.obstacle {
+    -fx-effect: dropshadow(gaussian, rgba(255, 0, 0, 0.5), 5, 0.5, 1, 1);
+}
+
+/* UI Elements */
+.ui-pane {
+    -fx-background-color: rgba(0, 0, 0, 0.7);
+    -fx-padding: 10;
+    -fx-border-color: #ffffff;
+    -fx-border-width: 2;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.ui-text {
+    -fx-font-family: "Arial";
+    -fx-font-size: 16px;
+    -fx-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 3, 0.5, 1, 1);
+}
+
+/* Alert Messages */
+.alert {
+    -fx-background-color: linear-gradient(to bottom, #1e3c72, #2a5298);
+}
+
+.alert .dialog-pane {
+    -fx-background-color: transparent;
+}
+
+.alert .header-panel {
+    -fx-background-color: #4facfe;
+    -fx-text-fill: #ffffff;
+    -fx-font-family: "Arial";
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.alert .content {
+    -fx-text-fill: #ffffff;
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+}
+
+.alert .button-bar .button {
+    -fx-background-color: #4facfe;
+    -fx-text-fill: #ffffff;
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+    -fx-background-radius: 5;
+}
+
+.alert .button-bar .button:hover {
+    -fx-background-color: #00f2fe;
+    -fx-cursor: hand;
+}
