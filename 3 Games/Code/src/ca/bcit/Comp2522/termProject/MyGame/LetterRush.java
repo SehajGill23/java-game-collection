@@ -1,6 +1,5 @@
 package ca.bcit.Comp2522.termProject.MyGame;
 
-import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;

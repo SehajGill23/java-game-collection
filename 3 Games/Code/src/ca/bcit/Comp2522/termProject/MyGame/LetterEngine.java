@@ -145,6 +145,19 @@ public class LetterEngine
         }
 
         private void startTimer(final GameUI ui) {
+
+
+
+
+                if (timer != null) {
+                        timer.stop();
+                        System.out.println("Previous AnimationTimer stopped in startTimer: " + timer);
+                }
+
+
+
+
+
                 timer = new AnimationTimer() {
                         private long lastUpdate = 0;
                         @Override
@@ -322,6 +335,17 @@ public class LetterEngine
                         System.err.println("LevelManager is null in resetGame!");
                         return;
                 }
+
+
+//added
+                if (timer != null) {
+                        timer.stop();
+                }
+
+
+
+
+
                 letters.clear();
                 obstacles.clear();
                 gamePane.getChildren().clear();
@@ -331,6 +355,13 @@ public class LetterEngine
                 ui.updateScore(player.getScore());
                 isGameOver = false;
                 bonusFound = false;
+
+
+
+                System.out.println("Restarting level: " + levelManager.getCurrentLevelNumber());
+
+
+                
                 startLevel(player, ui, levelManager);
         }
 
