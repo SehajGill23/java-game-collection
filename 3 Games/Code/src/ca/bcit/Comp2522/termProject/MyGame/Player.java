@@ -2,12 +2,13 @@ package ca.bcit.Comp2522.termProject.MyGame;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class Player
 {
     // In Player class
-    private static final String HIGH_SCORE_FILE_PATH = "/highScore.txt";
+    private static final String HIGH_SCORE_FILE_PATH = "Resources/highScore.txt";
     private static final int TARGET_POINTS = 10;
     private static final int BONUS_POINTS = 20;
     private static final double CURSOR_SIZE = 10.0;
@@ -110,31 +111,34 @@ public class Player
         return collected.toString().equals(bonusWord);
     }
 
-
-
-
     private int loadHighScore() {
-        try (BufferedReader reader = new BufferedReader(new FileReader(HIGH_SCORE_FILE_PATH))) {
-            String line = reader.readLine();
-            if (line != null && !line.trim().isEmpty()) {
-                return Integer.parseInt(line.trim());
+        try {
+            List<LetterRushScore> scores = LetterRushScore.readScoresFromFile(HIGH_SCORE_FILE_PATH);
+            if (scores.isEmpty()) {
+                return 0;
             }
-        } catch (FileNotFoundException e) {
-            System.out.println("High score file not found, starting with 0: " + HIGH_SCORE_FILE_PATH);
-        } catch (IOException | NumberFormatException e) {
+            // Get the most recent high score
+            LetterRushScore latestScore = scores.stream()
+                                      .max(Comparator.comparing(LetterRushScore::getTimestamp))
+                                      .orElse(new LetterRushScore(0, 0, 0));
+            return latestScore.getHighScore();
+        } catch (IOException e) {
             System.err.println("Error loading high score: " + e.getMessage());
+            return 0;
         }
-        return 0; // Default high score if file doesn’t exist or is invalid
     }
 
 
 
     private void saveHighScore() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(HIGH_SCORE_FILE_PATH))) {
-            writer.write(String.valueOf(highScore));
+
+        try {
+            LetterRushScore scoreEntry = new LetterRushScore(highScore, score, bonusPoints);
+            LetterRushScore.appendScoreToFile(scoreEntry, HIGH_SCORE_FILE_PATH);
         } catch (IOException e) {
             System.err.println("Error saving high score: " + e.getMessage());
         }
+
     }
 
     private void updateHighScore() {

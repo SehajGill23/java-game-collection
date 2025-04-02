@@ -242,6 +242,7 @@ private Pane root;
             alert.getDialogPane().getStyleClass().add("alert");
             alert.showAndWait();
             stopGame();
+            player.reset();
         });
     }
 
@@ -258,6 +259,7 @@ private Pane root;
             // Reset the player's state before stopping the game
             player.reset();
             stopGame();
+            player.reset();
         });
     }
 
@@ -273,6 +275,7 @@ private Pane root;
             // Reset the player's state before stopping the game
             player.reset();
             stopGame();
+            player.reset();
         });
     }
 
@@ -306,7 +309,8 @@ private Pane root;
 
 
                 } else {
-                    stage.close();
+                    stopGame();
+//                    stage.close();
                 }
             });
         });
