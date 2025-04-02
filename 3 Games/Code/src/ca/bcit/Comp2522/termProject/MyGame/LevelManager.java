@@ -55,7 +55,13 @@ public class LevelManager
     }
 
     public void reset() {
-        currentLevel = 0;
+
+
+
+//        currentLevel = 0;
+
+
+
     }
 
     public boolean updateTimer(final long now, final GameUI ui) {
