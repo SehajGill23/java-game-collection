@@ -55,11 +55,13 @@ public class LetterEngine
                         return;
                 }
                 try {
+                        player.setBonusPoints(0);
                         final LevelManager.Level level = levelManager.getCurrentLevel();
                         spawnLetters(ui);
                         spawnObstacles(level);
                         ui.updateLevel(levelManager.getCurrentLevelNumber());
                         ui.updateTargetWord(targetWord);
+                        ui.updateScore(player.getScore());
                         levelManager.startTimer();
                         isGameOver = false;
                         bonusFound = false;
@@ -146,17 +148,10 @@ public class LetterEngine
 
         private void startTimer(final GameUI ui) {
 
-
-
-
                 if (timer != null) {
                         timer.stop();
                         System.out.println("Previous AnimationTimer stopped in startTimer: " + timer);
                 }
-
-
-
-
 
                 timer = new AnimationTimer() {
                         private long lastUpdate = 0;
@@ -170,14 +165,6 @@ public class LetterEngine
                 };
                 timer.start();
         }
-
-//        private void updateGame(final GameUI ui, final long now) {
-
-
-
-
-
-
 
 
                 private void updateGame(final GameUI ui, final long now)
@@ -219,6 +206,13 @@ public class LetterEngine
                                 isGameOver = true;
                                 timer.stop();
                                 int currentLevel = levelManager.getCurrentLevelNumber();
+                                if (currentLevel >= 5) {
+                                        if (game != null) {
+                                                game.showGameWonAlert();
+                                        } else {
+                                                System.err.println("Cannot show game won alert: game is null");
+                                        }
+                                } else
                                 levelManager.advanceLevel();
                                 if (game != null) {
                                         game.showWinAlert(currentLevel);
@@ -228,7 +222,7 @@ public class LetterEngine
                                 return;
                         }
 
-                        // Check loss conditions
+
                         if(checkObstacleCollision())
                         {
                                 System.out.println("Obstacle collision detected.");
@@ -276,7 +270,8 @@ public class LetterEngine
                 
 
 
-        private boolean checkObstacleCollision() {
+        private boolean checkObstacleCollision()
+        {
                 return obstacles.stream().anyMatch(obstacle -> obstacle.collidesWith(player));
         }
 

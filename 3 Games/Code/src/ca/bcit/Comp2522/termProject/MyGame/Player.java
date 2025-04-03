@@ -7,10 +7,9 @@ import java.util.List;
 
 public class Player
 {
-    // In Player class
     private static final String HIGH_SCORE_FILE_PATH = "Resources/highScore.txt";
     private static final int TARGET_POINTS = 10;
-    private static final int BONUS_POINTS = 20;
+    private static final int BONUS_POINTS = 30;
     private static final double CURSOR_SIZE = 10.0;
     private int highScore;
     private double cursorX;
@@ -33,16 +32,7 @@ public class Player
         cursorX = x;
         cursorY = y;
     }
-
-    // Fix: Added getter for collectedBonus to allow access in LetterRush
-    public List<Character> getCollectedBonus() {
-        return new ArrayList<>(collectedBonus);
-    }
-
-    // Fix: Added setter for incorrectClicks to allow modification in LetterRush
-    public void setIncorrectClicks(int incorrectClicks) {
-        this.incorrectClicks = incorrectClicks;
-    }
+    
 
     public void resetForNewLevel() {
         collectedTarget.clear();
@@ -69,6 +59,17 @@ public class Player
         return CURSOR_SIZE;
     }
 
+    public void setBonusPoints(int bonusPoints)
+    {
+        this.bonusPoints = bonusPoints;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+        updateHighScore();
+    }
+
+
     public void clickLetter(final Letter letter, final String targetWord, final String bonusWord) {
         if (letter.isLocked()) return;
 
@@ -76,26 +77,32 @@ public class Player
         c = letter.getValue();
         letter.lock();
 
-        StringBuilder collected;
-        collected = new StringBuilder();
 
-        for  (char ch : collectedTarget) {
-            collected.append(ch);
+        if (targetWord.contains(String.valueOf(c)))
+        {
+            StringBuilder collected;
+            collected = new StringBuilder();
+
+            for(char ch : collectedTarget)
+            {
+                collected.append(ch);
+            }
+
+            collected.append(c);
+            boolean isCorrectClick;
+            isCorrectClick = targetWord.startsWith(collected.toString());
+
+            if(isCorrectClick)
+            {
+                collectedTarget.add(c);
+                addTargetPoints();
+            }
+            else
+            {
+                incorrectClicks++;
+            }
+
         }
-
-        collected.append(c);
-        boolean isCorrectClick;
-        isCorrectClick = targetWord.startsWith(collected.toString());
-
-
-        if (isCorrectClick) {
-            collectedTarget.add(c);
-            addTargetPoints();
-        } else {
-            incorrectClicks++;
-        }
-
-
         if (bonusWord.contains(String.valueOf(c))) {
             collectedBonus.add(c);
         }
@@ -147,6 +154,7 @@ public class Player
 
 
 
+
     private void saveHighScore() {
 
         try {
@@ -167,6 +175,12 @@ public class Player
 
 
     public boolean hasFailed(final String targetWord) {
+
+        if (collectedTarget.size() > targetWord.length()) {
+            System.out.println("hasFailed: Too many letters clicked: " + collectedTarget.size() + " > " + targetWord.length());
+            return true;
+        }
+
         // If the target word is already completed, don't mark as failed
         if (hasCompletedTargetWord(targetWord)) {
             System.out.println("hasFailed: Target word completed, returning false.");
@@ -178,11 +192,6 @@ public class Player
             return true;
         }
 
-        // Check if too many letters have been clicked
-        if (collectedTarget.size() > targetWord.length()) {
-            System.out.println("hasFailed: Too many letters clicked: " + collectedTarget.size() + " > " + targetWord.length());
-            return true;
-        }
 
         // Check if the collected letters match the start of the target word
         StringBuilder collected = new StringBuilder();

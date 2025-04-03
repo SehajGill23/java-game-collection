@@ -58,3 +58,58 @@ High Score: 120
 Current Score: 120
 Bonus Score: 0
 
+Timestamp: 2025-04-02 22:12:40
+High Score: 140
+Current Score: 140
+Bonus Score: 30
+
+Timestamp: 2025-04-02 22:12:48
+High Score: 150
+Current Score: 150
+Bonus Score: 0
+
+Timestamp: 2025-04-02 22:12:50
+High Score: 160
+Current Score: 160
+Bonus Score: 0
+
+Timestamp: 2025-04-02 22:12:55
+High Score: 190
+Current Score: 190
+Bonus Score: 30
+
+Timestamp: 2025-04-02 22:13:02
+High Score: 200
+Current Score: 200
+Bonus Score: 0
+
+Timestamp: 2025-04-02 22:13:05
+High Score: 210
+Current Score: 210
+Bonus Score: 0
+
+Timestamp: 2025-04-02 22:48:39
+High Score: 220
+Current Score: 220
+Bonus Score: 0
+
+Timestamp: 2025-04-02 22:48:43
+High Score: 230
+Current Score: 230
+Bonus Score: 0
+
+Timestamp: 2025-04-02 22:48:44
+High Score: 240
+Current Score: 240
+Bonus Score: 0
+
+Timestamp: 2025-04-02 22:48:45
+High Score: 250
+Current Score: 250
+Bonus Score: 0
+
+Timestamp: 2025-04-02 22:48:47
+High Score: 260
+Current Score: 260
+Bonus Score: 0
+

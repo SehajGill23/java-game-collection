@@ -6,8 +6,8 @@ import java.util.List;
 public class LevelManager
 {
     private static final String WORDS_FILE_PATH = "/words.txt";
-    private static final int[] OBSTACLE_COUNTS = {9, 12, 15, 18, 21}; // Increased for Level 1
-    private static final double[] TIMERS = {25.0, 20.0, 15.0, 10.0, 5.0};
+    private static final int[] OBSTACLE_COUNTS =  {9, 12, 15, 18, 21};
+    private static final double[] TIMERS = {22.0, 20.0, 16.0, 14.0, 10.0};
     private static final int[] LEVEL_LINES = {6, 7, 8, 9, 12};
     private static final double SPEED_FACTOR = 1.5;
 

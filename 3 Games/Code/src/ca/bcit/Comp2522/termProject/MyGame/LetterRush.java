@@ -338,7 +338,7 @@ public class LetterRush
                               alert.getDialogPane().getStylesheets().add(CSS_PATH);
                               alert.getDialogPane().getStyleClass().add("alert");
                               alert.showAndWait();
-                              // Reset the player's state before stopping the game
+                              player.setScore(0);
                               player.resetForNewLevel();
                               stopGame();
                           });
@@ -355,7 +355,7 @@ public class LetterRush
                               alert.getDialogPane().getStylesheets().add(CSS_PATH);
                               alert.getDialogPane().getStyleClass().add("alert");
                               alert.showAndWait();
-
+                              player.setScore(0);
                               player.resetForNewLevel();
                               stopGame();
                           });
@@ -442,15 +442,16 @@ public class LetterRush
                           });
     }
 
-
     public void showGameWonAlert()
     {
         Platform.runLater(() ->
                           {
                               Alert alert = new Alert(Alert.AlertType.INFORMATION);
                               alert.setTitle("Congratulations!");
-                              alert.setHeaderText("You Won the Game!");
-                              alert.setContentText("You have completed all levels of LetterRush! Final Score: " + player.getScore() + "\nReturn to the main menu?");
+                              alert.setHeaderText("You Won the Game! 🥳");
+                              alert.setContentText("You have completed all levels of" +
+                                                   " LetterRush! Final Score: " + player.getScore()
+                                                   + "You are the GOAT 🐐");
                               alert.getDialogPane().getStylesheets().add(CSS_PATH);
                               alert.getDialogPane().getStyleClass().add("alert");
                               alert.showAndWait();
