@@ -42,7 +42,7 @@ public class LetterRush
     private        Text         highScoreText;
     private        int          currentThemeIndex = 0;
     private        Pane         root;
-    private        int          scoreAtLevelStart;
+    private        int          scoreAtLevelStart ;
 
 
     public LetterRush()
@@ -92,17 +92,17 @@ public class LetterRush
                              WINDOW_HEIGHT);
 
         // Score Display
-        scoreText = new Text(300,
-                             150,
+        scoreText = new Text(80,
+                             210,
                              "Score: " + player.getScore());
         scoreText.getStyleClass().add("score-text");
 
-        bonusScoreText = new Text(300,
-                                  180,
+        bonusScoreText = new Text(400,
+                                  210,
                                   "Bonus Score: " + player.getBonusPoints());
         bonusScoreText.getStyleClass().add("score-text");
 
-        highScoreText = new Text(300,
+        highScoreText = new Text(740,
                                  210,
                                  "High Score: " + player.getHighScore());
         highScoreText.getStyleClass().add("score-text");
@@ -112,35 +112,32 @@ public class LetterRush
                                                450,
                                                """
                                                Instructions:
-                                               - Click letters to form the target word (white).
+                                               - Click letters to form the target word (white).                                             
+                                               - Complete the target word before time runs out.
                                                - There’s a hidden bonus word—find it for extra points!
                                                - Avoid obstacles (missile, bomb, spike) that move randomly.
-                                               - Complete the target word before time runs out.
-                                               - Use buttons below the game to restart, quit, or change theme.""");
+                                               - Use buttons below the game to restart, quit, or change theme.
+                                               - Failure resets the level to 1 and score to 0, regardless of Current level.""");
+
         instructionsText.getStyleClass().add("instructions-text");
 
         // Start LetterRush Button
-        final Rectangle startButton = new Rectangle(300,
-                                                    250,
-                                                    200,
-                                                    50);
+        final Rectangle startButton = new Rectangle(200, 320, 190, 50);
         startButton.setArcWidth(20);
         startButton.setArcHeight(20);
         startButton.getStyleClass().add("menu-button");
-        final Text startText = new Text(350,
-                                        280,
-                                        "Start LetterRush");
+        final Text startText = new Text(225,
+                                        350,
+                                        "Start Letter Rush");
         startText.getStyleClass().add("menu-text");
 
         // Return to Main Menu Button
-        final Rectangle returnButton = new Rectangle(300,
-                                                     350,
-                                                     200,
-                                                     50);
+        final Rectangle returnButton = new Rectangle(580, 320, 200, 50);
+        returnButton.setArcWidth(20);
         returnButton.setArcHeight(20);
         returnButton.getStyleClass().add("menu-button");
-        final Text returnText = new Text(320,
-                                         380,
+        final Text returnText = new Text(590,
+                                         350,
                                          "Return to Main Menu");
         returnText.getStyleClass().add("menu-text");
 

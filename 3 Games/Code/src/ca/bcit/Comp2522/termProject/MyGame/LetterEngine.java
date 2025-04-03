@@ -267,7 +267,7 @@ public class LetterEngine
 
                 }
 
-                
+
 
 
         private boolean checkObstacleCollision()
@@ -303,7 +303,8 @@ public class LetterEngine
                 obstacles.clear();
                 gamePane.getChildren().clear();
                 gamePane.getChildren().add(ui.getUIPane());
-                player.reset();
+                player.resetForNewLevel();
+                player.setBonusPoints(0);
                 ui.updateScore(player.getScore());
                 isGameOver = false;
                 bonusFound = false;
