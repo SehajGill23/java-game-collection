@@ -57,7 +57,6 @@ import javafx.scene.image.ImageView;
         }
 
         public boolean collidesWith(final Player player) {
-            // Simple distance-based collision: check if cursor center is close to obstacle center
             double obstacleCenterX = node.getX() + OBSTACLE_WIDTH / 2;
             double obstacleCenterY = node.getY() + OBSTACLE_HEIGHT / 2;
             double cursorCenterX = player.getCursorX();

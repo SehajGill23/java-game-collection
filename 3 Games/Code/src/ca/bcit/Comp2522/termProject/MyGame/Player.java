@@ -7,34 +7,39 @@ import java.util.List;
 
 public class Player
 {
-    private static final String HIGH_SCORE_FILE_PATH = "Resources/highScore.txt";
-    private static final int TARGET_POINTS = 10;
-    private static final int BONUS_POINTS = 30;
-    private static final double CURSOR_SIZE = 10.0;
-    private int highScore;
-    private double cursorX;
-    private double cursorY;
-    private List<Character> collectedTarget = new ArrayList<>();
-    private List<Character> collectedBonus = new ArrayList<>();
-    private int score = 0;
-    private int bonusPoints = 0;
-    private  int incorrectClicks = 0;
+    private              int             score;
+    private              int             highScore;
+    private              double          cursorX;
+    private              double          cursorY;
+    private static final String          HIGH_SCORE_FILE_PATH = "Resources/highScore.txt";
+    private static final int             TARGET_POINTS        = 10;
+    private static final int             BONUS_POINTS         = 30;
+    private static final double          CURSOR_SIZE          = 10.0;
+    private              List<Character> collectedTarget      = new ArrayList<>();
+    private              List<Character> collectedBonus       = new ArrayList<>();
+    private              int             bonusPoints          = 0;
+    private              int             incorrectClicks      = 0;
 
 
-    public Player() {
-        score = 0;
-        highScore = loadHighScore();
+
+    public Player()
+    {
+        score           = 0;
+        highScore       = loadHighScore();
         collectedTarget = new ArrayList<>();
-        collectedBonus = new ArrayList<>();
+        collectedBonus  = new ArrayList<>();
     }
 
-    public void updateCursorPosition(final double x, final double y) {
+    public void updateCursorPosition(final double x,
+                                     final double y)
+    {
         cursorX = x;
         cursorY = y;
     }
-    
 
-    public void resetForNewLevel() {
+
+    public void resetForNewLevel()
+    {
         collectedTarget.clear();
         collectedBonus.clear();
         incorrectClicks = 0;
@@ -42,20 +47,24 @@ public class Player
     }
 
     //helper method
-    public List<Character> getCollectedTarget() {
+    public List<Character> getCollectedTarget()
+    {
         return new ArrayList<>(collectedTarget);
     }
 
 
-    public double getCursorX() {
+    public double getCursorX()
+    {
         return cursorX;
     }
 
-    public double getCursorY() {
+    public double getCursorY()
+    {
         return cursorY;
     }
 
-    public double getCursorSize() {
+    public double getCursorSize()
+    {
         return CURSOR_SIZE;
     }
 
@@ -64,21 +73,28 @@ public class Player
         this.bonusPoints = bonusPoints;
     }
 
-    public void setScore(int score) {
+    public void setScore(int score)
+    {
         this.score = score;
         updateHighScore();
     }
 
 
-    public void clickLetter(final Letter letter, final String targetWord, final String bonusWord) {
-        if (letter.isLocked()) return;
+    public void clickLetter(final Letter letter,
+                            final String targetWord,
+                            final String bonusWord)
+    {
+        if(letter.isLocked())
+        {
+            return;
+        }
 
         final char c;
         c = letter.getValue();
         letter.lock();
 
 
-        if (targetWord.contains(String.valueOf(c)))
+        if(targetWord.contains(String.valueOf(c)))
         {
             StringBuilder collected;
             collected = new StringBuilder();
@@ -103,7 +119,8 @@ public class Player
             }
 
         }
-        if (bonusWord.contains(String.valueOf(c))) {
+        if(bonusWord.contains(String.valueOf(c)))
+        {
             collectedBonus.add(c);
         }
 
@@ -111,83 +128,105 @@ public class Player
     }
 
 
-    public boolean hasCompletedTargetWord(final String targetWord) {
-        if (collectedTarget.size() != targetWord.length()) {
+    public boolean hasCompletedTargetWord(final String targetWord)
+    {
+        if(collectedTarget.size() != targetWord.length())
+        {
             return false;
         }
 
         StringBuilder collected = new StringBuilder();
-        for (char c : collectedTarget) {
+        for(char c : collectedTarget)
+        {
             collected.append(c);
         }
         return collected.toString().equals(targetWord);
     }
 
-    public boolean hasCompletedBonusWord(final String bonusWord) {
-        if (collectedBonus.size() != bonusWord.length()) {
+    public boolean hasCompletedBonusWord(final String bonusWord)
+    {
+        if(collectedBonus.size() != bonusWord.length())
+        {
             return false;
         }
 
         StringBuilder collected = new StringBuilder();
-        for (char c : collectedBonus) {
+        for(char c : collectedBonus)
+        {
             collected.append(c);
         }
         return collected.toString().equals(bonusWord);
     }
 
-    private int loadHighScore() {
-        try {
+    private int loadHighScore()
+    {
+        try
+        {
             List<LetterRushScore> scores = LetterRushScore.readScoresFromFile(HIGH_SCORE_FILE_PATH);
-            if (scores.isEmpty()) {
+            if(scores.isEmpty())
+            {
                 return 0;
             }
             // Get the most recent high score
-            LetterRushScore latestScore = scores.stream()
-                                      .max(Comparator.comparing(LetterRushScore::getTimestamp))
-                                      .orElse(new LetterRushScore(0, 0, 0));
+            LetterRushScore latestScore = scores.stream().max(Comparator.comparing(LetterRushScore::getTimestamp)).orElse(new LetterRushScore(0,
+                                                                                                                                              0,
+                                                                                                                                              0));
             return latestScore.getHighScore();
-        } catch (IOException e) {
+        }
+        catch(IOException e)
+        {
             System.err.println("Error loading high score: " + e.getMessage());
             return 0;
         }
     }
 
 
+    private void saveHighScore()
+    {
 
-
-    private void saveHighScore() {
-
-        try {
-            LetterRushScore scoreEntry = new LetterRushScore(highScore, score, bonusPoints);
-            LetterRushScore.appendScoreToFile(scoreEntry, HIGH_SCORE_FILE_PATH);
-        } catch (IOException e) {
+        try
+        {
+            LetterRushScore scoreEntry = new LetterRushScore(highScore,
+                                                             score,
+                                                             bonusPoints);
+            LetterRushScore.appendScoreToFile(scoreEntry,
+                                              HIGH_SCORE_FILE_PATH);
+        }
+        catch(IOException e)
+        {
             System.err.println("Error saving high score: " + e.getMessage());
         }
 
     }
 
-    private void updateHighScore() {
-        if (score > highScore) {
+    private void updateHighScore()
+    {
+        if(score > highScore)
+        {
             highScore = score;
             saveHighScore();
         }
     }
 
 
-    public boolean hasFailed(final String targetWord) {
+    public boolean hasFailed(final String targetWord)
+    {
 
-        if (collectedTarget.size() > targetWord.length()) {
+        if(collectedTarget.size() > targetWord.length())
+        {
             System.out.println("hasFailed: Too many letters clicked: " + collectedTarget.size() + " > " + targetWord.length());
             return true;
         }
 
         // If the target word is already completed, don't mark as failed
-        if (hasCompletedTargetWord(targetWord)) {
+        if(hasCompletedTargetWord(targetWord))
+        {
             System.out.println("hasFailed: Target word completed, returning false.");
             return false;
         }
 
-        if(incorrectClicks > 1 ) {
+        if(incorrectClicks > 1)
+        {
             System.out.println("hasFailed: Too many incorrect clicks: " + incorrectClicks);
             return true;
         }
@@ -195,7 +234,8 @@ public class Player
 
         // Check if the collected letters match the start of the target word
         StringBuilder collected = new StringBuilder();
-        for (char c : collectedTarget) {
+        for(char c : collectedTarget)
+        {
             collected.append(c);
         }
         boolean startsWith = targetWord.startsWith(collected.toString());
@@ -203,40 +243,46 @@ public class Player
         return !startsWith;
     }
 
-    public int getIncorrectClicks() {
+    public int getIncorrectClicks()
+    {
         return incorrectClicks;
     }
 
-    public int getHighScore() {
+    public int getHighScore()
+    {
         return highScore;
     }
 
 
-
-    public int getScore() {
+    public int getScore()
+    {
         return score;
     }
 
-    public int getBonusPoints() {
+    public int getBonusPoints()
+    {
         return bonusPoints;
     }
 
-    public void addTargetPoints() {
+    public void addTargetPoints()
+    {
         score += TARGET_POINTS;
         updateHighScore();
     }
 
-    public void addBonusPoints() {
+    public void addBonusPoints()
+    {
         score += BONUS_POINTS;
         bonusPoints += BONUS_POINTS;
         updateHighScore();
     }
 
-    public void reset() {
+    public void reset()
+    {
         collectedTarget.clear();
         collectedBonus.clear();
-        score = 0;
-        bonusPoints = 0;
+        score           = 0;
+        bonusPoints     = 0;
         incorrectClicks = 0;
     }
 

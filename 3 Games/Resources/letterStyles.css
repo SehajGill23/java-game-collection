@@ -5,7 +5,7 @@
 /* Game Menu */
 .root {
     -fx-background-color: linear-gradient(to bottom, #1e3c72, #2a5298);
-    -fx-background-image: url("/ThanosBackground.png");
+    -fx-background-image: url("/LetterRushBg.png");
     -fx-background-size: cover;
     -fx-background-position: center;
 }

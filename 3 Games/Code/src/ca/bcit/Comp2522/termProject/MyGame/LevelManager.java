@@ -52,9 +52,6 @@ public class LevelManager
         }
     }
 
-    public void reset() {
-
-    }
 
     public boolean updateTimer(final long now, final GameUI ui) {
         final double timeLeft = TIMERS[currentLevel] - (now - startTime) / 1_000_000_000.0;
@@ -69,8 +66,8 @@ public class LevelManager
     public static final class Level {
         private final List<String> wordPairs;
         private final int obstacleCount;
-        private final double timer;
-        private final double speedMultiplier;
+        public final double timer;
+        public final  double speedMultiplier;
 
         private Level(final List<String> wordPairs, final int obstacleCount,
                       final double timer, final double speedMultiplier) {

@@ -26,7 +26,8 @@ public class LetterRush
     private static final double   CURSOR_SIZE       = 32.0;
     private static final String[] THEMES            = {"/background2.png",
                                                        "/background1.png",
-                                                       "/background3.png",};
+                                                       "/background3.png",
+                                                       "/background4.png"};
 
     private static LetterRush   instance;
     private final  LetterEngine engine;
@@ -109,7 +110,13 @@ public class LetterRush
         // Instructions
         final Text instructionsText = new Text(150,
                                                450,
-                                               "Instructions:\n" + "- Click letters to form the target word (white).\n" + "- There’s a hidden bonus word—find it for extra points!\n" + "- Avoid obstacles (missile, bomb, spike) that move randomly.\n" + "- Complete the target word before time runs out.\n" + "- Use buttons below the game to restart, quit, or change theme.");
+                                               """
+                                               Instructions:
+                                               - Click letters to form the target word (white).
+                                               - There’s a hidden bonus word—find it for extra points!
+                                               - Avoid obstacles (missile, bomb, spike) that move randomly.
+                                               - Complete the target word before time runs out.
+                                               - Use buttons below the game to restart, quit, or change theme.""");
         instructionsText.getStyleClass().add("instructions-text");
 
         // Start LetterRush Button
@@ -286,7 +293,6 @@ public class LetterRush
     {
         if(levelManager != null)
         {
-
             engine.resetGame(player,
                              ui,
                              levelManager);
@@ -448,10 +454,9 @@ public class LetterRush
                           {
                               Alert alert = new Alert(Alert.AlertType.INFORMATION);
                               alert.setTitle("Congratulations!");
-                              alert.setHeaderText("You Won the Game! 🥳");
+                              alert.setHeaderText("You are the GOAT 🐐, You've Won the Game! 🥳");
                               alert.setContentText("You have completed all levels of" +
-                                                   " LetterRush! Final Score: " + player.getScore()
-                                                   + "You are the GOAT 🐐");
+                                                   " LetterRush! Final Score: " + player.getScore());
                               alert.getDialogPane().getStylesheets().add(CSS_PATH);
                               alert.getDialogPane().getStyleClass().add("alert");
                               alert.showAndWait();

@@ -304,7 +304,6 @@ public class LetterEngine
                 gamePane.getChildren().clear();
                 gamePane.getChildren().add(ui.getUIPane());
                 player.reset();
-                levelManager.reset();
                 ui.updateScore(player.getScore());
                 isGameOver = false;
                 bonusFound = false;
