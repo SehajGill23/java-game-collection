@@ -92,6 +92,9 @@ public class LevelManager
             return config;
         }
     }
+    public void resetLevel() {
+        currentLevel = 0;
+    }
 
     public enum ObstacleType {
         MISSILE, BOMB, SPIKE

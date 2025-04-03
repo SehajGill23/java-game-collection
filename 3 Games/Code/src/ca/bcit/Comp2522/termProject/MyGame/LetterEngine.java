@@ -46,7 +46,8 @@ public class LetterEngine
                 return gamePane;
         }
 
-        public void startLevel(final Player player, final GameUI ui, final LevelManager levelManager) {
+        public void startLevel(final Player player, final GameUI ui, final LevelManager levelManager)
+        {
                 this.player = player;
                 this.levelManager = levelManager;
                 if (levelManager == null) {
@@ -314,9 +315,7 @@ public class LetterEngine
                 bonusFound = false;
 
 
-
                 System.out.println("Restarting level: " + levelManager.getCurrentLevelNumber());
-
 
 
                 startLevel(player, ui, levelManager);

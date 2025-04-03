@@ -3,7 +3,7 @@ package ca.bcit.Comp2522.termProject.MyGame;
 import javafx.scene.text.Text;
 
     public class Letter {
-        private static final double SPEED = 2.0;
+        private static final double SPEED = 3.0;
         private static final double SIZE = 20.0;
 
         private final Text node;

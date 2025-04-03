@@ -34,6 +34,23 @@ public class Player
         cursorY = y;
     }
 
+    // Fix: Added getter for collectedBonus to allow access in LetterRush
+    public List<Character> getCollectedBonus() {
+        return new ArrayList<>(collectedBonus);
+    }
+
+    // Fix: Added setter for incorrectClicks to allow modification in LetterRush
+    public void setIncorrectClicks(int incorrectClicks) {
+        this.incorrectClicks = incorrectClicks;
+    }
+
+    public void resetForNewLevel() {
+        collectedTarget.clear();
+        collectedBonus.clear();
+        incorrectClicks = 0;
+        // Note: score and bonusPoints are NOT reset here to maintain cumulative scoring
+    }
+
     //helper method
     public List<Character> getCollectedTarget() {
         return new ArrayList<>(collectedTarget);

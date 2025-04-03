@@ -41,6 +41,7 @@ private Text bonusScoreText;
 private Text highScoreText;
 private int currentThemeIndex = 0;
 private Pane root;
+private int scoreAtLevelStart;
 
 
     public LetterRush() {
@@ -54,6 +55,7 @@ private Pane root;
             System.out.println("LetterRush initialized successfully");
         }
         this.engine.setGame(this);
+        this.scoreAtLevelStart = 0;
     }
 
     public static void launchGame() {
@@ -196,6 +198,8 @@ private Pane root;
         stage.show();
 
         if (levelManager != null) {
+            levelManager.resetLevel();
+            scoreAtLevelStart = player.getScore();
             engine.startLevel(player, ui, levelManager);
             isRunning = true;
         } else {
@@ -217,6 +221,7 @@ private Pane root;
 
     private void resetGame() {
         if (levelManager != null) {
+
             engine.resetGame(player, ui, levelManager);
         } else {
             System.err.println("Cannot reset game: levelManager is null");
@@ -242,7 +247,9 @@ private Pane root;
             alert.getDialogPane().getStyleClass().add("alert");
             alert.showAndWait();
             stopGame();
-            player.reset();
+
+            player.resetForNewLevel();
+
         });
     }
 
@@ -257,9 +264,8 @@ private Pane root;
             alert.getDialogPane().getStyleClass().add("alert");
             alert.showAndWait();
             // Reset the player's state before stopping the game
-            player.reset();
+            player.resetForNewLevel();
             stopGame();
-            player.reset();
         });
     }
 
@@ -272,10 +278,9 @@ private Pane root;
             alert.getDialogPane().getStylesheets().add(CSS_PATH);
             alert.getDialogPane().getStyleClass().add("alert");
             alert.showAndWait();
-            // Reset the player's state before stopping the game
-            player.reset();
+
+            player.resetForNewLevel();
             stopGame();
-            player.reset();
         });
     }
 
@@ -296,8 +301,9 @@ private Pane root;
             alert.showAndWait().ifPresent(response -> {
                 if (response.getText().equals("Proceed")) {
 
-                    player.reset();
-
+//                    player.reset();
+                    player.resetForNewLevel();
+                    scoreAtLevelStart = player.getScore();
                     new Thread(() -> {
                         try {
                             Thread.sleep(100); // 100ms delay
@@ -307,8 +313,8 @@ private Pane root;
                         }
                     }).start();
 
-
-                } else {
+                } else
+                {
                     stopGame();
 //                    stage.close();
                 }
@@ -332,7 +338,10 @@ private Pane root;
 
             alert.showAndWait().ifPresent(response -> {
                 if (response.getText().equals("Proceed")) {
-                    player.reset();
+//                    player.reset();
+
+                    player.resetForNewLevel();
+                    scoreAtLevelStart = player.getScore();
                     engine.startLevel(player, ui, levelManager);
                 } else {
                     stopGame();

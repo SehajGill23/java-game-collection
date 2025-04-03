@@ -33,3 +33,13 @@ High Score: 70
 Current Score: 70
 Bonus Score: 0
 
+Timestamp: 2025-04-02 17:16:54
+High Score: 80
+Current Score: 80
+Bonus Score: 0
+
+Timestamp: 2025-04-02 17:16:56
+High Score: 90
+Current Score: 90
+Bonus Score: 0
+
