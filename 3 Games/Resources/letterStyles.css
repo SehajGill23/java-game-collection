@@ -122,7 +122,7 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 3, 0.5, 1, 1);
 }
 
-/* Alert Messages */
+
 .alert {
     -fx-background-color: linear-gradient(to bottom,  #A14A76, #5B3A7A, #2E1A47);
 }
@@ -160,7 +160,6 @@
 .alert .button-bar .button:hover {
     -fx-background-color: #A14A76; /* Bottom color on hover */
     -fx-cursor: hand;
-    -fx-border-color: #ffffff;
 }
 
 
