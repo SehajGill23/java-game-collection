@@ -1,36 +1,33 @@
-
-.root {
+.root
+{
     -fx-background-image: url("/LetterRushBg.png");
     -fx-background-size: cover;
     -fx-background-position: center;
 }
 
-/* Menu Buttons */
-.menu-button {
-    -fx-fill: #a10505;
-    -fx-stroke: #ffffff;
-    -fx-stroke-width: 2;
+
+.menu-button
+{
+    -fx-background-color: #a10505; /* Red background */
+    -fx-border-width: 2;
     -fx-background-radius: 20; /* Rounded edges */
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0.5, 2, 2);
+    -fx-text-fill: #ffffff; /* White text */
+    -fx-font-family: "Arial";
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0.5, 2, 2); /* Drop shadow from .menu-button */
+    -fx-padding: 0; /* Remove default padding to match Rectangle */
 }
 
-.menu-button:hover {
-    -fx-fill: #680202;
+.menu-button:hover
+{
+    -fx-background-color: #680202; /* Darker red on hover */
     -fx-cursor: hand;
 }
 
-/* Menu Button Text */
-.menu-text {
-    -fx-font-family: "Arial";
-    -fx-font-size: 18px;
-    -fx-fill: #ffffff;
-    -fx-font-weight: bold;
-    -fx-background-radius: 20;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.5, 1, 1);
-}
-
 /* Score Text */
-.score-text {
+.score-text
+{
     -fx-font-family: "Arial";
     -fx-font-size: 24px;
     -fx-fill: #ffd700;
@@ -39,7 +36,8 @@
 }
 
 /* Instructions Text */
-.instructions-text {
+.instructions-text
+{
     -fx-font-family: "Arial";
     -fx-font-size: 16px;
     -fx-fill: #ffffff;
@@ -48,7 +46,8 @@
 }
 
 /* Rules Text on Main Menu */
-.rules-text {
+.rules-text
+{
     -fx-font-family: "Arial";
     -fx-font-size: 16px;
     -fx-fill: #ffffff;
@@ -57,12 +56,14 @@
 }
 
 /* Game Scene */
-.game-pane {
+.game-pane
+{
     -fx-background-color: #0f2027;
 }
 
 /* Game Buttons (Restart, Quit, Change Theme) */
-.game-button {
+.game-button
+{
     -fx-background-color: #a10505;
     -fx-text-fill: #ffffff;
     -fx-font-family: "Arial";
@@ -72,41 +73,47 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 5, 0.5, 1, 1);
 }
 
-.game-button:hover {
+.game-button:hover
+{
     -fx-background-color: #680202;
     -fx-cursor: hand;
 }
 
 /* Letters */
-.letter {
+.letter
+{
     -fx-font-family: "Verdana";
     -fx-font-size: 24px;
     -fx-font-weight: bold;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 3, 0.5, 1, 1);
 }
 
-.letter-regular {
+.letter-regular
+{
     -fx-fill: #ffffff;
 }
 
-.letter-locked {
+.letter-locked
+{
     -fx-fill: #888888;
 }
 
-.letter:hover {
+.letter:hover
+{
     -fx-scale-x: 1.2;
     -fx-scale-y: 1.2;
     -fx-cursor: hand;
 }
 
 /* Obstacles */
-.obstacle {
+.obstacle
+{
     -fx-effect: dropshadow(gaussian, rgba(255, 0, 0, 0.5), 5, 0.5, 1, 1);
 }
 
 /* UI Elements */
-.ui-pane {
-    -fx-background-color: rgba(0, 0, 0, 0.7);
+.ui-pane
+{
     -fx-padding: 10;
     -fx-border-color: #ffffff;
     -fx-background-color: transparent;
@@ -114,7 +121,8 @@
     -fx-padding: 0;
 }
 
-.ui-text {
+.ui-text
+{
     -fx-font-family: "Arial";
     -fx-font-size: 16px;
     -fx-fill: #ffffff;
@@ -123,18 +131,19 @@
 }
 
 
-.alert {
-    -fx-background-color: linear-gradient(to bottom,  #A14A76, #5B3A7A, #2E1A47);
+.alert
+{
+    -fx-background-color: linear-gradient(to bottom, #A14A76, #5B3A7A, #2E1A47);
 }
 
 .alert .dialog-pane {
-    fx-background-color:  #A14A76;/* Solid dark red background */
-    -fx-background-color: #5B3A7A;  /* Optional: Add a border to match the theme */
+    fx-background-color: #A14A76; /* Solid dark red background */
+    -fx-background-color: #5B3A7A; /* Optional: Add a border to match the theme */
     -fx-border-width: 2;
 }
 
-
-.alert .content {
+.alert .content
+{
     -fx-text-fill: #ffffff;
     -fx-font-family: "Arial";
     -fx-font-size: 14px;
@@ -143,12 +152,13 @@
 }
 
 .alert .button-bar {
-    -fx-background-color: linear-gradient(to bottom,#A14A76 , #5B3A7A); /* Solid background for the button bar */
+    -fx-background-color: linear-gradient(to bottom, #A14A76, #5B3A7A); /* Solid background for the button bar */
     -fx-padding: 10;
 }
 
 
-.alert .button-bar .button {
+.alert .button-bar .button
+{
     -fx-background-color: #470cd6; /* Middle color for buttons */
     -fx-text-fill: #ffffff;
     -fx-font-family: "Gagalin";
@@ -157,33 +167,37 @@
 }
 
 
-.alert .button-bar .button:hover {
+.alert .button-bar .button:hover
+{
     -fx-background-color: #A14A76; /* Bottom color on hover */
     -fx-cursor: hand;
+    -fx-text-fill: #ffffff;
 }
 
 
-
-.alert .dialog-pane {
+.alert .dialog-pane
+{
     -fx-background-color: linear-gradient(to bottom, #2E1A47, #5B3A7A, #A14A76); /* Solid dark red background */
-    -fx-border-color: #A14A76;  /* Optional: Add a border to match the theme */
+    -fx-border-color: #A14A76; /* Optional: Add a border to match the theme */
     -fx-border-width: 2;
+    -fx-text-fill: #ffffff;
 }
 
-.alert .header-panel {
+.alert .header-panel
+{
     -fx-background-color: linear-gradient(to bottom, #2E1A47, #5B3A7A, #A14A76);
-    -fx-text-fill: #ffffff; /* Changed to white for better contrast */
+    -fx-text-fill: #ffffff;
     -fx-font-family: "Arial";
     -fx-font-size: 16px;
     -fx-font-weight: bold;
 }
 
-.alert .content {
+.alert .content
+{
     -fx-text-fill: #ffffff;
     -fx-font-family: "Arial";
     -fx-font-size: 14px;
-    /* Ensure content area matches dialog pane */
-    -fx-padding: 10; /* Add padding to avoid text touching edges */
+    -fx-padding: 10;
 }
 
 
