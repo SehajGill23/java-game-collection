@@ -86,7 +86,8 @@ public final class Score
         this.firstAttempts     = firstAttempts;
         this.secondAttempts    = secondAttempts;
         this.incorrectAttempts = incorrectAttempts;
-        this.score             = firstAttempts * FIRST_ATTEMPT_MULTIPLIER + secondAttempts * SECOND_ATTEMPT_MULTIPLIER;
+        this.score             = firstAttempts * FIRST_ATTEMPT_MULTIPLIER +
+                                 secondAttempts * SECOND_ATTEMPT_MULTIPLIER;
     }
 
     /**
@@ -131,7 +132,8 @@ public final class Score
      */
     public final double getAverageScore()
     {
-        return totalGamesPlayed == DEFAULT_ATTEMPT_VALUE ? DEFAULT_ATTEMPT_VALUE : (double) score / totalGamesPlayed;
+        return totalGamesPlayed == DEFAULT_ATTEMPT_VALUE ?
+               DEFAULT_ATTEMPT_VALUE : (double) score / totalGamesPlayed;
     }
 
     /**
@@ -291,7 +293,7 @@ public final class Score
                                                          [SPLIT_VALUE_INDEX].trim());
 
             final String scorePart;
-            scorePart = parts[SCORE_INDEX].split(":",
+            scorePart = parts[SCORE_INDEX].split(REGEX_COLON,
                                                  SPLIT_LIMIT)[SPLIT_VALUE_INDEX].trim();
 
             final int parsedScore;
