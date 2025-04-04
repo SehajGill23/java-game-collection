@@ -20,7 +20,7 @@ import java.util.List;
  * @author Sehaj Gill
  * @version 1.0
  */
-public class Score
+public final class Score
 {
     private final int           score;
     private final int           firstAttempts;

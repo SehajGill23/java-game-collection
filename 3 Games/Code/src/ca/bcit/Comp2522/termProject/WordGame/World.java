@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.List;
 
-
 /**
  * The World class manages a collection of countries for the Geography Trivia Game.
  * It loads country data from text files in the specified resource directory and provides

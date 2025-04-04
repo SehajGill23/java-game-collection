@@ -16,11 +16,37 @@ import java.util.List;
  * The LetterRushScore class represents a high score entry in the LetterRush game.
  * It stores the high score, current score, bonus score, and timestamp,
  * and provides methods to save and read scores from a file.
+ *
+ * @author Sehaj Gill
+ * @version 1.0
  */
-public class LetterRushScore {
-    private final int highScore;
-    private final int currentScore;
-    private final int bonusScore;
+public class LetterRushScore
+{
+    private static final int    DEFAULT_SCORE_VALUE = 0;
+    private static final int    SCORE_ENTRY_LINES   = 4;
+    private static final int    SPLIT_LIMIT         = 2;
+    private static final int    SPLIT_VALUE_INDEX   = 1;
+    private static final int    TIMESTAMP_INDEX     = 0;
+    private static final int    HIGH_SCORE_INDEX    = 1;
+    private static final int    CURRENT_SCORE_INDEX = 2;
+    private static final int    BONUS_SCORE_INDEX   = 3;
+    private static final String TIMESTAMP_LABEL     = "Timestamp: ";
+    private static final String HIGH_SCORE_LABEL    = "High Score: ";
+    private static final String CURRENT_SCORE_LABEL = "Current Score: ";
+    private static final String BONUS_SCORE_LABEL   = "Bonus Score: ";
+    private static final String DATE_TIME_PATTERN   = "yyyy-MM-dd HH:mm:ss";
+    private static final String ERROR_MESSAGE       = "Error: Unable to save score to ";
+    private static final String ERROR_READ_MESSAGE  = "Error: Unable to read scores from ";
+    private static final String INVALID_FORMAT_MSG  = "Invalid score format. Expected 4 lines, got ";
+    private static final String ENTRY_LABEL         = "Entry: ";
+    private static final String ERROR_PARSING_MSG   = "Error parsing score: ";
+    private static final String ERROR_MESSAGE_PART  = ": ";
+    private static final String NEW_LINE            = "\n";
+    private static final String SPLIT_COLON         = ":";
+
+    private final int           highScore;
+    private final int           currentScore;
+    private final int           bonusScore;
     private final LocalDateTime timestamp;
 
     /**
@@ -32,11 +58,15 @@ public class LetterRushScore {
      * @param bonusScore   the bonus score at the time of the high score
      * @param timestamp    the timestamp when the high score was achieved
      */
-    public LetterRushScore(int highScore, int currentScore, int bonusScore, LocalDateTime timestamp) {
-        this.highScore = highScore;
+    public LetterRushScore(final int highScore,
+                           final int currentScore,
+                           final int bonusScore,
+                           final LocalDateTime timestamp)
+    {
+        this.highScore    = highScore;
         this.currentScore = currentScore;
-        this.bonusScore = bonusScore;
-        this.timestamp = timestamp;
+        this.bonusScore   = bonusScore;
+        this.timestamp    = timestamp;
     }
 
     /**
@@ -47,8 +77,14 @@ public class LetterRushScore {
      * @param currentScore the current score at the time of the high score
      * @param bonusScore   the bonus score at the time of the high score
      */
-    public LetterRushScore(int highScore, int currentScore, int bonusScore) {
-        this(highScore, currentScore, bonusScore, LocalDateTime.now());
+    public LetterRushScore(final int highScore,
+                           final int currentScore,
+                           final int bonusScore)
+    {
+        this(highScore,
+             currentScore,
+             bonusScore,
+             LocalDateTime.now());
     }
 
     /**
@@ -56,26 +92,9 @@ public class LetterRushScore {
      *
      * @return the high score
      */
-    public int getHighScore() {
+    public final int getHighScore()
+    {
         return highScore;
-    }
-
-    /**
-     * Returns the current score at the time of the high score.
-     *
-     * @return the current score
-     */
-    public int getCurrentScore() {
-        return currentScore;
-    }
-
-    /**
-     * Returns the bonus score at the time of the high score.
-     *
-     * @return the bonus score
-     */
-    public int getBonusScore() {
-        return bonusScore;
     }
 
     /**
@@ -83,7 +102,8 @@ public class LetterRushScore {
      *
      * @return the timestamp
      */
-    public LocalDateTime getTimestamp() {
+    public final LocalDateTime getTimestamp()
+    {
         return timestamp;
     }
 
@@ -94,9 +114,14 @@ public class LetterRushScore {
      * @return a formatted string representing the score entry
      */
     @Override
-    public String toString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return String.format("Timestamp: %s\nHigh Score: %d\nCurrent Score: %d\nBonus Score: %d\n",
+    public final String toString()
+    {
+        final DateTimeFormatter formatter;
+        formatter = DateTimeFormatter.ofPattern(DATE_TIME_PATTERN);
+
+        return String.format(TIMESTAMP_LABEL + "%s" + NEW_LINE + HIGH_SCORE_LABEL
+                             + "%d" + NEW_LINE + CURRENT_SCORE_LABEL + "%d"
+                             + NEW_LINE + BONUS_SCORE_LABEL + "%d" + NEW_LINE,
                              timestamp.format(formatter),
                              highScore,
                              currentScore,
@@ -110,12 +135,20 @@ public class LetterRushScore {
      * @param filePath the path to the file where the score will be saved
      * @throws IOException if an error occurs while writing to the file
      */
-    public static void appendScoreToFile(LetterRushScore score, String filePath) throws IOException {
-        File scoreFile = new File(filePath);
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(scoreFile, true))) {
-            writer.write(score.toString() + "\n");
-        } catch (IOException e) {
-            throw new IOException("Error: Unable to save score to " + scoreFile.getAbsolutePath() + ": " + e.getMessage());
+    public static final void appendScoreToFile(final LetterRushScore score,
+                                               final String filePath) throws IOException
+    {
+        final File scoreFile;
+        scoreFile = new File(filePath);
+
+        try(final BufferedWriter writer = new BufferedWriter(new FileWriter(scoreFile,
+                                                                            true)))
+        {
+            writer.write(score.toString() + NEW_LINE);
+        }
+        catch(final IOException e)
+        {
+            throw new IOException(ERROR_MESSAGE + scoreFile.getAbsolutePath() + ERROR_MESSAGE_PART + e.getMessage());
         }
     }
 
@@ -127,31 +160,49 @@ public class LetterRushScore {
      * @return a list of LetterRushScore objects read from the file
      * @throws IOException if an error occurs while reading the file
      */
-    public static List<LetterRushScore> readScoresFromFile(String filePath) throws IOException {
-        List<LetterRushScore> scoreList = new ArrayList<>();
-        File scoreFile = new File(filePath);
+    public static List<LetterRushScore> readScoresFromFile(final String filePath) throws IOException
+    {
+        final List<LetterRushScore> scoreList;
+        scoreList = new ArrayList<>();
 
-        if (!scoreFile.exists()) {
+        final File scoreFile;
+        scoreFile = new File(filePath);
+
+        if(!scoreFile.exists())
+        {
             return scoreList;
         }
 
-        try (BufferedReader reader = Files.newBufferedReader(scoreFile.toPath(), StandardCharsets.UTF_8)) {
-            String line;
-            StringBuilder scoreEntry = new StringBuilder();
-            while ((line = reader.readLine()) != null) {
-                if (line.trim().isEmpty() && scoreEntry.length() > 0) {
+        try(final BufferedReader reader = Files.newBufferedReader(scoreFile.toPath(),
+                                                                  StandardCharsets.UTF_8))
+        {
+            String        line;
+            StringBuilder scoreEntry;
+            scoreEntry = new StringBuilder();
+
+            while((line = reader.readLine()) != null)
+            {
+                if(line.trim().isEmpty() && scoreEntry.length() > DEFAULT_SCORE_VALUE)
+                {
                     scoreList.add(fromString(scoreEntry.toString()));
-                    scoreEntry.setLength(0);
-                } else if (!line.trim().isEmpty()) {
-                    scoreEntry.append(line).append("\n");
+                    scoreEntry.setLength(DEFAULT_SCORE_VALUE);
+                }
+                else if(!line.trim().isEmpty())
+                {
+                    scoreEntry.append(line).append(NEW_LINE);
                 }
             }
-            if (scoreEntry.length() > 0) {
+
+            if(scoreEntry.length() > DEFAULT_SCORE_VALUE)
+            {
                 scoreList.add(fromString(scoreEntry.toString()));
             }
-        } catch (IOException e) {
-            throw new IOException("Error: Unable to read scores from " + filePath + ": " + e.getMessage());
         }
+        catch(final IOException e)
+        {
+            throw new IOException(ERROR_READ_MESSAGE + filePath + ERROR_MESSAGE_PART + e.getMessage());
+        }
+
         return scoreList;
     }
 
@@ -162,24 +213,55 @@ public class LetterRushScore {
      * @param entry the string representation of the score entry
      * @return a LetterRushScore object parsed from the string, or a default LetterRushScore if parsing fails
      */
-    public static LetterRushScore fromString(String entry) {
-        String[] parts = entry.split("\n");
-        if (parts.length != 4) {
-            System.out.println("Invalid score format. Expected 4 lines, got " + parts.length);
-            System.out.println("Entry: " + entry);
-            return new LetterRushScore(0, 0, 0);
+    public static final LetterRushScore fromString(final String entry)
+    {
+        final String[] parts;
+        parts = entry.split(NEW_LINE);
+
+        if(parts.length != SCORE_ENTRY_LINES)
+        {
+            System.out.println(INVALID_FORMAT_MSG + parts.length);
+            System.out.println(ENTRY_LABEL + entry);
+
+            return new LetterRushScore(DEFAULT_SCORE_VALUE,
+                                       DEFAULT_SCORE_VALUE,
+                                       DEFAULT_SCORE_VALUE);
         }
 
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            LocalDateTime timestamp = LocalDateTime.parse(parts[0].split(":", 2)[1].trim(), formatter);
-            int highScore = Integer.parseInt(parts[1].split(":", 2)[1].trim());
-            int currentScore = Integer.parseInt(parts[2].split(":", 2)[1].trim());
-            int bonusScore = Integer.parseInt(parts[3].split(":", 2)[1].trim());
-            return new LetterRushScore(highScore, currentScore, bonusScore, timestamp);
-        } catch (Exception e) {
-            System.out.println("Error parsing score: " + e.getMessage());
-            return new LetterRushScore(0, 0, 0);
+        try
+        {
+            final DateTimeFormatter formatter;
+            formatter = DateTimeFormatter.ofPattern(DATE_TIME_PATTERN);
+
+            final LocalDateTime timestamp;
+            timestamp = LocalDateTime.parse(parts[TIMESTAMP_INDEX].split( SPLIT_COLON,
+                                                                         SPLIT_LIMIT)[SPLIT_VALUE_INDEX].trim(),
+                                            formatter);
+
+            final int highScore;
+            highScore = Integer.parseInt(parts[HIGH_SCORE_INDEX].split( SPLIT_COLON,
+                                                                       SPLIT_LIMIT)[SPLIT_VALUE_INDEX].trim());
+
+            final int currentScore;
+            currentScore = Integer.parseInt(parts[CURRENT_SCORE_INDEX].split( SPLIT_COLON,
+                                                                             SPLIT_LIMIT)[SPLIT_VALUE_INDEX].trim());
+
+            final int bonusScore;
+            bonusScore = Integer.parseInt(parts[BONUS_SCORE_INDEX].split( SPLIT_COLON,
+                                                                         SPLIT_LIMIT)[SPLIT_VALUE_INDEX].trim());
+
+            return new LetterRushScore(highScore,
+                                       currentScore,
+                                       bonusScore,
+                                       timestamp);
+        }
+        catch(final Exception e)
+        {
+            System.out.println(ERROR_PARSING_MSG + e.getMessage());
+
+            return new LetterRushScore(DEFAULT_SCORE_VALUE,
+                                       DEFAULT_SCORE_VALUE,
+                                       DEFAULT_SCORE_VALUE);
         }
     }
 }

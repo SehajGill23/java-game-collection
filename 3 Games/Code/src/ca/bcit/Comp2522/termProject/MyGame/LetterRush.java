@@ -40,6 +40,10 @@ public final class LetterRush
     private static final int      QUIT_BUTTON_X           = 420;
     private static final int      THEME_BUTTON_X          = 737;
     private static final int      THREAD_SLEEP_MS         = 100;
+    private static final int      INCREMENTING_BY_ONE     = 1;
+    private static final int      WINDOW_ADJUSTMENT       = 100;
+    private static final int      INITIAL_SCORE           = 0;
+    private static final int      GRACE_PERIOD_MS         = 1000;
     private static final String   CSS_PATH                = "/letterStyles.css";
     private static final String   TITLE                   = "LetterRush";
     private static final String   TITLE_MENU              = TITLE + " - Menu";
@@ -82,6 +86,8 @@ public final class LetterRush
                                                              "/background1.png",
                                                              "/background3.png",
                                                              "/background4.png"};
+
+
     private static       LetterRush instance;
     private final        LetterEngine engine;
     private final        Player player;
@@ -94,8 +100,10 @@ public final class LetterRush
     private              Text scoreText;
     private              Text bonusScoreText;
     private              Text highScoreText;
-    private              int currentThemeIndex            = 0;
+    private              int currentThemeIndex = 0;
     private              int scoreAtLevelStart;
+    private              boolean isGracePeriodActive;
+    private              long gracePeriodStartTime;
 
 
     /**
@@ -105,12 +113,14 @@ public final class LetterRush
     public LetterRush()
     {
         this.engine       = new LetterEngine(WINDOW_WIDTH,
-                                             WINDOW_HEIGHT - 100);
+                                             WINDOW_HEIGHT - WINDOW_ADJUSTMENT);
         this.player       = new Player();
         this.ui           = new GameUI();
         this.levelManager = new LevelManager();
         this.engine.setGame(this);
-        this.scoreAtLevelStart = 0;
+        this.scoreAtLevelStart = INITIAL_SCORE;
+        this.isGracePeriodActive = false;
+        this.gracePeriodStartTime = 0;
     }
 
     /**
@@ -133,7 +143,7 @@ public final class LetterRush
         }
     }
 
-    /**
+    /*
      * Displays the main menu of the game, including score displays, instructions,
      * and start/return buttons. Initializes the stage and scene if not already set.
      */
@@ -207,7 +217,7 @@ public final class LetterRush
         isRunning = false;
     }
 
-    /**
+    /*
      * Creates a styled button with the specified position, size, text, and action.
      *
      * @param x      the x-coordinate of the button
@@ -218,7 +228,7 @@ public final class LetterRush
      * @param action the action to perform when the button is clicked
      * @return a configured `Button` instance
      */
-    private final Button createButton(double x,
+    private Button createButton(double x,
                                 double y,
                                 double width,
                                 double height,
@@ -245,27 +255,31 @@ public final class LetterRush
         System.out.println("Starting new game. Player collectedTarget: " + player.getCollectedTarget());
 
         root = new Pane();
-        root.setPrefSize(WINDOW_WIDTH,
-                         WINDOW_HEIGHT);
+        root.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         root.getStyleClass().add(GAME_PANE_STYLE);
         applyTheme();
 
-        root.getChildren().addAll(engine.getGamePane(),
-                                  ui.getUIPane());
+        root.getChildren().addAll(engine.getGamePane(), ui.getUIPane());
 
-        final Button restartButton = new Button(BUTTON_RESTART_TEXT);
+        final Button restartButton;
+        restartButton= new Button(BUTTON_RESTART_TEXT);
+
         restartButton.setLayoutX(RESTART_BUTTON_X);
         restartButton.setLayoutY(WINDOW_HEIGHT - GAME_BUTTON_Y_OFFSET);
         restartButton.getStyleClass().add(GAME_BUTTON_STYLE);
         restartButton.setOnAction(event -> resetGame());
 
-        final Button quitButton = new Button(BUTTON_QUIT_TEXT);
+        final Button quitButton;
+        quitButton= new Button(BUTTON_QUIT_TEXT);
+
         quitButton.setLayoutX(QUIT_BUTTON_X);
         quitButton.setLayoutY(WINDOW_HEIGHT - GAME_BUTTON_Y_OFFSET);
         quitButton.getStyleClass().add(GAME_BUTTON_STYLE);
         quitButton.setOnAction(event -> stopGame());
 
-        final Button themeButton = new Button(BUTTON_THEME_TEXT);
+        final Button themeButton;
+        themeButton = new Button(BUTTON_THEME_TEXT);
+
         themeButton.setLayoutX(THEME_BUTTON_X);
         themeButton.setLayoutY(WINDOW_HEIGHT - GAME_BUTTON_Y_OFFSET);
         themeButton.getStyleClass().add(GAME_BUTTON_STYLE);
@@ -304,6 +318,7 @@ public final class LetterRush
                               ui,
                               levelManager);
             isRunning = true;
+            startLevelWithGracePeriod();
         }
         else
         {
@@ -313,7 +328,7 @@ public final class LetterRush
         }
     }
 
-    /**
+    /*
      * Applies the current theme to the game root pane by setting the background image.
      */
     private void applyTheme()
@@ -322,16 +337,16 @@ public final class LetterRush
                       " -fx-background-size: cover; -fx-background-position: center;");
     }
 
-    /**
+    /*
      * Changes the current theme to the next one in the THEMES array.
      */
     private void changeTheme()
     {
-        currentThemeIndex = (currentThemeIndex + 1) % THEMES.length;
+        currentThemeIndex = (currentThemeIndex + INCREMENTING_BY_ONE ) % THEMES.length;
         applyTheme();
     }
 
-    /**
+    /*
      * Resets the current game level using the engine.
      */
     private void resetGame()
@@ -341,6 +356,7 @@ public final class LetterRush
             engine.resetGame(player,
                              ui,
                              levelManager);
+            startLevelWithGracePeriod();
         }
         else
         {
@@ -348,7 +364,44 @@ public final class LetterRush
         }
     }
 
+    /*
+     * Starts a level with a grace period during which obstacle collisions are ignored.
+     */
+    private final void startLevelWithGracePeriod()
+    {
+        // Start the grace period
+        isGracePeriodActive = true;
+        gracePeriodStartTime = System.currentTimeMillis();
+
+        // Start the level
+        engine.startLevel(player, ui, levelManager);
+        isRunning = true;
+    }
+
     /**
+     * Checks if the grace period is active, and deactivates it if the duration has passed.
+     *
+     * @return true if the grace period is active, false otherwise
+     */
+    public final boolean isGracePeriodActive()
+    {
+        if (!isGracePeriodActive)
+        {
+            return false;
+        }
+
+        final long currentTime;
+        currentTime = System.currentTimeMillis();
+
+        if (currentTime - gracePeriodStartTime >= GRACE_PERIOD_MS)
+        {
+            isGracePeriodActive = false;
+        }
+
+        return isGracePeriodActive;
+    }
+
+    /*
      * Stops the game, updates the menu scene, and resets the player state.
      */
     private void stopGame()
@@ -367,7 +420,8 @@ public final class LetterRush
      * @param header the header text of the alert
      * @param content the content text of the alert
      */
-    public final void showLossAlert(String header, String content) {
+    public void showLossAlert(String header, String content)
+    {
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle(GAME_OVER_TITLE);
@@ -385,14 +439,16 @@ public final class LetterRush
     /**
      * Displays a loss alert when the player hits an obstacle.
      */
-    public  void showLossAlertObstacle() {
+    public void showLossAlertObstacle()
+    {
         showLossAlert(GAME_OVER_HEADER, OBSTACLE_MESSAGE);
     }
 
     /**
      * Displays a loss alert when time runs out.
      */
-    public  void showLossAlertTime() {
+    public void showLossAlertTime()
+    {
         showLossAlert(GAME_OVER_HEADER, TIME_UP_MESSAGE);
     }
 
@@ -477,6 +533,7 @@ public final class LetterRush
                                                                     engine.startLevel(player,
                                                                                       ui,
                                                                                       levelManager);
+                                                                    startLevelWithGracePeriod();
                                                                 }
                                                                 else
                                                                 {

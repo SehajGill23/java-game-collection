@@ -100,7 +100,8 @@ public class Validation
             else if(NO_RESPONSES.contains(response))
             {
                 saveAndPrintHighScore();
-                return; // Back to main menu
+                Main.ConsoleInput();
+                return;
             }
             else
             {
@@ -141,7 +142,7 @@ public class Validation
         }
         else
         {
-            System.out.println("No new high score this time.");
+            System.out.println("\nNo new high score this time.");
         }
 
         try
