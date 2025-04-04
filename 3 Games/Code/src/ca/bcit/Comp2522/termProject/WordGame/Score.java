@@ -22,6 +22,42 @@ import java.util.List;
  */
 public final class Score
 {
+    private static final int    DEFAULT_ATTEMPT_VALUE     = 0;
+    private static final int    DEFAULT_GAMES_PLAYED      = 1;
+    private static final int    FIRST_ATTEMPT_MULTIPLIER  = 2;
+    private static final int    SECOND_ATTEMPT_MULTIPLIER = 1;
+    private static final int    SCORE_ENTRY_LINES         = 6;
+    private static final int    SPLIT_LIMIT               = 2;
+    private static final int    SPLIT_VALUE_INDEX         = 1;
+    private static final int    TIMESTAMP_INDEX           = 0;
+    private static final int    GAMES_PLAYED_INDEX        = 1;
+    private static final int    FIRST_ATTEMPTS_INDEX      = 2;
+    private static final int    SECOND_ATTEMPTS_INDEX     = 3;
+    private static final int    INCORRECT_ATTEMPTS_INDEX  = 4;
+    private static final int    SCORE_INDEX               = 5;
+    private static final String DATE_TIME_PATTERN         = "yyyy-MM-dd HH:mm:ss";
+    private static final String NEW_LINE                  = "\n";
+    private static final String DATE_TIME_LABEL           = "Date and Time: ";
+    private static final String GAMES_PLAYED_LABEL        = "Games Played: ";
+    private static final String FIRST_ATTEMPTS_LABEL      = "Correct First Attempts: ";
+    private static final String SECOND_ATTEMPTS_LABEL     = "Correct Second Attempts: ";
+    private static final String INCORRECT_ATTEMPTS_LABEL  = "Incorrect Attempts: ";
+    private static final String SCORE_LABEL               = "Score: ";
+    private static final String SCORE_SUFFIX              = " points";
+    private static final String ERROR_MESSAGE             = "Error: Unable to save score to ";
+    private static final String ERROR_READ_MESSAGE        = "Error: Unable to read scores from ";
+    private static final String ERROR_MESSAGE_PART        = ": ";
+    private static final String INVALID_FORMAT_MSG        = "Invalid score format. Expected 6 lines, got ";
+    private static final String ENTRY_LABEL               = "Entry: ";
+    private static final String WARNING_MESSAGE           = "Warning: Parsed score (";
+    private static final String DOES_NOT_MATCH_MSG        = ") does not match calculated score (";
+    private static final String CLOSE_PARENTHESIS         = ")";
+    private static final String TOTAL_SCORE_LABEL         = "Total Score:";
+    private static final String ERROR_PARSING_MSG         = "Error parsing score: ";
+    private static final String ERROR_PARSING_OLD_MSG     = "Error parsing score with old format: ";
+    private static final String REGEX_NON_NUMERIC         = "[^0-9]";
+    private static final String REGEX_COLON               = ":";
+
     private final int           score;
     private final int           firstAttempts;
     private final int           secondAttempts;
@@ -39,18 +75,18 @@ public final class Score
      * @param secondAttempts    the number of correct answers on the second attempt
      * @param incorrectAttempts the number of incorrect answers after two attempts
      */
-    public Score(LocalDateTime timestamp,
-                 int totalGamesPlayed,
-                 int firstAttempts,
-                 int secondAttempts,
-                 int incorrectAttempts)
+    public Score(final LocalDateTime timestamp,
+                 final int totalGamesPlayed,
+                 final int firstAttempts,
+                 final int secondAttempts,
+                 final int incorrectAttempts)
     {
         this.timestamp         = timestamp;
         this.totalGamesPlayed  = totalGamesPlayed;
         this.firstAttempts     = firstAttempts;
         this.secondAttempts    = secondAttempts;
         this.incorrectAttempts = incorrectAttempts;
-        this.score             = firstAttempts * 2 + secondAttempts * 1;
+        this.score             = firstAttempts * FIRST_ATTEMPT_MULTIPLIER + secondAttempts * SECOND_ATTEMPT_MULTIPLIER;
     }
 
     /**
@@ -63,11 +99,11 @@ public final class Score
      * @param incorrectAttempts the number of incorrect answers after two attempts
      * @param totalGamesPlayed  the total number of games played
      */
-    public Score(int score,
-                 int firstAttempts,
-                 int secondAttempts,
-                 int incorrectAttempts,
-                 int totalGamesPlayed)
+    public Score(final int score,
+                 final int firstAttempts,
+                 final int secondAttempts,
+                 final int incorrectAttempts,
+                 final int totalGamesPlayed)
     {
         this.score             = score;
         this.firstAttempts     = firstAttempts;
@@ -82,7 +118,7 @@ public final class Score
      *
      * @return the total score
      */
-    public int getScore()
+    public final int getScore()
     {
         return score;
     }
@@ -93,9 +129,9 @@ public final class Score
      *
      * @return the average score per game
      */
-    public double getAverageScore()
+    public final double getAverageScore()
     {
-        return totalGamesPlayed == 0 ? 0 : (double) score / totalGamesPlayed;
+        return totalGamesPlayed == DEFAULT_ATTEMPT_VALUE ? DEFAULT_ATTEMPT_VALUE : (double) score / totalGamesPlayed;
     }
 
     /**
@@ -105,10 +141,15 @@ public final class Score
      * @return a formatted string representing the score
      */
     @Override
-    public String toString()
+    public final String toString()
     {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return String.format("Date and Time: %s\nGames Played: %d\nCorrect First Attempts: %d\nCorrect Second Attempts: %d\nIncorrect Attempts: %d\nScore: %d points\n",
+        final DateTimeFormatter formatter;
+        formatter = DateTimeFormatter.ofPattern(DATE_TIME_PATTERN);
+
+        return String.format(DATE_TIME_LABEL + "%s" + NEW_LINE + GAMES_PLAYED_LABEL + "%d" + NEW_LINE
+                             + FIRST_ATTEMPTS_LABEL + "%d" + NEW_LINE + SECOND_ATTEMPTS_LABEL + "%d"
+                             + NEW_LINE + INCORRECT_ATTEMPTS_LABEL + "%d" + NEW_LINE + SCORE_LABEL
+                             + "%d" + SCORE_SUFFIX + NEW_LINE,
                              timestamp.format(formatter),
                              totalGamesPlayed,
                              firstAttempts,
@@ -122,21 +163,22 @@ public final class Score
      *
      * @param score    the Score object to save
      * @param filePath the path to the file where the score will be saved
-     * @throw IOException if an error occurs while writing to the file
+     * @throws IOException if an error occurs while writing to the file
      */
-    public static void appendScoreToFile(Score score,
-                                         String filePath) throws IOException
+    public static final void appendScoreToFile(final Score score,
+                                               final String filePath) throws IOException
     {
-        File scoreFile = new File(filePath);
-        try(BufferedWriter writer = new BufferedWriter(new FileWriter(scoreFile,
-                                                                      true)))
+        final File scoreFile;
+        scoreFile = new File(filePath);
+
+        try(final BufferedWriter writer = new BufferedWriter(new FileWriter(scoreFile,
+                                                                            true)))
         {
-            writer.write(score.toString() + "\n");
+            writer.write(score.toString() + NEW_LINE);
         }
-        catch(IOException e)
+        catch(final IOException e)
         {
-            throw new IOException("Error: Unable to save score to " + scoreFile.getAbsolutePath()
-                                  + ": " + e.getMessage());
+            throw new IOException(ERROR_MESSAGE + scoreFile.getAbsolutePath() + ERROR_MESSAGE_PART + e.getMessage());
         }
     }
 
@@ -148,42 +190,49 @@ public final class Score
      * @return a list of Score objects read from the file
      * @throws IOException if an error occurs while reading the file
      */
-    public static List<Score> readScoresFromFile(String filePath) throws IOException
+    public static final List<Score> readScoresFromFile(final String filePath) throws IOException
     {
-        List<Score> scoreList = new ArrayList<>();
-        File        scoreFile = new File(filePath);
+        final List<Score> scoreList;
+        scoreList = new ArrayList<>();
+
+        final File scoreFile;
+        scoreFile = new File(filePath);
 
         if(!scoreFile.exists())
         {
             return scoreList;
         }
 
-        try(BufferedReader reader = Files.newBufferedReader(scoreFile.toPath(),
-                                                            StandardCharsets.UTF_8))
+        try(final BufferedReader reader = Files.newBufferedReader(scoreFile.toPath(),
+                                                                  StandardCharsets.UTF_8))
         {
             String        line;
-            StringBuilder scoreEntry = new StringBuilder();
+            StringBuilder scoreEntry;
+            scoreEntry = new StringBuilder();
+
             while((line = reader.readLine()) != null)
             {
-                if(line.trim().isEmpty() && scoreEntry.length() > 0)
+                if(line.trim().isEmpty() && scoreEntry.length() > DEFAULT_ATTEMPT_VALUE)
                 {
                     scoreList.add(fromString(scoreEntry.toString()));
-                    scoreEntry.setLength(0);
+                    scoreEntry.setLength(DEFAULT_ATTEMPT_VALUE);
                 }
                 else if(!line.trim().isEmpty())
                 {
-                    scoreEntry.append(line).append("\n");
+                    scoreEntry.append(line).append(NEW_LINE);
                 }
             }
-            if(scoreEntry.length() > 0)
+
+            if(scoreEntry.length() > DEFAULT_ATTEMPT_VALUE)
             {
                 scoreList.add(fromString(scoreEntry.toString()));
             }
         }
-        catch(IOException e)
+        catch(final IOException e)
         {
-            throw new IOException("Error: Unable to read scores from " + filePath + ": " + e.getMessage());
+            throw new IOException(ERROR_READ_MESSAGE + filePath + ERROR_MESSAGE_PART + e.getMessage());
         }
+
         return scoreList;
     }
 
@@ -194,44 +243,69 @@ public final class Score
      * @param line the string representation of the score
      * @return a Score object parsed from the string, or a default Score if parsing fails
      */
-    public static Score fromString(String line)
+    public static final Score fromString(final String line)
     {
-        String[] parts = line.split("\n");
-        if(parts.length != 6)
+        final String[] parts;
+        parts = line.split(NEW_LINE);
+
+        if(parts.length != SCORE_ENTRY_LINES)
         {
-            System.out.println("Invalid score format. Expected 6 lines, got " + parts.length);
-            System.out.println("Entry: " + line);
+            System.out.println(INVALID_FORMAT_MSG + parts.length);
+            System.out.println(ENTRY_LABEL + line);
+
             return new Score(LocalDateTime.now(),
-                             1,
-                             0,
-                             0,
-                             0);
+                             DEFAULT_GAMES_PLAYED,
+                             DEFAULT_ATTEMPT_VALUE,
+                             DEFAULT_ATTEMPT_VALUE,
+                             DEFAULT_ATTEMPT_VALUE);
         }
 
         try
         {
-            DateTimeFormatter formatter         = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            LocalDateTime     timestamp         = LocalDateTime.parse(parts[0].split(":",
-                                                                                     2)[1].trim(),
-                                                                      formatter);
-            int               gamesPlayed       = Integer.parseInt(parts[1].split(":",
-                                                                                  2)[1].trim());
-            int               firstAttempts     = Integer.parseInt(parts[2].split(":",
-                                                                                  2)[1].trim());
-            int               secondAttempts    = Integer.parseInt(parts[3].split(":",
-                                                                                  2)[1].trim());
-            int               incorrectAttempts = Integer.parseInt(parts[4].split(":",
-                                                                                  2)[1].trim());
-            String            scorePart         = parts[5].split(":",
-                                                                 2)[1].trim();
-            int               parsedScore       = Integer.parseInt(scorePart.replaceAll("[^0-9]",
-                                                                                        ""));
+            final DateTimeFormatter formatter;
+            formatter = DateTimeFormatter.ofPattern(DATE_TIME_PATTERN);
 
+            final LocalDateTime timestamp;
+            timestamp = LocalDateTime.parse(parts[TIMESTAMP_INDEX].split(REGEX_COLON,
+                                                                         SPLIT_LIMIT)
+                                                    [SPLIT_VALUE_INDEX].trim(), formatter);
 
-            int calculatedScore = firstAttempts * 2 + secondAttempts * 1;
+            final int gamesPlayed;
+            gamesPlayed = Integer.parseInt(parts[GAMES_PLAYED_INDEX].split(REGEX_COLON,
+                                                                           SPLIT_LIMIT)
+                                                   [SPLIT_VALUE_INDEX].trim());
+
+            final int firstAttempts;
+            firstAttempts = Integer.parseInt(parts[FIRST_ATTEMPTS_INDEX].split(REGEX_COLON,
+                                                                               SPLIT_LIMIT)
+                                                     [SPLIT_VALUE_INDEX].trim());
+
+            final int secondAttempts;
+            secondAttempts = Integer.parseInt(parts[SECOND_ATTEMPTS_INDEX].split(REGEX_COLON,
+                                                                                 SPLIT_LIMIT)
+                                                      [SPLIT_VALUE_INDEX].trim());
+
+            final int incorrectAttempts;
+            incorrectAttempts = Integer.parseInt(parts[INCORRECT_ATTEMPTS_INDEX].split(REGEX_COLON,
+                                                                                       SPLIT_LIMIT)
+                                                         [SPLIT_VALUE_INDEX].trim());
+
+            final String scorePart;
+            scorePart = parts[SCORE_INDEX].split(":",
+                                                 SPLIT_LIMIT)[SPLIT_VALUE_INDEX].trim();
+
+            final int parsedScore;
+            parsedScore = Integer.parseInt(scorePart.replaceAll(REGEX_NON_NUMERIC,
+                                                                ""));
+
+            final int calculatedScore;
+            calculatedScore = firstAttempts * FIRST_ATTEMPT_MULTIPLIER + secondAttempts
+                                                                         * SECOND_ATTEMPT_MULTIPLIER;
+
             if(parsedScore != calculatedScore)
             {
-                System.out.println("Warning: Parsed score (" + parsedScore + ") does not match calculated score (" + calculatedScore + ")");
+                System.out.println(WARNING_MESSAGE + parsedScore + DOES_NOT_MATCH_MSG
+                                   + calculatedScore + CLOSE_PARENTHESIS);
             }
 
             return new Score(timestamp,
@@ -240,46 +314,65 @@ public final class Score
                              secondAttempts,
                              incorrectAttempts);
         }
-        catch(Exception e)
+        catch(final Exception e)
         {
-            if(parts[5].startsWith("Total Score:"))
+            if(parts[SCORE_INDEX].startsWith(TOTAL_SCORE_LABEL))
             {
                 try
                 {
-                    DateTimeFormatter formatter         = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                    LocalDateTime     timestamp         = LocalDateTime.parse(parts[0].split(":",
-                                                                                             2)[1].trim(),
-                                                                              formatter);
-                    int               gamesPlayed       = Integer.parseInt(parts[1].split(":",
-                                                                                          2)[1].trim());
-                    int               firstAttempts     = Integer.parseInt(parts[2].split(":",
-                                                                                          2)[1].trim());
-                    int               secondAttempts    = Integer.parseInt(parts[3].split(":",
-                                                                                          2)[1].trim());
-                    int               incorrectAttempts = Integer.parseInt(parts[4].split(":",
-                                                                                          2)[1].trim());
+                    final DateTimeFormatter formatter;
+                    formatter = DateTimeFormatter.ofPattern(DATE_TIME_PATTERN);
+
+                    final LocalDateTime timestamp;
+                    timestamp = LocalDateTime.parse(parts[TIMESTAMP_INDEX].split(REGEX_COLON,
+                                                                                 SPLIT_LIMIT)
+                                                            [SPLIT_VALUE_INDEX].trim(), formatter);
+
+                    final int gamesPlayed;
+                    gamesPlayed = Integer.parseInt(parts[GAMES_PLAYED_INDEX].split(REGEX_COLON,
+                                                                                   SPLIT_LIMIT)
+                                                           [SPLIT_VALUE_INDEX].trim());
+
+                    final int firstAttempts;
+                    firstAttempts = Integer.parseInt(parts[FIRST_ATTEMPTS_INDEX].split(REGEX_COLON,
+                                                                                       SPLIT_LIMIT)
+                                                             [SPLIT_VALUE_INDEX].trim());
+
+                    final int secondAttempts;
+                    secondAttempts = Integer.parseInt(parts[SECOND_ATTEMPTS_INDEX].split(REGEX_COLON,
+                                                                                         SPLIT_LIMIT)
+                                                              [SPLIT_VALUE_INDEX].trim());
+
+                    final int incorrectAttempts;
+                    incorrectAttempts = Integer.parseInt(parts[INCORRECT_ATTEMPTS_INDEX].split(REGEX_COLON,
+                                                                                               SPLIT_LIMIT)
+                                                                 [SPLIT_VALUE_INDEX].trim());
+
                     return new Score(timestamp,
                                      gamesPlayed,
                                      firstAttempts,
                                      secondAttempts,
                                      incorrectAttempts);
                 }
-                catch(Exception ex)
+                catch(final Exception ex)
                 {
-                    System.out.println("Error parsing score with old format: " + ex.getMessage());
+                    System.out.println(ERROR_PARSING_OLD_MSG + ex.getMessage());
+
                     return new Score(LocalDateTime.now(),
-                                     1,
-                                     0,
-                                     0,
-                                     0);
+                                     DEFAULT_GAMES_PLAYED,
+                                     DEFAULT_ATTEMPT_VALUE,
+                                     DEFAULT_ATTEMPT_VALUE,
+                                     DEFAULT_ATTEMPT_VALUE);
                 }
             }
-            System.out.println("Error parsing score: " + e.getMessage());
+
+            System.out.println(ERROR_PARSING_MSG + e.getMessage());
+
             return new Score(LocalDateTime.now(),
-                             1,
-                             0,
-                             0,
-                             0);
+                             DEFAULT_GAMES_PLAYED,
+                             DEFAULT_ATTEMPT_VALUE,
+                             DEFAULT_ATTEMPT_VALUE,
+                             DEFAULT_ATTEMPT_VALUE);
         }
     }
 }
