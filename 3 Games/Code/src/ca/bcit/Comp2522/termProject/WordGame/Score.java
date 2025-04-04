@@ -119,7 +119,7 @@ public final class Score
      *
      * @return the total score
      */
-    public final int getScore()
+    public int getScore()
     {
         return score;
     }
@@ -130,7 +130,7 @@ public final class Score
      *
      * @return the average score per game
      */
-    public final double getAverageScore()
+    public double getAverageScore()
     {
         return totalGamesPlayed == DEFAULT_ATTEMPT_VALUE ?
                DEFAULT_ATTEMPT_VALUE : (double) score / totalGamesPlayed;
@@ -143,7 +143,7 @@ public final class Score
      * @return a formatted string representing the score
      */
     @Override
-    public final String toString()
+    public String toString()
     {
         final DateTimeFormatter formatter;
         formatter = DateTimeFormatter.ofPattern(DATE_TIME_PATTERN);
@@ -167,7 +167,7 @@ public final class Score
      * @param filePath the path to the file where the score will be saved
      * @throws IOException if an error occurs while writing to the file
      */
-    public static final void appendScoreToFile(final Score score,
+    public static void appendScoreToFile(final Score score,
                                                final String filePath) throws IOException
     {
         final File scoreFile;
@@ -192,7 +192,7 @@ public final class Score
      * @return a list of Score objects read from the file
      * @throws IOException if an error occurs while reading the file
      */
-    public static final List<Score> readScoresFromFile(final String filePath) throws IOException
+    public static List<Score> readScoresFromFile(final String filePath) throws IOException
     {
         final List<Score> scoreList;
         scoreList = new ArrayList<>();
@@ -245,7 +245,7 @@ public final class Score
      * @param line the string representation of the score
      * @return a Score object parsed from the string, or a default Score if parsing fails
      */
-    public static final Score fromString(final String line)
+    public static Score fromString(final String line)
     {
         final String[] parts;
         parts = line.split(NEW_LINE);

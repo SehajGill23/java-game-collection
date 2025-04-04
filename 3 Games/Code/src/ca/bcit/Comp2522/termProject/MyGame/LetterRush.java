@@ -245,7 +245,7 @@ public final class LetterRush
         return button;
     }
 
-    /**
+    /*
      * Starts a new game by resetting the player, setting up the game scene,
      * and initiating the first level. Handles cursor setup and error conditions.
      */

@@ -15,33 +15,30 @@ import java.util.Objects;
  *
  * @author Sehaj Gill
  * @version 1.0
- *
  */
 public class GameUI
 {
 
-    private static final int UI_WIDTH    = 150;
-    private static final int UI_HEIGHT   = 100;
-    private static final int TEXT_X      = 10;
-    private static final int SCORE_Y     = 30;
-    private static final int LEVEL_Y     = 50;
-    private static final int TIMER_Y     = 70;
-    private static final int TARGET_Y    = 90;
-    private static final int UI_LAYOUT_X = 10;
-    private static final int UI_LAYOUT_Y = 10;
-
-    private static final String SCORE_PREFIX  = "Score: ";
-    private static final String LEVEL_PREFIX  = "Level: ";
-    private static final String TIME_PREFIX   = "Time: ";
-    private static final String TARGET_PREFIX = "Target: ";
-    private static final String UI_PANE_STYLE = "ui-pane";
-    private static final String UI_TEXT_STYLE = "ui-text";
-
-    private final Pane uiPane         = new Pane();
-    private final Text scoreText      = new Text(SCORE_PREFIX + "0");
-    private final Text levelText      = new Text(LEVEL_PREFIX + "1");
-    private final Text timerText      = new Text(TIME_PREFIX + "30.0");
-    private final Text targetWordText = new Text(TARGET_PREFIX);
+    private static final int    UI_WIDTH       = 150;
+    private static final int    UI_HEIGHT      = 100;
+    private static final int    TEXT_X         = 10;
+    private static final int    SCORE_Y        = 30;
+    private static final int    LEVEL_Y        = 50;
+    private static final int    TIMER_Y        = 70;
+    private static final int    TARGET_Y       = 90;
+    private static final int    UI_LAYOUT_X    = 10;
+    private static final int    UI_LAYOUT_Y    = 10;
+    private static final String SCORE_PREFIX   = "Score: ";
+    private static final String LEVEL_PREFIX   = "Level: ";
+    private static final String TIME_PREFIX    = "Time: ";
+    private static final String TARGET_PREFIX  = "Target: ";
+    private static final String UI_PANE_STYLE  = "ui-pane";
+    private static final String UI_TEXT_STYLE  = "ui-text";
+    private final        Pane   uiPane         = new Pane();
+    private final        Text   scoreText      = new Text(SCORE_PREFIX + "0");
+    private final        Text   levelText      = new Text(LEVEL_PREFIX + "1");
+    private final        Text   timerText      = new Text(TIME_PREFIX + "30.0");
+    private final        Text   targetWordText = new Text(TARGET_PREFIX);
 
     /**
      * Constructs a new GameUI and initializes the UI components.
@@ -137,10 +134,8 @@ public class GameUI
     public List<String> loadWords(final String path)
     {
         final List<String> words = new ArrayList<>();
-        try(BufferedReader reader = new BufferedReader(new InputStreamReader
-                                                               (Objects.requireNonNull
-                                                                               (getClass().getResourceAsStream
-                                                                                                  (path)))))
+        try(BufferedReader reader = new BufferedReader(
+                new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream(path)))))
         {
 
             String line;
