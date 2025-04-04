@@ -17,9 +17,9 @@ import java.util.List;
  */
 public class World
 {
-    HashMap<String, Country> countries;
-    public final  String       resourceDir;
-    public final  List<String> fileNames;
+    private       HashMap<String, Country> countries;
+    private final String                   resourceDir;
+    private final List<String> fileNames;
     private final Random       random = new Random();
 
 
@@ -43,7 +43,7 @@ public class World
      * country data in the format "Country:Capital" followed by facts.
      * Skips files that do not exist, are empty, or have an incorrect format.
      */
-    public void loadCountries()
+    void loadCountries()
     {
         String countryName;
         String countryCapital;

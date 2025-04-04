@@ -110,7 +110,7 @@ public final class LetterRush
      * Constructs a new `LetterRush` instance, initializing the game engine, player, UI,
      * and level manager. Sets up the game environment and handles initialization errors.
      */
-    public LetterRush()
+    private LetterRush()
     {
         this.engine       = new LetterEngine(WINDOW_WIDTH,
                                              WINDOW_HEIGHT - WINDOW_ADJUSTMENT);
@@ -420,7 +420,8 @@ public final class LetterRush
      * @param header the header text of the alert
      * @param content the content text of the alert
      */
-    public void showLossAlert(String header, String content)
+    void showLossAlert(String header,
+                       String content)
     {
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -439,7 +440,7 @@ public final class LetterRush
     /**
      * Displays a loss alert when the player hits an obstacle.
      */
-    public void showLossAlertObstacle()
+     void showLossAlertObstacle()
     {
         showLossAlert(GAME_OVER_HEADER, OBSTACLE_MESSAGE);
     }
@@ -447,7 +448,7 @@ public final class LetterRush
     /**
      * Displays a loss alert when time runs out.
      */
-    public void showLossAlertTime()
+    void showLossAlertTime()
     {
         showLossAlert(GAME_OVER_HEADER, TIME_UP_MESSAGE);
     }
@@ -458,7 +459,7 @@ public final class LetterRush
      * @param level the completed level number
      */
     //Interface Runnable, Concurrency
-    public void showWinAlert(int level)
+    void showWinAlert(int level)
     {
         Platform.runLater(() ->
                           {
@@ -509,7 +510,7 @@ public final class LetterRush
      *
      * @param level the current level number
      */
-    public void showBonusAlert(int level)
+    void showBonusAlert(int level)
     {
         Platform.runLater(() ->
                           {
@@ -546,7 +547,7 @@ public final class LetterRush
     /**
      * Displays a game completion alert when all levels are won.
      */
-    public void showGameWonAlert()
+    void showGameWonAlert()
     {
         Platform.runLater(() ->
                           {
