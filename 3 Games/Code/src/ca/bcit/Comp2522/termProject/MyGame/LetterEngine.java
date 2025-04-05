@@ -305,7 +305,9 @@ public class LetterEngine
 
         if(player.getCollectedTarget().size() > 0 && player.hasFailed(targetWord, bonusWord))
         {
-            System.out.println("Player failed: wrong letter order or too many clicks. Collected: " + player.getCollectedTarget() + ", Target: " + targetWord + ", Incorrect clicks: " + player.getIncorrectClicks());
+            System.out.println("Player failed: wrong letter order or too many clicks. Collected: " +
+                               player.getCollectedTarget() + ", Target: " + targetWord + ", " +
+                               "Incorrect clicks: " + player.getIncorrectClicks());
             isGameOver = true;
             timer.stop();
             if(game != null)

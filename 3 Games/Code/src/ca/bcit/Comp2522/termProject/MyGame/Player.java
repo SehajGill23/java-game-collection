@@ -166,10 +166,11 @@ public class Player
         final char c = letter.getValue();
         letter.lock();
 
+        //Needs to be fixed..., below this
         final StringBuilder collected;
         collected = new StringBuilder();
 
-        //Need to fix here,
+
         final boolean isCorrectTargetClick;
         isCorrectTargetClick = targetWord.startsWith(collected.toString());
 
@@ -319,7 +320,8 @@ public class Player
      * @param targetWord the target word to match
      * @return true if the player has failed, false otherwise
      */
-    public final boolean hasFailed(final String targetWord, final String bonusWord)
+    final boolean hasFailed(final String targetWord,
+                            final String bonusWord)
     {
         if (collectedTarget.size() > targetWord.length() || collectedBonus.size() > bonusWord.length())
         {
