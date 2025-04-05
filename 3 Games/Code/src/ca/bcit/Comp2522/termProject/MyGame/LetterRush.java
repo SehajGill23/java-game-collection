@@ -57,7 +57,6 @@ public final class LetterRush
     private static final String   GAME_BUTTON_STYLE       = "game-button";
     private static final String   ALERT_STYLE             = "alert";
     private static final String   BUTTON_START_TEXT       = "Start Letter Rush";
-    private static final String   BUTTON_RETURN_TEXT      = "Return to Main Menu";
     private static final String   BUTTON_RESTART_TEXT     = "Restart Current Level";
     private static final String   BUTTON_QUIT_TEXT        = "Return to Game Menu";
     private static final String   BUTTON_THEME_TEXT       = "Change Current theme";
@@ -191,7 +190,7 @@ public final class LetterRush
                                                  BUTTON_Y,
                                                  BUTTON_WIDTH,
                                                  BUTTON_HEIGHT,
-                                                 BUTTON_RETURN_TEXT,
+                                                 RETURN_BUTTON,
                                                  () ->
                                                  {
                                                      stage.close();
@@ -351,17 +350,33 @@ public final class LetterRush
      */
     private void resetGame()
     {
-        if(levelManager != null)
+//        if(levelManager != null)
+//        {
+//            engine.resetGame(player,
+//                             ui,
+//                             levelManager);
+//            startLevelWithGracePeriod();
+//        }
+//        else
+//        {
+//            System.err.println("Cannot reset game: levelManager is null");
+//        }
+
+
+        if (levelManager != null)
         {
-            engine.resetGame(player,
-                             ui,
-                             levelManager);
+            // Reset the player's score to the value at the start of the current level
+            player.setScore(scoreAtLevelStart);
+            player.setBonusPoints(0); // Reset bonus points for the level
+            player.resetForNewLevel(); // Clear collected letters and incorrect clicks
+            engine.resetGame(player, ui, levelManager);
             startLevelWithGracePeriod();
         }
         else
         {
             System.err.println("Cannot reset game: levelManager is null");
         }
+
     }
 
     /*
