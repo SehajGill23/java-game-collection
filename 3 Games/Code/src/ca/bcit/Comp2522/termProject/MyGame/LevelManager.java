@@ -3,20 +3,50 @@ package ca.bcit.Comp2522.termProject.MyGame;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Manages the levels in the LetterRush game, including level progression, timers,
+ * and obstacle configurations. The LevelManager loads words from a file, organizes
+ * them into levels, and provides access to the current level's configuration, such as
+ * word pairs, obstacle counts, timers, and speed multipliers. It also handles timer
+ * updates and level advancement.
+ *
+ * @author Sehaj Gill
+ * @version 1.0
+ */
 public class LevelManager
 {
-    private static final String   WORDS_FILE_PATH = "/words.txt";
-    private static final int[]    OBSTACLE_COUNTS = {9, 12, 15, 18, 21};
-    private static final double[] TIMERS          = {22.0, 20.0, 16.0, 14.0, 10.0};
-    private static final int[]    LEVEL_LINES     = {6, 7, 8, 9, 12};
-    private static final double   SPEED_FACTOR    = 1.5;
+
+    private static final String   WORDS_FILE_PATH        = "/words.txt";
+    private static final String   ERROR_NO_WORDS_LOADED  = "LevelManager: No words loaded from ";
+    private static final String   ERROR_INIT_FAILED      = "LevelManager initialization failed: ";
+    private static final String   SUCCESS_INIT_MESSAGE   = "LevelManager initialized with ";
+    private static final int      OBSTACLE_TYPE_COUNT    = 3;
+    private static final int[]    OBSTACLE_COUNTS        = {9, 12, 15, 18, 21};
+    private static final int[]    LEVEL_LINES            = {6, 7, 8, 9, 12};
+    private static final double   SPEED_FACTOR           = 1.5;
+    private static final double   NANOSECONDS_PER_SECOND = 1_000_000_000.0;
+    private static final double[] TIMERS                 = {22.0, 20.0, 16.0, 14.0, 10.0};
+    static final         String   OBSTACLE_TYPE_MISSILE  = "MISSILE";
+    static final         String   OBSTACLE_TYPE_BOMB     = "BOMB";
+    static final         String   OBSTACLE_TYPE_SPIKE    = "SPIKE";
+    private static final String[] OBSTACLE_TYPES         = {OBSTACLE_TYPE_MISSILE,
+                                                            OBSTACLE_TYPE_BOMB,
+                                                            OBSTACLE_TYPE_SPIKE};
 
     private final List<List<String>> levels       = new ArrayList<>();
     private       int                currentLevel = 0;
     private       long               startTime;
     private final GameUI             ui;
 
-    public LevelManager()
+
+    /**
+     * Constructs a new LevelManager, initializing the levels by loading words from
+     * the words file and organizing them into levels based on predefined configurations.
+     * Each level contains a subset of word pairs, and the number of word pairs per level
+     * is defined by LEVEL_LINES. Prints a success message with the number of levels
+     * initialized or an error message if initialization fails.
+     */
+    LevelManager()
     {
         this.ui = new GameUI();
         try
@@ -24,7 +54,7 @@ public class LevelManager
             final List<String> allWords = ui.loadWords(WORDS_FILE_PATH);
             if(allWords == null || allWords.isEmpty())
             {
-                System.err.println("LevelManager: No words loaded from " + WORDS_FILE_PATH);
+                System.err.println(ERROR_NO_WORDS_LOADED + WORDS_FILE_PATH);
             }
             int index = 0;
             for(final int lines : LEVEL_LINES)
@@ -34,15 +64,23 @@ public class LevelManager
                                                      allWords.size())));
                 index += lines;
             }
-            System.out.println("LevelManager initialized with " + levels.size() + " levels");
+            System.out.println(SUCCESS_INIT_MESSAGE + levels.size() + " levels");
         }
         catch(Exception e)
         {
-            System.err.println("LevelManager initialization failed: " + e.getMessage());
+            System.err.println(ERROR_INIT_FAILED + e.getMessage());
         }
     }
 
-    public Level getCurrentLevel()
+    /*
+     * Retrieves the current level's configuration, including word pairs, obstacle count,
+     * timer, and speed multiplier. Throws an IllegalStateException if there are no more
+     * levels available.
+     *
+     * @return the current Level object
+     * @throws IllegalStateException if no more levels are available
+     */
+    Level getCurrentLevel()
     {
         if(currentLevel >= levels.size())
         {
@@ -54,12 +92,21 @@ public class LevelManager
                          SPEED_FACTOR * (currentLevel + 1));
     }
 
-    public int getCurrentLevelNumber()
+    /*
+     * Gets the current level number (1-based index).
+     *
+     * @return the current level number (e.g., 1 for the first level)
+     */
+    int getCurrentLevelNumber()
     {
         return currentLevel + 1;
     }
 
-    public void advanceLevel()
+    /*
+     * Advances to the next level if there are more levels available.
+     * Does nothing if the current level is the last one.
+     */
+    void advanceLevel()
     {
         if(currentLevel < levels.size() - 1)
         {
@@ -67,28 +114,59 @@ public class LevelManager
         }
     }
 
-
-    public boolean updateTimer(final long now,
-                               final GameUI ui)
+    /*
+     * Updates the game timer based on the elapsed time since the level started.
+     * Updates the UI with the remaining time and returns whether the time has run out.
+     *
+     * @param now the current time in nanoseconds
+     * @param ui  the GameUI instance to update the timer display
+     * @return true if the time has run out (timeLeft <= 0), false otherwise
+     */
+    boolean updateTimer(final long now,
+                        final GameUI ui)
     {
-        final double timeLeft = TIMERS[currentLevel] - (now - startTime) / 1_000_000_000.0;
+        final double timeLeft = TIMERS[currentLevel] - (now - startTime) / NANOSECONDS_PER_SECOND;
         ui.updateTimer(Math.max(0,
                                 timeLeft));
         return timeLeft <= 0;
     }
 
-    public void startTimer()
+    /*
+     * Starts the level timer by recording the current time in nanoseconds.
+     */
+    void startTimer()
     {
         startTime = System.nanoTime();
     }
 
-    public static final class Level
+    /*
+     * Resets the level manager to the first level.
+     */
+    void resetLevel()
+    {
+        currentLevel = 0;
+    }
+
+    /*
+     * Represents a single level in the LetterRush game, containing word pairs,
+     * obstacle configurations, a timer, and a speed multiplier.
+     */
+    static final class Level
     {
         private final List<String> wordPairs;
         private final int          obstacleCount;
-        public final  double       timer;
-        public final  double       speedMultiplier;
+        final         double       timer;
+        final         double       speedMultiplier;
 
+        /*
+         * Constructs a new Level with the specified word pairs, obstacle count,
+         * timer, and speed multiplier.
+         *
+         * @param wordPairs       the list of word pairs for this level
+         * @param obstacleCount   the number of obstacles in this level
+         * @param timer           the time limit for this level in seconds
+         * @param speedMultiplier the speed multiplier for letters and obstacles
+         */
         private Level(final List<String> wordPairs,
                       final int obstacleCount,
                       final double timer,
@@ -100,29 +178,30 @@ public class LevelManager
             this.speedMultiplier = speedMultiplier;
         }
 
-        public List<String> getWordPairs()
+        /*
+         * Gets a copy of the word pairs for this level.
+         *
+         * @return a new ArrayList containing the word pairs
+         */
+        List<String> getWordPairs()
         {
             return new ArrayList<>(wordPairs);
         }
 
-        public List<ObstacleType> getObstacleConfig()
+        /*
+         * Generates the obstacle configuration for this level, cycling through
+         * the available obstacle types ("MISSILE", "BOMB", "SPIKE").
+         *
+         * @return a list of obstacle type strings representing the obstacles
+         */
+        List<String> getObstacleConfig()
         {
-            final List<ObstacleType> config = new ArrayList<>();
+            final List<String> config = new ArrayList<>();
             for(int i = 0; i < obstacleCount; i++)
             {
-                config.add(ObstacleType.values()[i % 3]);
+                config.add(OBSTACLE_TYPES[i % OBSTACLE_TYPE_COUNT]);
             }
             return config;
         }
-    }
-
-    public void resetLevel()
-    {
-        currentLevel = 0;
-    }
-
-    public enum ObstacleType
-    {
-        MISSILE, BOMB, SPIKE
     }
 }

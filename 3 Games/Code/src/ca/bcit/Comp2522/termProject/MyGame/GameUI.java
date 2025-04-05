@@ -79,7 +79,7 @@ public class GameUI
      *
      * @return the game UI pane
      */
-    public Pane getUIPane()
+    Pane getUIPane()
     {
         return uiPane;
     }

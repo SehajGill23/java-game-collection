@@ -74,7 +74,7 @@ public class Player
      * Resets the player's state for a new level, clearing collected letters
      * and incorrect clicks, but preserving cumulative scores.
      */
-    final void resetForNewLevel()
+    public final void resetForNewLevel()
     {
         collectedTarget.clear();
         collectedBonus.clear();
@@ -88,7 +88,7 @@ public class Player
      *
      * @return a list of characters collected for the target word
      */
-    final List<Character> getCollectedTarget()
+    public final List<Character> getCollectedTarget()
     {
         final List<Character> copy;
         copy = new ArrayList<>(collectedTarget);
@@ -131,7 +131,7 @@ public class Player
      *
      * @param bonusPoints the bonus points to set
      */
-    final void setBonusPoints(final int bonusPoints)
+    public final void setBonusPoints(final int bonusPoints)
     {
         this.bonusPoints = bonusPoints;
         updateHighScore();
@@ -227,7 +227,7 @@ public class Player
      * @param targetWord the target word to match
      * @return true if the target word is completed, false otherwise
      */
-    final boolean hasCompletedTargetWord(final String targetWord)
+    public final boolean hasCompletedTargetWord(final String targetWord)
     {
         return hasCompletedWord(collectedTarget, targetWord);
     }
@@ -238,7 +238,7 @@ public class Player
      * @param bonusWord the bonus word to match
      * @return true if the bonus word is completed, false otherwise
      */
-    final boolean hasCompletedBonusWord(final String bonusWord)
+    public final boolean hasCompletedBonusWord(final String bonusWord)
     {
         return hasCompletedWord(collectedBonus, bonusWord);
     }
@@ -302,7 +302,7 @@ public class Player
     /**
      * Updates the high score if the current score is higher.
      */
-    private void updateHighScore()
+    public void updateHighScore()
     {
         if (score > highScore)
         {
@@ -318,8 +318,8 @@ public class Player
      * @param targetWord the target word to match
      * @return true if the player has failed, false otherwise
      */
-    final boolean hasFailed(final String targetWord,
-                            final String bonusWord)
+    public final boolean hasFailed(final String targetWord,
+                                   final String bonusWord)
     {
         if (collectedTarget.size() > targetWord.length() || collectedBonus.size() > bonusWord.length())
         {
@@ -357,7 +357,7 @@ public class Player
      *
      * @return the number of incorrect clicks
      */
-    final int getIncorrectClicks()
+    public final int getIncorrectClicks()
     {
         return incorrectClicks;
     }
@@ -367,7 +367,7 @@ public class Player
      *
      * @return the high score
      */
-    final int getHighScore()
+    public final int getHighScore()
     {
         return highScore;
     }

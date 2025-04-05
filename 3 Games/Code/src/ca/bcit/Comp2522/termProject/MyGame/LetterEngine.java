@@ -5,7 +5,6 @@ import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 public class LetterEngine
@@ -13,18 +12,21 @@ public class LetterEngine
     private static final long   FRAME_DURATION_NS = 16_666_666;
     private static final double MIN_DISTANCE      = 40.0;
 
-    private final Pane           gamePane   = new Pane();
-    private final List<Letter>   letters    = new ArrayList<>();
-    private final List<Obstacle> obstacles  = new ArrayList<>();
-    private final int            windowWidth;
-    private final int            windowHeight;
-    private       AnimationTimer timer;
-    private       String         targetWord;
-    private       String         bonusWord;
-    private       Player         player;
-    private       LevelManager   levelManager;
-    private       boolean        bonusFound = false;
-    private       LetterRush     game;
+    private final        Pane           gamePane              = new Pane();
+    private final        List<Letter>   letters               = new ArrayList<>();
+    private final        List<Obstacle> obstacles             = new ArrayList<>();
+    private final        int            windowWidth;
+    private final        int            windowHeight;
+    private              AnimationTimer timer;
+    private              String         targetWord;
+    private              String         bonusWord;
+    private              Player         player;
+    private              LevelManager   levelManager;
+    private              boolean        bonusFound            = false;
+    private              LetterRush     game;
+    private static final String         OBSTACLE_TYPE_MISSILE = LevelManager.OBSTACLE_TYPE_MISSILE;
+    private static final String         OBSTACLE_TYPE_BOMB    = LevelManager.OBSTACLE_TYPE_BOMB;
+    private static final String         OBSTACLE_TYPE_SPIKE   = LevelManager.OBSTACLE_TYPE_SPIKE;
 
 
     public boolean isGameOver = false;
@@ -133,45 +135,71 @@ public class LetterEngine
         }
     }
 
+
     private void spawnObstacles(final LevelManager.Level level)
     {
         obstacles.clear();
-        final List<Obstacle> newObstacles = level.getObstacleConfig().stream().map(type ->
-                                                                                   {
-                                                                                       double  x, y;
-                                                                                       boolean tooClose;
-                                                                                       do
-                                                                                       {
-                                                                                           tooClose = false;
-                                                                                           x        = Math.random() * windowWidth;
-                                                                                           y        = Math.random() * windowHeight;
-                                                                                           for(Letter letter : letters)
-                                                                                           {
-                                                                                               double dx = letter.getNode().getX() - x;
-                                                                                               double dy = letter.getNode().getY() - y;
-                                                                                               if(Math.sqrt(dx * dx + dy * dy) < MIN_DISTANCE)
-                                                                                               {
-                                                                                                   tooClose = true;
-                                                                                                   break;
-                                                                                               }
-                                                                                           }
-                                                                                       }
-                                                                                       while(tooClose);
+        final List<String>   obstacleTypes = level.getObstacleConfig();
+        final List<Obstacle> newObstacles  = new ArrayList<>();
 
-                                                                                       Obstacle obstacle = switch(type)
-                                                                                       {
-                                                                                           case MISSILE -> new Missile(x,
-                                                                                                                       y);
-                                                                                           case BOMB -> new Bomb(x,
-                                                                                                                 y);
-                                                                                           case SPIKE -> new Cactus(x,
-                                                                                                                    y);
-                                                                                       };
-                                                                                       obstacle.getNode().getStyleClass().add("obstacle");
-                                                                                       return obstacle;
-                                                                                   }).collect(Collectors.toList());
+        for(String type : obstacleTypes)
+        {
+            double  x;
+            double  y;
+            boolean tooClose;
+            do
+            {
+                tooClose = false;
+                x        = Math.random() * windowWidth;
+                y        = Math.random() * windowHeight;
+                for(final Letter letter : letters)
+                {
+                    double dx = letter.getNode().getX() - x;
+                    double dy = letter.getNode().getY() - y;
+                    if(Math.sqrt(dx * dx + dy * dy) < MIN_DISTANCE)
+                    {
+                        tooClose = true;
+                        break;
+                    }
+                }
+            }
+            while(tooClose);
+
+            Obstacle obstacle = createObstacle(type,
+                                               x,
+                                               y);
+            obstacle.getNode().getStyleClass().add("obstacle");
+            newObstacles.add(obstacle);
+        }
+
         obstacles.addAll(newObstacles);
         gamePane.getChildren().addAll(newObstacles.stream().map(Obstacle::getNode).toList());
+    }
+
+    /**
+     * Creates an obstacle based on the specified type and position.
+     *
+     * @param type the type of obstacle ("MISSILE", "BOMB", or "SPIKE")
+     * @param x    the x-coordinate of the obstacle
+     * @param y    the y-coordinate of the obstacle
+     * @return the created Obstacle instance
+     * @throws IllegalArgumentException if the obstacle type is unknown
+     */
+    private Obstacle createObstacle(final String type,
+                                    final double x,
+                                    final double y)
+    {
+        return switch(type)
+        {
+            case OBSTACLE_TYPE_MISSILE -> new Missile(x,
+                                                      y);
+            case OBSTACLE_TYPE_BOMB -> new Bomb(x,
+                                                y);
+            case OBSTACLE_TYPE_SPIKE -> new Cactus(x,
+                                                   y);
+            default -> throw new IllegalArgumentException("Unknown obstacle type: " + type);
+        };
+
     }
 
     private void startTimer(final GameUI ui)
@@ -303,11 +331,10 @@ public class LetterEngine
             return;
         }
 
-        if(player.getCollectedTarget().size() > 0 && player.hasFailed(targetWord, bonusWord))
+        if(!player.getCollectedTarget().isEmpty() && player.hasFailed(targetWord,
+                                                                      bonusWord))
         {
-            System.out.println("Player failed: wrong letter order or too many clicks. Collected: " +
-                               player.getCollectedTarget() + ", Target: " + targetWord + ", " +
-                               "Incorrect clicks: " + player.getIncorrectClicks());
+            System.out.println("Player failed: wrong letter order or too many clicks. Collected: " + player.getCollectedTarget() + ", Target: " + targetWord + ", " + "Incorrect clicks: " + player.getIncorrectClicks());
             isGameOver = true;
             timer.stop();
             if(game != null)
@@ -348,9 +375,9 @@ public class LetterEngine
         }
     }
 
-    public void resetGame(final Player player,
-                          final GameUI ui,
-                          final LevelManager levelManager)
+    void resetGame(final Player player,
+                   final GameUI ui,
+                   final LevelManager levelManager)
     {
         this.player       = player;
         this.levelManager = levelManager;

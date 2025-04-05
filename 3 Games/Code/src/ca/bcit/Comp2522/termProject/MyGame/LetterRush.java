@@ -19,7 +19,7 @@ import javafx.stage.Stage;
  * @author Sehaj Gill
  * @version 1.0
  */
-public final class LetterRush
+public class LetterRush
 {
     private              boolean  isRunning               = false;
     private static final int      WINDOW_WIDTH            = 1000;
@@ -77,7 +77,7 @@ public final class LetterRush
                                                             - Click letters to form the target word (white).
                                                             - Complete the target word before time runs out.
                                                             - There’s a hidden bonus word—find it for extra points!
-                                                            - Avoid obstacles (missile, bomb, spike) that move randomly.
+                                                            - Avoid obstacles (missile, bomb, cactus) that move randomly.
                                                             - Use buttons below the game to restart, quit, or change theme.
                                                             - Failure resets the level to 1 and score to 0,""" +
                                                             " regardless of current level";
@@ -87,29 +87,29 @@ public final class LetterRush
                                                              "/background4.png"};
 
 
-    private static       LetterRush instance;
-    private final        LetterEngine engine;
-    private final        Player player;
-    private final        GameUI ui;
-    private final        LevelManager levelManager;
-    private              Pane root;
-    private              Stage stage;
-    private              Scene menuScene;
-    private              Scene gameScene;
-    private              Text scoreText;
-    private              Text bonusScoreText;
-    private              Text highScoreText;
-    private              int currentThemeIndex = 0;
-    private              int scoreAtLevelStart;
-    private              boolean isGracePeriodActive;
-    private              long gracePeriodStartTime;
+    private static LetterRush   instance;
+    private final  LetterEngine engine;
+    private final  Player       player;
+    private final  GameUI       ui;
+    private final  LevelManager levelManager;
+    private        Pane         root;
+    private        Stage        stage;
+    private        Scene        menuScene;
+    private        Scene        gameScene;
+    private        Text         scoreText;
+    private        Text         bonusScoreText;
+    private        Text         highScoreText;
+    private        int          currentThemeIndex = 0;
+    public         int          scoreAtLevelStart;
+    private        boolean      isGracePeriodActive;
+    private        long         gracePeriodStartTime;
 
 
     /**
      * Constructs a new `LetterRush` instance, initializing the game engine, player, UI,
      * and level manager. Sets up the game environment and handles initialization errors.
      */
-    private LetterRush()
+    public LetterRush()
     {
         this.engine       = new LetterEngine(WINDOW_WIDTH,
                                              WINDOW_HEIGHT - WINDOW_ADJUSTMENT);
@@ -350,25 +350,12 @@ public final class LetterRush
      */
     private void resetGame()
     {
-//        if(levelManager != null)
-//        {
-//            engine.resetGame(player,
-//                             ui,
-//                             levelManager);
-//            startLevelWithGracePeriod();
-//        }
-//        else
-//        {
-//            System.err.println("Cannot reset game: levelManager is null");
-//        }
-
 
         if (levelManager != null)
         {
-            // Reset the player's score to the value at the start of the current level
             player.setScore(scoreAtLevelStart);
-            player.setBonusPoints(0); // Reset bonus points for the level
-            player.resetForNewLevel(); // Clear collected letters and incorrect clicks
+            player.setBonusPoints(0);
+            player.resetForNewLevel();
             engine.resetGame(player, ui, levelManager);
             startLevelWithGracePeriod();
         }
@@ -382,7 +369,7 @@ public final class LetterRush
     /*
      * Starts a level with a grace period during which obstacle collisions are ignored.
      */
-    private final void startLevelWithGracePeriod()
+    private void startLevelWithGracePeriod()
     {
         // Start the grace period
         isGracePeriodActive = true;
@@ -398,7 +385,7 @@ public final class LetterRush
      *
      * @return true if the grace period is active, false otherwise
      */
-    public final boolean isGracePeriodActive()
+    public boolean isGracePeriodActive()
     {
         if (!isGracePeriodActive)
         {

@@ -58,10 +58,10 @@ public class LetterRushScore
      * @param bonusScore   the bonus score at the time of the high score
      * @param timestamp    the timestamp when the high score was achieved
      */
-    public LetterRushScore(final int highScore,
-                           final int currentScore,
-                           final int bonusScore,
-                           final LocalDateTime timestamp)
+    private LetterRushScore(final int highScore,
+                            final int currentScore,
+                            final int bonusScore,
+                            final LocalDateTime timestamp)
     {
         this.highScore    = highScore;
         this.currentScore = currentScore;
@@ -69,7 +69,7 @@ public class LetterRushScore
         this.timestamp    = timestamp;
     }
 
-    /**
+    /*
      * Constructs a new LetterRushScore instance with the specified high score, current score,
      * and bonus score, using the current timestamp.
      *
@@ -77,9 +77,9 @@ public class LetterRushScore
      * @param currentScore the current score at the time of the high score
      * @param bonusScore   the bonus score at the time of the high score
      */
-    public LetterRushScore(final int highScore,
-                           final int currentScore,
-                           final int bonusScore)
+    LetterRushScore(final int highScore,
+                    final int currentScore,
+                    final int bonusScore)
     {
         this(highScore,
              currentScore,
@@ -102,7 +102,7 @@ public class LetterRushScore
      *
      * @return the timestamp
      */
-    public final LocalDateTime getTimestamp()
+    final LocalDateTime getTimestamp()
     {
         return timestamp;
     }
@@ -135,7 +135,7 @@ public class LetterRushScore
      * @param filePath the path to the file where the score will be saved
      * @throws IOException if an error occurs while writing to the file
      */
-    static final void appendScoreToFile(final LetterRushScore score,
+     static void appendScoreToFile(final LetterRushScore score,
                                         final String filePath) throws IOException
     {
         final File scoreFile;
@@ -160,7 +160,7 @@ public class LetterRushScore
      * @return a list of LetterRushScore objects read from the file
      * @throws IOException if an error occurs while reading the file
      */
-    static List<LetterRushScore> readScoresFromFile(final String filePath) throws IOException
+    public static List<LetterRushScore> readScoresFromFile(final String filePath) throws IOException
     {
         final List<LetterRushScore> scoreList;
         scoreList = new ArrayList<>();
@@ -213,7 +213,7 @@ public class LetterRushScore
      * @param entry the string representation of the score entry
      * @return a LetterRushScore object parsed from the string, or a default LetterRushScore if parsing fails
      */
-    public static final LetterRushScore fromString(final String entry)
+    private static LetterRushScore fromString(final String entry)
     {
         final String[] parts;
         parts = entry.split(NEW_LINE);

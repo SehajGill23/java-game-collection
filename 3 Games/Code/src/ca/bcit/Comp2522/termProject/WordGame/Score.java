@@ -124,13 +124,13 @@ public final class Score
         return score;
     }
 
-    /**
+    /*
      * Calculates and returns the average score per game.
      * If no games have been played, returns 0.
      *
      * @return the average score per game
      */
-    public double getAverageScore()
+    double getAverageScore()
     {
         return totalGamesPlayed == DEFAULT_ATTEMPT_VALUE ?
                DEFAULT_ATTEMPT_VALUE : (double) score / totalGamesPlayed;
@@ -245,7 +245,7 @@ public final class Score
      * @param line the string representation of the score
      * @return a Score object parsed from the string, or a default Score if parsing fails
      */
-    public static Score fromString(final String line)
+    private static Score fromString(final String line)
     {
         final String[] parts;
         parts = line.split(NEW_LINE);
