@@ -135,8 +135,8 @@ public class LetterRushScore
      * @param filePath the path to the file where the score will be saved
      * @throws IOException if an error occurs while writing to the file
      */
-    public static final void appendScoreToFile(final LetterRushScore score,
-                                               final String filePath) throws IOException
+    static final void appendScoreToFile(final LetterRushScore score,
+                                        final String filePath) throws IOException
     {
         final File scoreFile;
         scoreFile = new File(filePath);
@@ -160,7 +160,7 @@ public class LetterRushScore
      * @return a list of LetterRushScore objects read from the file
      * @throws IOException if an error occurs while reading the file
      */
-    public static List<LetterRushScore> readScoresFromFile(final String filePath) throws IOException
+    static List<LetterRushScore> readScoresFromFile(final String filePath) throws IOException
     {
         final List<LetterRushScore> scoreList;
         scoreList = new ArrayList<>();

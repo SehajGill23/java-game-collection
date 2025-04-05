@@ -180,7 +180,6 @@ public class LetterEngine
         if(timer != null)
         {
             timer.stop();
-            System.out.println("Previous AnimationTimer stopped in startTimer: " + timer);
         }
 
         timer = new AnimationTimer()
@@ -304,7 +303,7 @@ public class LetterEngine
             return;
         }
 
-        if(player.getCollectedTarget().size() > 0 && player.hasFailed(targetWord))
+        if(player.getCollectedTarget().size() > 0 && player.hasFailed(targetWord, bonusWord))
         {
             System.out.println("Player failed: wrong letter order or too many clicks. Collected: " + player.getCollectedTarget() + ", Target: " + targetWord + ", Incorrect clicks: " + player.getIncorrectClicks());
             isGameOver = true;
@@ -340,7 +339,6 @@ public class LetterEngine
             ui.updateScore(player.getScore());
             letter.getNode().getStyleClass().removeAll("letter-regular");
             letter.getNode().getStyleClass().add("letter-locked");
-            System.out.println("Clicked letter: " + letter.getValue());
         }
         else
         {

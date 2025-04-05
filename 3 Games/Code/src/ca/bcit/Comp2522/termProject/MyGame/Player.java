@@ -10,29 +10,27 @@ import java.util.List;
  * It manages the player's score, high score, cursor position, collected letters,
  * bonus points, and incorrect clicks, and handles high score persistence.
  *
+ * @author Sehaj Gill
  * @version 1.0
  */
 public class Player
 {
+    private static final int    INITIAL_CLICKS          = 0;
     private static final int    INITIAL_SCORE_VALUE     = 0;
     private static final int    TARGET_POINTS           = 10;
-    private static final int    BONUS_POINTS            = 30;
-    private static final int    MAX_INCORRECT_CLICKS    = 1;
+    private static final int    BONUS_POINTS            = 20;
     private static final double CURSOR_SIZE             = 10.0;
     private static final String HIGH_SCORE_FILE_PATH    = "Resources/highScore.txt";
     private static final String ERROR_LOADING_MESSAGE   = "Error loading high score: ";
     private static final String ERROR_SAVING_MESSAGE    = "Error saving high score: ";
     private static final String CLICKED_LETTER_MESSAGE  = "Clicked letter: ";
-    private static final String TARGET_SO_FAR_MESSAGE   = " | Target so far: ";
-    private static final String BONUS_SO_FAR_MESSAGE    = " | Bonus so far: ";
+    private static final String TARGET_SO_FAR_MESSAGE   = " | Collected Target so far: ";
+    private static final String BONUS_SO_FAR_MESSAGE    = " | Collected Bonus so far: ";
     private static final String HAS_FAILED_MESSAGE      = "hasFailed: ";
     private static final String TOO_MANY_LETTERS_MSG    = "Too many letters clicked: ";
     private static final String GREATER_THAN_MESSAGE    = " > ";
     private static final String TARGET_COMPLETED_MSG    = "Target word completed, returning false.";
     private static final String TOO_MANY_CLICKS_MSG     = "Too many incorrect clicks: ";
-    private static final String COLLECTED_MESSAGE       = "Collected: ";
-    private static final String TARGET_MESSAGE          = ", Target: ";
-    private static final String STARTS_WITH_MESSAGE     = ", Starts with: ";
 
     private int                 score;
     private int                 highScore;
@@ -54,7 +52,7 @@ public class Player
         collectedTarget = new ArrayList<>();
         collectedBonus  = new ArrayList<>();
         bonusPoints     = INITIAL_SCORE_VALUE;
-        incorrectClicks = INITIAL_SCORE_VALUE;
+        incorrectClicks = INITIAL_CLICKS;
     }
 
     /**
@@ -74,7 +72,7 @@ public class Player
      * Resets the player's state for a new level, clearing collected letters
      * and incorrect clicks, but preserving cumulative scores.
      */
-    public final void resetForNewLevel()
+    final void resetForNewLevel()
     {
         collectedTarget.clear();
         collectedBonus.clear();
@@ -87,7 +85,7 @@ public class Player
      *
      * @return a list of characters collected for the target word
      */
-    public final List<Character> getCollectedTarget()
+    final List<Character> getCollectedTarget()
     {
         final List<Character> copy;
         copy = new ArrayList<>(collectedTarget);
@@ -100,7 +98,7 @@ public class Player
      *
      * @return the cursor's x-coordinate
      */
-    public final double getCursorX()
+    final double getCursorX()
     {
         return cursorX;
     }
@@ -110,7 +108,7 @@ public class Player
      *
      * @return the cursor's y-coordinate
      */
-    public final double getCursorY()
+    final double getCursorY()
     {
         return cursorY;
     }
@@ -120,7 +118,7 @@ public class Player
      *
      * @return the cursor size
      */
-    public final double getCursorSize()
+    final double getCursorSize()
     {
         return CURSOR_SIZE;
     }
@@ -130,9 +128,10 @@ public class Player
      *
      * @param bonusPoints the bonus points to set
      */
-    public final void setBonusPoints(final int bonusPoints)
+    final void setBonusPoints(final int bonusPoints)
     {
         this.bonusPoints = bonusPoints;
+        updateHighScore();
     }
 
     /**
@@ -154,6 +153,7 @@ public class Player
      * @param targetWord the target word to match
      * @param bonusWord  the bonus word to match
      */
+
     public final void clickLetter(final Letter letter,
                                   final String targetWord,
                                   final String bonusWord)
@@ -163,40 +163,33 @@ public class Player
             return;
         }
 
-        final char c;
-        c = letter.getValue();
-
+        final char c = letter.getValue();
         letter.lock();
 
-        if (targetWord.contains(String.valueOf(c)))
+        final StringBuilder collected;
+        collected = new StringBuilder();
+
+        //Need to fix here,
+        final boolean isCorrectTargetClick;
+        isCorrectTargetClick = targetWord.startsWith(collected.toString());
+
+        final boolean isCorrectBonusClick;
+        isCorrectBonusClick = targetWord.startsWith(collected.toString());
+
+        if (isCorrectTargetClick && targetWord.contains(String.valueOf(c)))
         {
-            final StringBuilder collected;
-            collected = new StringBuilder();
-
-            for (final char ch : collectedTarget)
-            {
-                collected.append(ch);
-            }
-
-            collected.append(c);
-
-            final boolean isCorrectClick;
-            isCorrectClick = targetWord.startsWith(collected.toString());
-
-            if (isCorrectClick)
-            {
-                collectedTarget.add(c);
-                addTargetPoints();
-            }
-            else
-            {
-                incorrectClicks++;
-            }
+            collectedTarget.add(c);
+            addTargetPoints();
         }
 
-        if (bonusWord.contains(String.valueOf(c)))
+        if (isCorrectBonusClick && bonusWord.contains(String.valueOf(c)))
         {
             collectedBonus.add(c);
+            addBonusPoints();
+        }
+        else
+        {
+            incorrectClicks++;
         }
 
         System.out.println(CLICKED_LETTER_MESSAGE + c +
@@ -204,53 +197,53 @@ public class Player
                            BONUS_SO_FAR_MESSAGE + collectedBonus);
     }
 
+
     /**
-     * Checks if the player has completed the target word.
+     * Checks whether the collected characters match the given word exactly.
+     *
+     * @param collected the list of collected characters
+     * @param word the word to compare against
+     * @return true if the collected characters form the word exactly, false otherwise
+     */
+    private boolean hasCompletedWord(final List<Character> collected, final String word)
+    {
+        if (collected.size() != word.length())
+        {
+            return false;
+        }
+
+        final StringBuilder builder = new StringBuilder();
+        for (final char c : collected)
+        {
+            builder.append(c);
+        }
+
+        return builder.toString().equals(word);
+    }
+
+
+    /**
+     * Checks if the player has completed the target word by matching the collected characters.
      *
      * @param targetWord the target word to match
      * @return true if the target word is completed, false otherwise
      */
-    public final boolean hasCompletedTargetWord(final String targetWord)
+    final boolean hasCompletedTargetWord(final String targetWord)
     {
-        if (collectedTarget.size() != targetWord.length())
-        {
-            return false;
-        }
-
-        final StringBuilder collected;
-        collected = new StringBuilder();
-
-        for (final char c : collectedTarget)
-        {
-            collected.append(c);
-        }
-
-        return collected.toString().equals(targetWord);
+        return hasCompletedWord(collectedTarget, targetWord);
     }
 
     /**
-     * Checks if the player has completed the bonus word.
+     * Checks if the player has completed the bonus word by matching the collected characters.
      *
      * @param bonusWord the bonus word to match
      * @return true if the bonus word is completed, false otherwise
      */
-    public final boolean hasCompletedBonusWord(final String bonusWord)
+    final boolean hasCompletedBonusWord(final String bonusWord)
     {
-        if (collectedBonus.size() != bonusWord.length())
-        {
-            return false;
-        }
-
-        final StringBuilder collected;
-        collected = new StringBuilder();
-
-        for (final char c : collectedBonus)
-        {
-            collected.append(c);
-        }
-
-        return collected.toString().equals(bonusWord);
+        return hasCompletedWord(collectedBonus, bonusWord);
     }
+
 
     /**
      * Loads the high score from a file.
@@ -326,9 +319,9 @@ public class Player
      * @param targetWord the target word to match
      * @return true if the player has failed, false otherwise
      */
-    public final boolean hasFailed(final String targetWord)
+    public final boolean hasFailed(final String targetWord, final String bonusWord)
     {
-        if (collectedTarget.size() > targetWord.length())
+        if (collectedTarget.size() > targetWord.length() || collectedBonus.size() > bonusWord.length())
         {
             System.out.println(HAS_FAILED_MESSAGE + TOO_MANY_LETTERS_MSG +
                                collectedTarget.size() + GREATER_THAN_MESSAGE +
@@ -336,13 +329,13 @@ public class Player
             return true;
         }
 
-        if (hasCompletedTargetWord(targetWord))
+        if (hasCompletedTargetWord(targetWord) || hasCompletedBonusWord(bonusWord))
         {
             System.out.println(HAS_FAILED_MESSAGE + TARGET_COMPLETED_MSG);
             return false;
         }
 
-        if (incorrectClicks > MAX_INCORRECT_CLICKS)
+        if (incorrectClicks >= targetWord.length() || incorrectClicks >= bonusWord.length())
         {
             System.out.println(HAS_FAILED_MESSAGE + TOO_MANY_CLICKS_MSG +
                                incorrectClicks);
@@ -356,15 +349,7 @@ public class Player
         {
             collected.append(c);
         }
-
-        final boolean startsWith;
-        startsWith = targetWord.startsWith(collected.toString());
-
-        System.out.println(HAS_FAILED_MESSAGE + COLLECTED_MESSAGE +
-                           collected.toString() + TARGET_MESSAGE +
-                           targetWord + STARTS_WITH_MESSAGE + startsWith);
-
-        return !startsWith;
+        return false;
     }
 
     /**
@@ -372,7 +357,7 @@ public class Player
      *
      * @return the number of incorrect clicks
      */
-    public final int getIncorrectClicks()
+    final int getIncorrectClicks()
     {
         return incorrectClicks;
     }
@@ -382,7 +367,7 @@ public class Player
      *
      * @return the high score
      */
-    public final int getHighScore()
+    final int getHighScore()
     {
         return highScore;
     }
@@ -402,7 +387,7 @@ public class Player
      *
      * @return the bonus points
      */
-    public final int getBonusPoints()
+    final int getBonusPoints()
     {
         return bonusPoints;
     }
@@ -410,26 +395,28 @@ public class Player
     /**
      * Adds points for collecting a target letter.
      */
-    public final void addTargetPoints()
+    private void addTargetPoints()
     {
         score += TARGET_POINTS;
+        System.out.println("Target Points: " + score);
         updateHighScore();
     }
 
     /**
      * Adds points for completing a bonus word.
      */
-    public final void addBonusPoints()
+    final void addBonusPoints()
     {
         score += BONUS_POINTS;
         bonusPoints += BONUS_POINTS;
+        System.out.println("Bonus Points: " + score);
         updateHighScore();
     }
 
     /**
      * Resets the player's state, clearing all scores and collected letters.
      */
-    public final void reset()
+    final void reset()
     {
         collectedTarget.clear();
         collectedBonus.clear();
