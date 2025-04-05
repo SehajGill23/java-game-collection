@@ -40,6 +40,7 @@ public class Player
     private List<Character>     collectedBonus;
     private int                 bonusPoints;
     private int                 incorrectClicks;
+    private boolean bonusWordCompleted;
 
     /**
      * Constructs a new Player instance, initializing scores, collected letters,
@@ -53,6 +54,7 @@ public class Player
         collectedBonus  = new ArrayList<>();
         bonusPoints     = INITIAL_SCORE_VALUE;
         incorrectClicks = INITIAL_CLICKS;
+        bonusWordCompleted = false;
     }
 
     /**
@@ -77,6 +79,7 @@ public class Player
         collectedTarget.clear();
         collectedBonus.clear();
         incorrectClicks = INITIAL_SCORE_VALUE;
+        bonusWordCompleted = false;
         // Note: score and bonusPoints are NOT reset here to maintain cumulative scoring
     }
 
@@ -153,7 +156,6 @@ public class Player
      * @param targetWord the target word to match
      * @param bonusWord  the bonus word to match
      */
-
     public final void clickLetter(final Letter letter,
                                   final String targetWord,
                                   final String bonusWord)
@@ -163,39 +165,35 @@ public class Player
             return;
         }
 
-        final char c = letter.getValue();
+        final char c;
+        c = letter.getValue();
+
         letter.lock();
 
-        //Needs to be fixed..., below this
-        final StringBuilder collected;
-        collected = new StringBuilder();
-
-
-        final boolean isCorrectTargetClick;
-        isCorrectTargetClick = targetWord.startsWith(collected.toString());
-
-        final boolean isCorrectBonusClick;
-        isCorrectBonusClick = targetWord.startsWith(collected.toString());
-
-        if (isCorrectTargetClick && targetWord.contains(String.valueOf(c)))
+        if (targetWord.contains(String.valueOf(c)))
         {
             collectedTarget.add(c);
             addTargetPoints();
-        }
-
-        if (isCorrectBonusClick && bonusWord.contains(String.valueOf(c)))
-        {
-            collectedBonus.add(c);
-            addBonusPoints();
         }
         else
         {
             incorrectClicks++;
         }
 
+        if (bonusWord.contains(String.valueOf(c)))
+        {
+            collectedBonus.add(c);
+        }
+
         System.out.println(CLICKED_LETTER_MESSAGE + c +
                            TARGET_SO_FAR_MESSAGE + collectedTarget +
                            BONUS_SO_FAR_MESSAGE + collectedBonus);
+
+        if (hasCompletedBonusWord(bonusWord))
+        {
+            System.out.println("Bonus word completed!");
+            addBonusPoints();
+        }
     }
 
 
@@ -409,10 +407,15 @@ public class Player
      */
     final void addBonusPoints()
     {
-        score += BONUS_POINTS;
-        bonusPoints += BONUS_POINTS;
-        System.out.println("Bonus Points: " + score);
-        updateHighScore();
+        if (!bonusWordCompleted)
+        {
+            score += BONUS_POINTS;
+            bonusPoints += BONUS_POINTS;
+            bonusWordCompleted = true;
+            System.out.println("Bonus Points: " + score);
+            updateHighScore();
+        }
+
     }
 
     /**
@@ -425,5 +428,6 @@ public class Player
         score           = INITIAL_SCORE_VALUE;
         bonusPoints     = INITIAL_SCORE_VALUE;
         incorrectClicks = INITIAL_SCORE_VALUE;
+        bonusWordCompleted = false;
     }
 }
