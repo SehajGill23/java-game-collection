@@ -1,15 +1,41 @@
 package ca.bcit.Comp2522.termProject.MyGame;
 
+/**
+ * The Bomb class represents a bomb obstacle in the LetterRush game.
+ * It extends the Obstacle class, defining a specific image, damage, speed multiplier,
+ * and collision behavior for the bomb.
+ *
+ * @author Sehaj Gill
+ * @version 1.0
+ */
+class Bomb extends Obstacle
+{
+    private static final String IMAGE_PATH       = "/bomb.png";
+    private static final double SPEED_MULTIPLIER = 1.0; // Same as original
 
-public class Bomb extends Obstacle
-{ // Lesson 2: Inheritance
-    private static final String IMAGE_PATH   = "/bomb.png";
-
-    public Bomb(final double x,
-                final double y)
+    /**
+     * Constructs a new Bomb instance at the specified position.
+     *
+     * @param x the initial x-coordinate of the bomb
+     * @param y the initial y-coordinate of the bomb
+     */
+    Bomb(final double x,
+         final double y)
     {
         super(IMAGE_PATH,
               x,
               y);
     }
+
+    /**
+     * Returns the speed multiplier for the bomb, affecting its movement speed.
+     *
+     * @return the speed multiplier (1.0, same as original)
+     */
+    @Override
+    public double getSpeedMultiplier()
+    {
+        return SPEED_MULTIPLIER;
+    }
+
 }

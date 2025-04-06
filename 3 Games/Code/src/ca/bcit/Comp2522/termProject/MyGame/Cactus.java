@@ -1,14 +1,41 @@
 package ca.bcit.Comp2522.termProject.MyGame;
 
-public class Cactus extends Obstacle
+/**
+ * The Cactus class represents a cactus obstacle in the LetterRush game.
+ * It extends the Obstacle class, defining a specific image, damage, speed multiplier,
+ * and collision behavior for the cactus.
+ *
+ * @author Sehaj Gill
+ * @version 1.0
+ */
+class Cactus extends Obstacle
 {
-    private static final String IMAGE_PATH        = "/spike.png";
+    private static final String IMAGE_PATH       = "/spike.png";
+    private static final double SPEED_MULTIPLIER = 1.0; // Same as original
 
-    public Cactus(final double x,
-                  final double y)
+    /**
+     * Constructs a new Cactus instance at the specified position.
+     *
+     * @param x the initial x-coordinate of the cactus
+     * @param y the initial y-coordinate of the cactus
+     */
+    Cactus(final double x,
+           final double y)
     {
         super(IMAGE_PATH,
               x,
               y);
     }
+
+    /**
+     * Returns the speed multiplier for the cactus, affecting its movement speed.
+     *
+     * @return the speed multiplier (1.0, same as original)
+     */
+    @Override
+    public double getSpeedMultiplier()
+    {
+        return SPEED_MULTIPLIER;
+    }
+
 }
