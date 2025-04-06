@@ -143,6 +143,8 @@ public class LetterRush
 
     /*
      * Displays a loss alert with a custom header and content message.
+     * The alert informs the player of a game-over condition, resets the player's score,
+     * and stops the game. This method runs on the JavaFX Application Thread using Platform.runLater.
      *
      * @param header the header text of the alert
      * @param content the content text of the alert
@@ -168,6 +170,8 @@ public class LetterRush
 
     /*
      * Displays a loss alert when the player hits an obstacle.
+     * The alert uses predefined messages (GAME_OVER_HEADER and OBSTACLE_MESSAGE) to inform
+     * the player of the failure condition. This method delegates to showLossAlert for the actual display.
      */
     void showLossAlertObstacle()
     {
@@ -175,7 +179,9 @@ public class LetterRush
     }
 
     /*
-     * Displays a loss alert when time runs out.
+     * Displays a loss alert when the game timer runs out.
+     * The alert uses predefined messages (GAME_OVER_HEADER and TIME_UP_MESSAGE) to inform
+     * the player of the failure condition. This method delegates to showLossAlert for the actual display.
      */
     void showLossAlertTime()
     {
@@ -184,6 +190,8 @@ public class LetterRush
 
     /*
      * Displays a win alert for completing a level, offering options to proceed or return.
+     * The alert congratulates the player and allows them to either proceed to the next level
+     * or return to the main menu. This method runs on the JavaFX Application Thread using Platform.runLater.
      *
      * @param level the completed level number
      */
@@ -222,6 +230,8 @@ public class LetterRush
 
     /*
      * Displays a bonus alert when a bonus word is found, offering options to proceed or return.
+     * The alert informs the player of extra points earned and allows them to proceed to the next level
+     * or return to the main menu. This method runs on the JavaFX Application Thread using Platform.runLater.
      *
      * @param level the current level number
      */
@@ -259,8 +269,10 @@ public class LetterRush
                           });
     }
 
-    /**
+    /*
      * Displays a game completion alert when all levels are won.
+     * The alert congratulates the player on completing the game, displays their final score,
+     * and stops the game. This method runs on the JavaFX Application Thread using Platform.runLater.
      */
     void showGameWonAlert()
     {
@@ -281,7 +293,9 @@ public class LetterRush
 
     /*
      * Displays the main menu of the game, including score displays, instructions,
-     * and start/return buttons. Initializes the stage and scene if not already set.
+     * and start/return buttons. Initializes the stage and scene if not already set,
+     * and sets the game to a non-running state. This method is intended for internal use
+     * within the class to handle menu display.
      */
     private void showMenu()
     {
@@ -356,14 +370,16 @@ public class LetterRush
 
     /*
      * Creates a styled button with the specified position, size, text, and action.
+     * The button is styled using the MENU_BUTTON_STYLE class and triggers the provided action when clicked.
+     * This method is intended for internal use within the class to create reusable buttons.
      *
-     * @param x      the x-coordinate of the button
-     * @param y      the y-coordinate of the button
-     * @param width  the width of the button
-     * @param height the height of the button
-     * @param text   the text to display on the button
+     * @param x the x-coordinate of the button in pixels
+     * @param y the y-coordinate of the button in pixels
+     * @param width the width of the button in pixels
+     * @param height the height of the button in pixels
+     * @param text the text to display on the button
      * @param action the action to perform when the button is clicked
-     * @return a configured `Button` instance
+     * @return a configured Button instance
      */
     private Button createButton(double x,
                                 double y,
@@ -386,7 +402,9 @@ public class LetterRush
 
     /*
      * Starts a new game by resetting the player, setting up the game scene,
-     * and initiating the first level. Handles cursor setup and error conditions.
+     * and initiating the first level. Handles cursor setup, button initialization,
+     * and error conditions if the level manager is null. This method is intended for internal use
+     * within the class to manage game startup.
      */
     private void startGame()
     {
@@ -468,6 +486,8 @@ public class LetterRush
 
     /*
      * Applies the current theme to the game root pane by setting the background image.
+     * The theme is selected from the THEMES array based on the currentThemeIndex.
+     * This method is intended for internal use within the class to manage visual styling.
      */
     private void applyTheme()
     {
@@ -477,6 +497,8 @@ public class LetterRush
 
     /*
      * Changes the current theme to the next one in the THEMES array.
+     * The method cycles through the available themes using the INCREMENTING_BY_ONE constant.
+     * This method is intended for internal use within the class to handle theme switching.
      */
     private void changeTheme()
     {
@@ -485,7 +507,9 @@ public class LetterRush
     }
 
     /*
-     * Resets the current game level using the engine.
+     * Resets the current game level using the engine, restoring the player's score to the level start.
+     * The method also resets bonus points and player state, and starts the level with a grace period.
+     * This method is intended for internal use within the class to handle level resets.
      */
     private void resetGame()
     {
@@ -503,8 +527,11 @@ public class LetterRush
         }
 
     }
+
     /*
-     * Stops the game, updates the menu scene, and resets the player state.
+     * Stops the game, updates the menu scene with the latest scores, and resets the player state.
+     * The method displays the player's collected target in the console for debugging purposes.
+     * This method is intended for internal use within the class to handle game termination.
      */
     private void stopGame()
     {
