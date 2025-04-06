@@ -1,4 +1,4 @@
-package ca.bcit.Comp2522.termProject.MyGame;
+package ca.bcit.Comp2522.termProject.LetterRushGame;
 
 import ca.bcit.Comp2522.termProject.WordGame.Main;
 import javafx.application.Platform;
@@ -21,7 +21,6 @@ import javafx.stage.Stage;
  */
 public class LetterRush
 {
-    private              boolean  isRunning               = false;
     private static final int      WINDOW_WIDTH            = 1000;
     private static final int      WINDOW_HEIGHT           = 600;
     private static final int      SCORE_X                 = 80;
@@ -43,7 +42,6 @@ public class LetterRush
     private static final int      INCREMENTING_BY_ONE     = 1;
     private static final int      WINDOW_ADJUSTMENT       = 100;
     private static final int      INITIAL_SCORE           = 0;
-    private static final int      GRACE_PERIOD_MS         = 1000;
     private static final String   CSS_PATH                = "/letterStyles.css";
     private static final String   TITLE                   = "LetterRush";
     private static final String   TITLE_MENU              = TITLE + " - Menu";
@@ -85,6 +83,7 @@ public class LetterRush
                                                              "/background1.png",
                                                              "/background3.png",
                                                              "/background4.png"};
+    private              boolean  isRunning               = false;
 
 
     private static LetterRush   instance;
@@ -101,13 +100,13 @@ public class LetterRush
     private        Text         highScoreText;
     private        int          currentThemeIndex = 0;
     public         int          scoreAtLevelStart;
-    private        boolean      isGracePeriodActive;
-    private        long         gracePeriodStartTime;
+
 
 
     /**
-     * Constructs a new `LetterRush` instance, initializing the game engine, player, UI,
-     * and level manager. Sets up the game environment and handles initialization errors.
+     * Constructs a new LetterRush instance, initializing the game engine, player, UI,
+     * and level manager. Sets up the game environment with default values for the score,
+     * and theme index. This constructor prepares the game for launch.
      */
     public LetterRush()
     {
@@ -118,13 +117,12 @@ public class LetterRush
         this.levelManager = new LevelManager();
         this.engine.setGame(this);
         this.scoreAtLevelStart = INITIAL_SCORE;
-        this.isGracePeriodActive = false;
-        this.gracePeriodStartTime = 0;
     }
 
     /**
      * Launches the LetterRush game by creating an instance (if none exists) and displaying
-     * the menu. Ensures the operation runs on the JavaFX application thread.
+     * the menu. Ensures the operation runs on the JavaFX Application Thread using Platform.runLater
+     * if necessary. This method serves as the entry point for starting the game.
      */
     public static void launchGame()
     {
@@ -142,6 +140,145 @@ public class LetterRush
         }
     }
 
+
+    /*
+     * Displays a loss alert with a custom header and content message.
+     *
+     * @param header the header text of the alert
+     * @param content the content text of the alert
+     */
+    void showLossAlert(String header,
+                       String content)
+    {
+        Platform.runLater(() -> {
+            Alert alert;
+            alert = new Alert(Alert.AlertType.INFORMATION);
+
+            alert.setTitle(GAME_OVER_TITLE);
+            alert.setHeaderText(header);
+            alert.setContentText(content);
+            alert.getDialogPane().getStylesheets().add(CSS_PATH);
+            alert.getDialogPane().getStyleClass().add(ALERT_STYLE);
+            alert.showAndWait();
+            player.setScore(0);
+            player.resetForNewLevel();
+            stopGame();
+        });
+    }
+
+    /*
+     * Displays a loss alert when the player hits an obstacle.
+     */
+    void showLossAlertObstacle()
+    {
+        showLossAlert(GAME_OVER_HEADER, OBSTACLE_MESSAGE);
+    }
+
+    /*
+     * Displays a loss alert when time runs out.
+     */
+    void showLossAlertTime()
+    {
+        showLossAlert(GAME_OVER_HEADER, TIME_UP_MESSAGE);
+    }
+
+    /*
+     * Displays a win alert for completing a level, offering options to proceed or return.
+     *
+     * @param level the completed level number
+     */
+    //Interface Runnable, Concurrency
+    void showWinAlert(int level)
+    {
+        Platform.runLater(() ->
+                          {
+                              Alert alert;
+                              alert = new Alert(Alert.AlertType.CONFIRMATION);
+                              alert.setTitle(CONGRATS_TITLE);
+                              alert.setHeaderText("Congrats on finishing Level " + level + "!");
+                              alert.setContentText("Would you like to proceed to Level " + (level + 1) + " " +
+                                                   "or return to the main menu?");
+                              alert.getDialogPane().getStylesheets().add(CSS_PATH);
+                              alert.getDialogPane().getStyleClass().add(ALERT_STYLE);
+
+                              alert.getButtonTypes().setAll(new javafx.scene.control.ButtonType(PROCEED_BUTTON),
+                                                            new javafx.scene.control.ButtonType(RETURN_BUTTON));
+
+                              alert.showAndWait().ifPresent(response ->
+                                                            {
+                                                                if(response.getText().equals(PROCEED_BUTTON))
+                                                                {
+                                                                    player.resetForNewLevel();
+                                                                    scoreAtLevelStart = player.getScore();
+                                                                    new Thread(this::run).start();
+                                                                }
+                                                                else
+                                                                {
+                                                                    stopGame();
+                                                                }
+                                                            });
+                          });
+    }
+
+    /*
+     * Displays a bonus alert when a bonus word is found, offering options to proceed or return.
+     *
+     * @param level the current level number
+     */
+    void showBonusAlert(int level)
+    {
+        Platform.runLater(() ->
+                          {
+                              Alert alert;
+                              alert = new Alert(Alert.AlertType.CONFIRMATION);
+                              alert.setTitle(BONUS_TITLE);
+                              alert.setHeaderText(BONUS_HEADER);
+                              alert.setContentText("You earned extra points! Proceed to Level " + (level + 1) +
+                                                   " or return to the main menu?");
+                              alert.getDialogPane().getStylesheets().add(CSS_PATH);
+                              alert.getDialogPane().getStyleClass().add(ALERT_STYLE);
+
+                              alert.getButtonTypes().setAll(new javafx.scene.control.ButtonType(PROCEED_BUTTON),
+                                                            new javafx.scene.control.ButtonType(RETURN_BUTTON));
+
+                              alert.showAndWait().ifPresent(response ->
+                                                            {
+                                                                if(response.getText().equals(PROCEED_BUTTON))
+                                                                {
+                                                                    player.resetForNewLevel();
+                                                                    scoreAtLevelStart = player.getScore();
+                                                                    engine.startLevel(player,
+                                                                                      ui,
+                                                                                      levelManager);
+                                                                }
+                                                                else
+                                                                {
+                                                                    stopGame();
+                                                                }
+                                                            });
+                          });
+    }
+
+    /**
+     * Displays a game completion alert when all levels are won.
+     */
+    void showGameWonAlert()
+    {
+        Platform.runLater(() ->
+                          {
+                              Alert alert;
+                              alert = new Alert(Alert.AlertType.INFORMATION);
+                              alert.setTitle(CONGRATS_TITLE);
+                              alert.setHeaderText(GOAT_MESSAGE);
+                              alert.setContentText("You have completed all levels of LetterRush! Final Score: " +
+                                                   player.getScore());
+                              alert.getDialogPane().getStylesheets().add(CSS_PATH);
+                              alert.getDialogPane().getStyleClass().add(ALERT_STYLE);
+                              alert.showAndWait();
+                              stopGame();
+                          });
+    }
+
     /*
      * Displays the main menu of the game, including score displays, instructions,
      * and start/return buttons. Initializes the stage and scene if not already set.
@@ -153,10 +290,10 @@ public class LetterRush
             stage = new Stage();
         }
 
-        final Pane menuPane = new Pane();
+        final Pane menuPane;
+        menuPane = new Pane();
         menuPane.setPrefSize(WINDOW_WIDTH,
                              WINDOW_HEIGHT);
-
         // Score Display
         scoreText = new Text(SCORE_X,
                              SCORE_Y,
@@ -174,9 +311,10 @@ public class LetterRush
         highScoreText.getStyleClass().add(SCORE_TEXT_STYLE);
 
 
-        final Text instructionsText = new Text(INSTRUCTIONS_X,
-                                               INSTRUCTIONS_Y,
-                                               INSTRUCTIONS_TEXT);
+        final Text instructionsText;
+        instructionsText= new Text(INSTRUCTIONS_X,
+                                   INSTRUCTIONS_Y,
+                                   INSTRUCTIONS_TEXT);
         instructionsText.getStyleClass().add(INSTRUCTIONS_TEXT_STYLE);
 
 
@@ -234,7 +372,9 @@ public class LetterRush
                                 String text,
                                 Runnable action)
     {
-        final Button button = new Button(text);
+        final Button button;
+        button = new Button(text);
+
         button.setLayoutX(x);
         button.setLayoutY(y);
         button.setPrefWidth(width);
@@ -317,7 +457,6 @@ public class LetterRush
                               ui,
                               levelManager);
             isRunning = true;
-            startLevelWithGracePeriod();
         }
         else
         {
@@ -357,7 +496,6 @@ public class LetterRush
             player.setBonusPoints(0);
             player.resetForNewLevel();
             engine.resetGame(player, ui, levelManager);
-            startLevelWithGracePeriod();
         }
         else
         {
@@ -365,44 +503,6 @@ public class LetterRush
         }
 
     }
-
-    /*
-     * Starts a level with a grace period during which obstacle collisions are ignored.
-     */
-    private void startLevelWithGracePeriod()
-    {
-        // Start the grace period
-        isGracePeriodActive = true;
-        gracePeriodStartTime = System.currentTimeMillis();
-
-        // Start the level
-        engine.startLevel(player, ui, levelManager);
-        isRunning = true;
-    }
-
-    /**
-     * Checks if the grace period is active, and deactivates it if the duration has passed.
-     *
-     * @return true if the grace period is active, false otherwise
-     */
-    public boolean isGracePeriodActive()
-    {
-        if (!isGracePeriodActive)
-        {
-            return false;
-        }
-
-        final long currentTime;
-        currentTime = System.currentTimeMillis();
-
-        if (currentTime - gracePeriodStartTime >= GRACE_PERIOD_MS)
-        {
-            isGracePeriodActive = false;
-        }
-
-        return isGracePeriodActive;
-    }
-
     /*
      * Stops the game, updates the menu scene, and resets the player state.
      */
@@ -416,152 +516,24 @@ public class LetterRush
         stage.setScene(menuScene);
     }
 
-    /**
-     * Displays a loss alert with a custom header and content message.
-     *
-     * @param header the header text of the alert
-     * @param content the content text of the alert
+    /*
+     * Executes the game level startup process in a separate thread.
+     * Delays the start of the level by a brief period (defined by THREAD_SLEEP_MS),
+     * then schedules the level to start on the JavaFX Application Thread using Platform.runLater.
+     * This method is intended for internal use within the class to handle asynchronous level initialization.
      */
-    void showLossAlert(String header,
-                       String content)
+    private void run()
     {
-        Platform.runLater(() -> {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle(GAME_OVER_TITLE);
-            alert.setHeaderText(header);
-            alert.setContentText(content);
-            alert.getDialogPane().getStylesheets().add(CSS_PATH);
-            alert.getDialogPane().getStyleClass().add(ALERT_STYLE);
-            alert.showAndWait();
-            player.setScore(0); // Reset score for loss scenarios
-            player.resetForNewLevel();
-            stopGame();
-        });
-    }
-
-    /**
-     * Displays a loss alert when the player hits an obstacle.
-     */
-     void showLossAlertObstacle()
-    {
-        showLossAlert(GAME_OVER_HEADER, OBSTACLE_MESSAGE);
-    }
-
-    /**
-     * Displays a loss alert when time runs out.
-     */
-    void showLossAlertTime()
-    {
-        showLossAlert(GAME_OVER_HEADER, TIME_UP_MESSAGE);
-    }
-
-    /**
-     * Displays a win alert for completing a level, offering options to proceed or return.
-     *
-     * @param level the completed level number
-     */
-    //Interface Runnable, Concurrency
-    void showWinAlert(int level)
-    {
-        Platform.runLater(() ->
-                          {
-                              Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                              alert.setTitle(CONGRATS_TITLE);
-                              alert.setHeaderText("Congrats on finishing Level " + level + "!");
-                              alert.setContentText("Would you like to proceed to Level " + (level + 1) + " " +
-                                                   "or return to the main menu?");
-                              alert.getDialogPane().getStylesheets().add(CSS_PATH);
-                              alert.getDialogPane().getStyleClass().add(ALERT_STYLE);
-
-                              alert.getButtonTypes().setAll(new javafx.scene.control.ButtonType(PROCEED_BUTTON),
-                                                            new javafx.scene.control.ButtonType(RETURN_BUTTON));
-
-                              alert.showAndWait().ifPresent(response ->
-                                                            {
-                                                                if(response.getText().equals(PROCEED_BUTTON))
-                                                                {
-                                                                    player.resetForNewLevel();
-                                                                    scoreAtLevelStart = player.getScore();
-                                                                    new Thread(() ->
-                                                                               {
-                                                                                   try
-                                                                                   {
-                                                                                       Thread.sleep(THREAD_SLEEP_MS);
-                                                                                       Platform.runLater(() -> engine
-                                                                                               .startLevel
-                                                                                                       (player,
-                                                                                                        ui,
-                                                                                                        levelManager));
-                                                                                   }
-                                                                                   catch(InterruptedException e)
-                                                                                   {
-                                                                                       e.printStackTrace();
-                                                                                   }
-                                                                               }).start();
-                                                                }
-                                                                else
-                                                                {
-                                                                    stopGame();
-                                                                }
-                                                            });
-                          });
-    }
-
-    /**
-     * Displays a bonus alert when a bonus word is found, offering options to proceed or return.
-     *
-     * @param level the current level number
-     */
-    void showBonusAlert(int level)
-    {
-        Platform.runLater(() ->
-                          {
-                              Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                              alert.setTitle(BONUS_TITLE);
-                              alert.setHeaderText(BONUS_HEADER);
-                              alert.setContentText("You earned extra points! Proceed to Level " + (level + 1) +
-                                                   " or return to the main menu?");
-                              alert.getDialogPane().getStylesheets().add(CSS_PATH);
-                              alert.getDialogPane().getStyleClass().add(ALERT_STYLE);
-
-                              alert.getButtonTypes().setAll(new javafx.scene.control.ButtonType(PROCEED_BUTTON),
-                                                            new javafx.scene.control.ButtonType(RETURN_BUTTON));
-
-                              alert.showAndWait().ifPresent(response ->
-                                                            {
-                                                                if(response.getText().equals(PROCEED_BUTTON))
-                                                                {
-                                                                    player.resetForNewLevel();
-                                                                    scoreAtLevelStart = player.getScore();
-                                                                    engine.startLevel(player,
-                                                                                      ui,
-                                                                                      levelManager);
-                                                                    startLevelWithGracePeriod();
-                                                                }
-                                                                else
-                                                                {
-                                                                    stopGame();
-                                                                }
-                                                            });
-                          });
-    }
-
-    /**
-     * Displays a game completion alert when all levels are won.
-     */
-    void showGameWonAlert()
-    {
-        Platform.runLater(() ->
-                          {
-                              Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                              alert.setTitle(CONGRATS_TITLE);
-                              alert.setHeaderText(GOAT_MESSAGE);
-                              alert.setContentText("You have completed all levels of LetterRush! Final Score: " +
-                                                   player.getScore());
-                              alert.getDialogPane().getStylesheets().add(CSS_PATH);
-                              alert.getDialogPane().getStyleClass().add(ALERT_STYLE);
-                              alert.showAndWait();
-                              stopGame();
-                          });
+        try
+        {
+            Thread.sleep(THREAD_SLEEP_MS);
+            Platform.runLater(() -> engine.startLevel(player,
+                                                      ui,
+                                                      levelManager));
+        }
+        catch(InterruptedException e)
+        {
+            e.printStackTrace();
+        }
     }
 }

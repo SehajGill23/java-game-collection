@@ -1,4 +1,4 @@
-package ca.bcit.Comp2522.termProject.MyGame;
+package ca.bcit.Comp2522.termProject.LetterRushGame;
 
 /**
  * The Missile class represents a missile obstacle in the LetterRush game.
@@ -10,8 +10,7 @@ package ca.bcit.Comp2522.termProject.MyGame;
  */
 class Missile extends Obstacle
 {
-    private static final String IMAGE_PATH       = "/missile.png";
-    private static final double SPEED_MULTIPLIER = 1.0; // Same as original
+    private static final String IMAGE_PATH = "/missile.png";
 
     /*
      * Constructs a new Missile instance at the specified position.

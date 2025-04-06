@@ -1,4 +1,4 @@
-package ca.bcit.Comp2522.termProject.MyGame;
+package ca.bcit.Comp2522.termProject.LetterRushGame;
 
 /**
  * The Cactus class represents a cactus obstacle in the LetterRush game.
@@ -10,8 +10,7 @@ package ca.bcit.Comp2522.termProject.MyGame;
  */
 class Cactus extends Obstacle
 {
-    private static final String IMAGE_PATH       = "/spike.png";
-    private static final double SPEED_MULTIPLIER = 1.0; // Same as original
+    private static final String IMAGE_PATH = "/spike.png";
 
     /**
      * Constructs a new Cactus instance at the specified position.

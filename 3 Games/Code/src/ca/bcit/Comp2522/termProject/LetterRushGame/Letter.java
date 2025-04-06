@@ -1,4 +1,4 @@
-package ca.bcit.Comp2522.termProject.MyGame;
+package ca.bcit.Comp2522.termProject.LetterRushGame;
 
 import javafx.scene.text.Text;
 

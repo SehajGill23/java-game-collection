@@ -84,52 +84,52 @@ public class WordGame
         return score;
     }
 
-    /**
+    /*
      * Returns the number of questions answered correctly on the first attempt in the current game.
      *
      * @return the number of first attempts
      */
-    public int getFirstAttempts()
+    int getFirstAttempts()
     {
         return firstAttempts;
     }
 
-    /**
+    /*
      * Returns the number of questions answered correctly on the second attempt in the current game.
      *
      * @return the number of second attempts
      */
-    public int getSecondAttempts()
+    int getSecondAttempts()
     {
         return secondAttempts;
     }
 
-    /**
+    /*
      * Returns the number of questions answered incorrectly after two attempts in the current game.
      *
      * @return the number of incorrect attempts
      */
-    public int getIncorrectAttempts()
+    int getIncorrectAttempts()
     {
         return incorrectAttempts;
     }
 
-    /**
+    /*
      * Returns the total number of word games played across all sessions.
      *
      * @return the total number of games played
      */
-    public int getTotalGamesPlayed()
+    int getTotalGamesPlayed()
     {
         return totalGamesPlayed;
     }
 
-    /**
+    /*
      * Starts a new word game session, asking the player 10 random questions about countries.
      * Tracks the player's score, attempts, and provides game statistics at the end.
      * If no countries are loaded, the game will not proceed and an error message will be displayed.
      */
-    public void playWordGame()
+    void playWordGame()
     {
         firstAttempts     = INITIAL_SCORE;
         secondAttempts    = INITIAL_SCORE;
@@ -206,22 +206,25 @@ public class WordGame
      */
     private int askQuestion(int questionType)
     {
-        String correctAnswer = "";
-        switch(questionType)
+        String correctAnswer = switch(questionType)
         {
-            case 0:
+            case 0 ->
+            {
                 System.out.println("Which country has the capital city: " + country.getCapitalCityName() + "?");
-                correctAnswer = country.getName();
-                break;
-            case 1:
+                yield country.getName();
+            }
+            case 1 ->
+            {
                 System.out.println("What is the capital of " + country.getName() + "?");
-                correctAnswer = country.getCapitalCityName();
-                break;
-            case 2:
+                yield country.getCapitalCityName();
+            }
+            case 2 ->
+            {
                 System.out.println("Which country is known for this fact: " + country.getRandomFact() + "?");
-                correctAnswer = country.getName();
-                break;
-        }
+                yield country.getName();
+            }
+            default -> "";
+        };
         return getUserAnswer(correctAnswer);
     }
 
@@ -260,10 +263,10 @@ public class WordGame
         return 0;
     }
 
-    /**
+    /*
      * Closes the resources used by the WordGame instance.
      */
-    public void close()
+    void close()
     {
         scanner.close();
     }

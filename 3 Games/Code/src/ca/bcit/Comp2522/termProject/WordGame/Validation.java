@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * @author Sehaj Gill
  * @version 1.0
  */
-public class Validation
+class Validation
 {
     private static final String      SCORE_FILE_PATH      = "Resources/score.txt";
     private static final String      WORD_GAME_MODE       = "W";
@@ -38,25 +38,25 @@ public class Validation
 
     private final WordGame game;
 
-    /**
+    /*
      * Constructs a new Validation instance, initializing the WordGame with files from the resource directory.
      *
      * @param resourceDir the directory containing the country data files
      */
-    public Validation(final String resourceDir)
+    Validation(final String resourceDir)
     {
         final List<String> fileNames = getTextFilesInDirectory(resourceDir);
         this.game = new WordGame(resourceDir,
                                  fileNames);
     }
 
-    /**
+    /*
      * Validates the user's game mode input.
      *
      * @param input the raw input from the user (trimmed and uppercased)
      * @return true if the input is valid, false otherwise
      */
-    public boolean isValidInput(final String input)
+    boolean isValidInput(final String input)
     {
         if(input.length() != 1)
         {
@@ -71,21 +71,22 @@ public class Validation
         return true;
     }
 
-    /**
+    /*
      * Starts the Word Game by invoking the playWordGame method on the WordGame instance.
      */
-    public void startWordGame()
+    void startWordGame()
     {
         game.playWordGame();
     }
 
-    /**
+
+    /*
      * Prompts the user to decide if they want to play another Word Game.
      * If Yes, starts a new Word Game; if No, returns to the main menu.
      *
      * @param sc the Scanner instance to read user input
      */
-    public void handlePlayAgain(final Scanner sc)
+    void handlePlayAgain(final Scanner sc)
     {
         while(true)
         {
@@ -95,6 +96,7 @@ public class Validation
             {
                 System.out.println("Starting Word Game...");
                 startWordGame();
+                Main.ConsoleInput();
                 return;
             }
             else if(NO_RESPONSES.contains(response))
@@ -110,7 +112,7 @@ public class Validation
         }
     }
 
-    /**
+    /*
      * Calculates, displays, and compares the current game score with the highest score.
      * Prints the raw score, games played, current average score, and highest average score,
      * and provides feedback on whether a new high score was achieved.
@@ -156,7 +158,7 @@ public class Validation
         }
     }
 
-    /**
+    /*
      * Retrieves the highest score from the score file based on the average score.
      * If the file does not exist or an error occurs, returns a default Score object.
      *
@@ -186,15 +188,15 @@ public class Validation
                                                                                                            1));
     }
 
-    /**
+    /*
      * Closes the resources used by the Validation instance, including the WordGame.
      */
-    public void close()
+    void close()
     {
         game.close();
     }
 
-    /**
+    /*
      * Retrieves a list of text file names from the specified Resources directory.
      * Only includes files matching the pattern [a-z].txt, excluding w.txt and x.txt,
      * to ensure only valid country data files are loaded.

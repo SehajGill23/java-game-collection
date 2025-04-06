@@ -1,4 +1,4 @@
-package ca.bcit.Comp2522.termProject.MyGame;
+package ca.bcit.Comp2522.termProject.LetterRushGame;
 
 /**
  * The Bomb class represents a bomb obstacle in the LetterRush game.
@@ -11,7 +11,6 @@ package ca.bcit.Comp2522.termProject.MyGame;
 class Bomb extends Obstacle
 {
     private static final String IMAGE_PATH       = "/bomb.png";
-    private static final double SPEED_MULTIPLIER = 1.0; // Same as original
 
     /**
      * Constructs a new Bomb instance at the specified position.

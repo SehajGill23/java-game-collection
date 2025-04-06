@@ -1133,14 +1133,14 @@ CodeHeap 'non-nmethods': size=5712Kb used=1664Kb max_used=1767Kb free=4048Kb
 
 Compilation events (20 events):
 Event: 414.942 Thread 0x0000000130028400 nmethod 11396 0x000000013190ae10 code [0x000000013190afc0, 0x000000013190b220]
-Event: 414.942 Thread 0x0000000130028400 11397   !   3       ca.bcit.Comp2522.termProject.MyGame.Obstacle::<init> (178 bytes)
+Event: 414.942 Thread 0x0000000130028400 11397   !   3       ca.bcit.Comp2522.termProject.LetterRushGame.Obstacle::<init> (178 bytes)
 Event: 414.942 Thread 0x000000013001fc00 nmethod 11398 0x00000001389b8510 code [0x00000001389b8680, 0x00000001389b86f8]
 Event: 414.944 Thread 0x0000000130028400 nmethod 11397 0x000000013190b310 code [0x000000013190b940, 0x000000013190e368]
 Event: 414.947 Thread 0x0000000130028400 11400       3       javafx.scene.image.ImageView$7::invalidated (25 bytes)
 Event: 414.947 Thread 0x0000000130028400 nmethod 11400 0x000000013190f390 code [0x000000013190f5c0, 0x000000013190fac0]
 Event: 414.947 Thread 0x0000000130028400 11401       3       javafx.scene.image.ImageView$8::invalidated (25 bytes)
 Event: 414.947 Thread 0x0000000130028400 nmethod 11401 0x000000013190fd10 code [0x000000013190ff40, 0x0000000131910440]
-Event: 414.952 Thread 0x0000000130028400 11404       3       ca.bcit.Comp2522.termProject.MyGame.LetterEngine$$Lambda/0x0000700001294a60::apply (8 bytes)
+Event: 414.952 Thread 0x0000000130028400 11404       3       ca.bcit.Comp2522.termProject.LetterRushGame.LetterEngine$$Lambda/0x0000700001294a60::apply (8 bytes)
 Event: 414.952 Thread 0x0000000130028400 nmethod 11404 0x0000000131910690 code [0x0000000131910840, 0x0000000131910a68]
 Event: 414.956 Thread 0x0000000130028400 11405       3       com.sun.prism.impl.BaseResourcePool::resourceManaged (24 bytes)
 Event: 414.958 Thread 0x0000000130028400 nmethod 11405 0x0000000131910b90 code [0x0000000131910d80, 0x00000001319111e0]

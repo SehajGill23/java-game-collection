@@ -20,16 +20,16 @@ final class Country
     /**
      * Constructs a new Country instance with the specified name, capital city, facts, and random number generator.
      *
-     * @param countryName            the name of the country
+     * @param countryName     the name of the country
      * @param capitalCityName the name of the country's capital city
      * @param facts           an array of facts about the country
      * @param random          a Random instance for selecting random facts
      * @throws IllegalArgumentException if countryName, capitalCityName, facts, or random is null, or if facts is empty
      */
     Country(final String countryName,
-                   final String capitalCityName,
-                   final String[] facts,
-                   final Random random)
+            final String capitalCityName,
+            final String[] facts,
+            final Random random)
     {
         this.name            = countryName;
         this.capitalCityName = capitalCityName;
@@ -47,24 +47,24 @@ final class Country
         return name;
     }
 
-    /**
+    /*
      * Returns the name of the country's capital city.
      *
      * @return the capital city's name
      */
-    public String getCapitalCityName()
+    String getCapitalCityName()
     {
         return capitalCityName;
     }
 
-    /**
+    /*
      * Returns a random fact about the country.
      * If no facts are available (which should not occur due to constructor validation),
      * a default message is returned.
      *
      * @return a random fact about the country, or a default message if no facts are available
      */
-    public String getRandomFact()
+    String getRandomFact()
     {
         return facts[random.nextInt(facts.length)];
     }

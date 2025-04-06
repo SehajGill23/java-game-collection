@@ -1,4 +1,4 @@
-import ca.bcit.Comp2522.termProject.MyGame.*;
+import ca.bcit.Comp2522.termProject.LetterRushGame.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

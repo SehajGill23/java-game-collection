@@ -1,4 +1,4 @@
-package ca.bcit.Comp2522.termProject.MyGame;
+package ca.bcit.Comp2522.termProject.LetterRushGame;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -58,6 +58,36 @@ public class Player
     }
 
     /**
+     * Returns the number of incorrect clicks made by the player.
+     *
+     * @return the number of incorrect clicks
+     */
+    public final int getIncorrectClicks()
+    {
+        return incorrectClicks;
+    }
+
+    /**
+     * Returns the player's high score.
+     *
+     * @return the high score
+     */
+    public final int getHighScore()
+    {
+        return highScore;
+    }
+
+    /**
+     * Returns the player's current score.
+     *
+     * @return the current score
+     */
+    public final int getScore()
+    {
+        return score;
+    }
+
+    /**
      * Resets the player's state for a new level, clearing collected letters
      * and incorrect clicks, but preserving cumulative scores.
      */
@@ -102,6 +132,40 @@ public class Player
     {
         this.score = score;
         updateHighScore();
+    }
+
+    /**
+     * Updates the high score if the current score is higher.
+     */
+    public void updateHighScore()
+    {
+        if (score > highScore)
+        {
+            highScore = score;
+            saveHighScore();
+        }
+    }
+
+    /**
+     * Checks if the player has completed the target word by matching the collected characters.
+     *
+     * @param targetWord the target word to match
+     * @return true if the target word is completed, false otherwise
+     */
+    public final boolean hasCompletedTargetWord(final String targetWord)
+    {
+        return hasCompletedWord(collectedTarget, targetWord);
+    }
+
+    /**
+     * Checks if the player has completed the bonus word by matching the collected characters.
+     *
+     * @param bonusWord the bonus word to match
+     * @return true if the bonus word is completed, false otherwise
+     */
+    public final boolean hasCompletedBonusWord(final String bonusWord)
+    {
+        return hasCompletedWord(collectedBonus, bonusWord);
     }
 
 
@@ -153,41 +217,6 @@ public class Player
         }
     }
 
-
-    /**
-     * Checks if the player has completed the target word by matching the collected characters.
-     *
-     * @param targetWord the target word to match
-     * @return true if the target word is completed, false otherwise
-     */
-    public final boolean hasCompletedTargetWord(final String targetWord)
-    {
-        return hasCompletedWord(collectedTarget, targetWord);
-    }
-
-    /**
-     * Checks if the player has completed the bonus word by matching the collected characters.
-     *
-     * @param bonusWord the bonus word to match
-     * @return true if the bonus word is completed, false otherwise
-     */
-    public final boolean hasCompletedBonusWord(final String bonusWord)
-    {
-        return hasCompletedWord(collectedBonus, bonusWord);
-    }
-
-    /**
-     * Updates the high score if the current score is higher.
-     */
-    public void updateHighScore()
-    {
-        if (score > highScore)
-        {
-            highScore = score;
-            saveHighScore();
-        }
-    }
-
     /**
      * Checks if the player has failed the level based on collected letters
      * and incorrect clicks.
@@ -228,36 +257,6 @@ public class Player
             collected.append(c);
         }
         return false;
-    }
-
-    /**
-     * Returns the number of incorrect clicks made by the player.
-     *
-     * @return the number of incorrect clicks
-     */
-    public final int getIncorrectClicks()
-    {
-        return incorrectClicks;
-    }
-
-    /**
-     * Returns the player's high score.
-     *
-     * @return the high score
-     */
-    public final int getHighScore()
-    {
-        return highScore;
-    }
-
-    /**
-     * Returns the player's current score.
-     *
-     * @return the current score
-     */
-    public final int getScore()
-    {
-        return score;
     }
 
     /*

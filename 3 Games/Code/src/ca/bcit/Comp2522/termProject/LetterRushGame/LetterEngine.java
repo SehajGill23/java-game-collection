@@ -1,4 +1,4 @@
-package ca.bcit.Comp2522.termProject.MyGame;
+package ca.bcit.Comp2522.termProject.LetterRushGame;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.layout.Pane;
