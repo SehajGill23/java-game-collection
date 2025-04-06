@@ -27,15 +27,4 @@ class Cactus extends Obstacle
               y);
     }
 
-    /**
-     * Returns the speed multiplier for the cactus, affecting its movement speed.
-     *
-     * @return the speed multiplier (1.0, same as original)
-     */
-    @Override
-    public double getSpeedMultiplier()
-    {
-        return SPEED_MULTIPLIER;
-    }
-
 }

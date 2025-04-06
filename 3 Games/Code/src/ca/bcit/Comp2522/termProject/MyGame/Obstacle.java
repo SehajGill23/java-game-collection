@@ -78,7 +78,7 @@ public abstract class Obstacle
      *
      * @return the ImageView node
      */
-    public final ImageView getNode()
+    final ImageView getNode()
     {
         return node;
     }
@@ -89,8 +89,8 @@ public abstract class Obstacle
      * @param width  the width of the game area
      * @param height the height of the game area
      */
-    public final void update(final int width,
-                             final int height)
+    final void update(final int width,
+                      final int height)
     {
         double x;
         x = node.getX() + dx;
@@ -124,7 +124,7 @@ public abstract class Obstacle
      * @param player the player to check collision against
      * @return true if a collision occurs, false otherwise
      */
-    public final boolean collidesWith(final Player player)
+    final boolean collidesWith(final Player player)
     {
         final double obstacleCenterX;
         obstacleCenterX = node.getX() + HALF_WIDTH;
