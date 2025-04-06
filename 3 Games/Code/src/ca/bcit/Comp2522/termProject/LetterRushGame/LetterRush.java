@@ -21,70 +21,69 @@ import javafx.stage.Stage;
  */
 public class LetterRush
 {
-    private static final int      WINDOW_WIDTH            = 1000;
-    private static final int      WINDOW_HEIGHT           = 600;
-    private static final int      SCORE_X                 = 80;
-    private static final int      SCORE_Y                 = 210;
-    private static final int      BONUS_SCORE_X           = 400;
-    private static final int      HIGH_SCORE_X            = 740;
-    private static final int      INSTRUCTIONS_X          = 50;
-    private static final int      INSTRUCTIONS_Y          = 450;
-    private static final int      BUTTON_START_X          = 200;
-    private static final int      BUTTON_RETURN_X         = 580;
-    private static final int      BUTTON_Y                = 320;
-    private static final int      BUTTON_WIDTH            = 200;
-    private static final int      BUTTON_HEIGHT           = 50;
-    private static final int      GAME_BUTTON_Y_OFFSET    = 80;
-    private static final int      RESTART_BUTTON_X        = 90;
-    private static final int      QUIT_BUTTON_X           = 420;
-    private static final int      THEME_BUTTON_X          = 737;
-    private static final int      THREAD_SLEEP_MS         = 100;
-    private static final int      INCREMENTING_BY_ONE     = 1;
-    private static final int      WINDOW_ADJUSTMENT       = 100;
-    private static final int      INITIAL_SCORE           = 0;
-    private static final String   CSS_PATH                = "/letterStyles.css";
-    private static final String   TITLE                   = "LetterRush";
-    private static final String   TITLE_MENU              = TITLE + " - Menu";
-    private static final String   SCORE_TEXT_PREFIX       = "Score: ";
-    private static final String   BONUS_SCORE_TEXT_PREFIX = "Bonus Score: ";
-    private static final String   HIGH_SCORE_TEXT_PREFIX  = "High Score: ";
-    private static final String   SCORE_TEXT_STYLE        = "score-text";
-    private static final String   INSTRUCTIONS_TEXT_STYLE = "instructions-text";
-    private static final String   MENU_BUTTON_STYLE       = "menu-button";
-    private static final String   GAME_PANE_STYLE         = "game-pane";
-    private static final String   GAME_BUTTON_STYLE       = "game-button";
-    private static final String   ALERT_STYLE             = "alert";
-    private static final String   BUTTON_START_TEXT       = "Start Letter Rush";
-    private static final String   BUTTON_RESTART_TEXT     = "Restart Current Level";
-    private static final String   BUTTON_QUIT_TEXT        = "Return to Game Menu";
-    private static final String   BUTTON_THEME_TEXT       = "Change Current theme";
-    private static final String   GAME_OVER_TITLE         = "Game Over";
-    private static final String   GAME_OVER_HEADER        = "Game Over!";
-    private static final String   OBSTACLE_MESSAGE        = "You hit an obstacle! Try again?";
-    private static final String   TIME_UP_MESSAGE         = "Time’s up! Try again?";
-    private static final String   ERROR_HEADER            = "Initialization Error";
-    private static final String   ERROR_MESSAGE           = "LevelManager is null. Check resources and restart.";
-    private static final String   CONGRATS_TITLE          = "Congratulations!";
-    private static final String   BONUS_TITLE             = "Bonus Found!";
-    private static final String   BONUS_HEADER            = "Bonus Word Found! Extra Points!";
-    private static final String   PROCEED_BUTTON          = "Proceed";
-    private static final String   RETURN_BUTTON           = "Return to Main Menu";
-    private static final String   GOAT_MESSAGE            = "You are the GOAT 🐐, You've Won the Game! 🥳";
-    private static final String   INSTRUCTIONS_TEXT       = """
-                                                            Instructions:
-                                                            - Click letters to form the target word (white).
-                                                            - Complete the target word before time runs out.
-                                                            - There’s a hidden bonus word—find it for extra points!
-                                                            - Avoid obstacles (missile, bomb, cactus) that move randomly.
-                                                            - Use buttons below the game to restart, quit, or change theme.
-                                                            - Failure resets the level to 1 and score to 0,""" +
-                                                            " regardless of current level";
-    private static final String[] THEMES                  = {"/background2.png",
-                                                             "/background1.png",
-                                                             "/background3.png",
-                                                             "/background4.png"};
-    private              boolean  isRunning               = false;
-
+    private static final int      WINDOW_WIDTH_PIXELS         = 1000;
+    private static final int      WINDOW_HEIGHT_PIXELS        = 600;
+    private static final int      SCORE_X_PIXELS              = 80;
+    private static final int      SCORE_Y_PIXELS              = 210;
+    private static final int      BONUS_SCORE_X_PIXELS        = 400;
+    private static final int      HIGH_SCORE_X_PIXELS         = 740;
+    private static final int      INSTRUCTIONS_X_PIXELS       = 50;
+    private static final int      INSTRUCTIONS_Y_PIXELS       = 450;
+    private static final int      BUTTON_START_X_PIXELS       = 200;
+    private static final int      BUTTON_RETURN_X_PIXELS      = 580;
+    private static final int      BUTTON_Y_PIXELS             = 320;
+    private static final int      BUTTON_WIDTH_PIXELS         = 200;
+    private static final int      BUTTON_HEIGHT_PIXELS        = 50;
+    private static final int      GAME_BUTTON_Y_OFFSET_PIXELS = 80;
+    private static final int      RESTART_BUTTON_X_PIXELS     = 90;
+    private static final int      QUIT_BUTTON_X_PIXELS        = 420;
+    private static final int      THEME_BUTTON_X_PIXELS       = 737;
+    private static final int      THREAD_SLEEP_MS             = 100;
+    private static final int      INCREMENTING_BY_ONE         = 1;
+    private static final int      WINDOW_ADJUSTMENT_PIXELS    = 100;
+    private static final int      INITIAL_SCORE               = 0;
+    private static final String   CSS_PATH                    = "/letterStyles.css";
+    private static final String   TITLE                       = "LetterRush";
+    private static final String   TITLE_MENU                  = TITLE + " - Menu";
+    private static final String   SCORE_TEXT_PREFIX           = "Score: ";
+    private static final String   BONUS_SCORE_TEXT_PREFIX     = "Bonus Score: ";
+    private static final String   HIGH_SCORE_TEXT_PREFIX      = "High Score: ";
+    private static final String   SCORE_TEXT_STYLE            = "score-text";
+    private static final String   INSTRUCTIONS_TEXT_STYLE     = "instructions-text";
+    private static final String   MENU_BUTTON_STYLE           = "menu-button";
+    private static final String   GAME_PANE_STYLE             = "game-pane";
+    private static final String   GAME_BUTTON_STYLE           = "game-button";
+    private static final String   ALERT_STYLE                 = "alert";
+    private static final String   BUTTON_START_TEXT           = "Start Letter Rush";
+    private static final String   BUTTON_RESTART_TEXT         = "Restart Current Level";
+    private static final String   BUTTON_QUIT_TEXT            = "Return to Game Menu";
+    private static final String   BUTTON_THEME_TEXT           = "Change Current theme";
+    private static final String   GAME_OVER_TITLE             = "Game Over";
+    private static final String   GAME_OVER_HEADER            = "Game Over!";
+    private static final String   OBSTACLE_MESSAGE            = "You hit an obstacle! Try again?";
+    private static final String   TIME_UP_MESSAGE             = "Time’s up! Try again?";
+    private static final String   ERROR_HEADER                = "Initialization Error";
+    private static final String   ERROR_MESSAGE               = "LevelManager is null. Check resources and restart.";
+    private static final String   CONGRATS_TITLE              = "Congratulations!";
+    private static final String   BONUS_TITLE                 = "Bonus Found!";
+    private static final String   BONUS_HEADER                = "Bonus Word Found! Extra Points!";
+    private static final String   PROCEED_BUTTON              = "Proceed";
+    private static final String   RETURN_BUTTON               = "Return to Main Menu";
+    private static final String   GOAT_MESSAGE                = "You are the GOAT 🐐, You've Won the Game! 🥳";
+    private static final String   INSTRUCTIONS_TEXT           = """
+                                                                Instructions:
+                                                                - Click letters to form the target word (white).
+                                                                - Complete the target word before time runs out.
+                                                                - There’s a hidden bonus word—find it for extra points!
+                                                                - Avoid obstacles (missile, bomb, cactus) that move randomly.
+                                                                - Use buttons below the game to restart, quit, or change theme.
+                                                                - Failure resets the level to 1 and score to 0,""" +
+                                                                " regardless of current level";
+    private static final String[] THEMES                      = {"/background2.png",
+                                                                 "/background1.png",
+                                                                 "/background3.png",
+                                                                 "/background4.png"};
+    private              boolean  isRunning                   = false;
 
     private static LetterRush   instance;
     private final  LetterEngine engine;
@@ -101,8 +100,6 @@ public class LetterRush
     private        int          currentThemeIndex = 0;
     public         int          scoreAtLevelStart;
 
-
-
     /**
      * Constructs a new LetterRush instance, initializing the game engine, player, UI,
      * and level manager. Sets up the game environment with default values for the score,
@@ -110,8 +107,8 @@ public class LetterRush
      */
     public LetterRush()
     {
-        this.engine       = new LetterEngine(WINDOW_WIDTH,
-                                             WINDOW_HEIGHT - WINDOW_ADJUSTMENT);
+        this.engine       = new LetterEngine(WINDOW_WIDTH_PIXELS,
+                                             WINDOW_HEIGHT_PIXELS - WINDOW_ADJUSTMENT_PIXELS);
         this.player       = new Player();
         this.ui           = new GameUI();
         this.levelManager = new LevelManager();
@@ -140,7 +137,6 @@ public class LetterRush
         }
     }
 
-
     /*
      * Displays a loss alert with a custom header and content message.
      * The alert informs the player of a game-over condition, resets the player's score,
@@ -152,20 +148,21 @@ public class LetterRush
     void showLossAlert(String header,
                        String content)
     {
-        Platform.runLater(() -> {
-            Alert alert;
-            alert = new Alert(Alert.AlertType.INFORMATION);
+        Platform.runLater(() ->
+                          {
+                              Alert alert;
+                              alert = new Alert(Alert.AlertType.INFORMATION);
 
-            alert.setTitle(GAME_OVER_TITLE);
-            alert.setHeaderText(header);
-            alert.setContentText(content);
-            alert.getDialogPane().getStylesheets().add(CSS_PATH);
-            alert.getDialogPane().getStyleClass().add(ALERT_STYLE);
-            alert.showAndWait();
-            player.setScore(0);
-            player.resetForNewLevel();
-            stopGame();
-        });
+                              alert.setTitle(GAME_OVER_TITLE);
+                              alert.setHeaderText(header);
+                              alert.setContentText(content);
+                              alert.getDialogPane().getStylesheets().add(CSS_PATH);
+                              alert.getDialogPane().getStyleClass().add(ALERT_STYLE);
+                              alert.showAndWait();
+                              player.setScore(0);
+                              player.resetForNewLevel();
+                              stopGame();
+                          });
     }
 
     /*
@@ -175,7 +172,8 @@ public class LetterRush
      */
     void showLossAlertObstacle()
     {
-        showLossAlert(GAME_OVER_HEADER, OBSTACLE_MESSAGE);
+        showLossAlert(GAME_OVER_HEADER,
+                      OBSTACLE_MESSAGE);
     }
 
     /*
@@ -185,7 +183,8 @@ public class LetterRush
      */
     void showLossAlertTime()
     {
-        showLossAlert(GAME_OVER_HEADER, TIME_UP_MESSAGE);
+        showLossAlert(GAME_OVER_HEADER,
+                      TIME_UP_MESSAGE);
     }
 
     /*
@@ -204,8 +203,8 @@ public class LetterRush
                               alert = new Alert(Alert.AlertType.CONFIRMATION);
                               alert.setTitle(CONGRATS_TITLE);
                               alert.setHeaderText("Congrats on finishing Level " + level + "!");
-                              alert.setContentText("Would you like to proceed to Level " + (level + 1) + " " +
-                                                   "or return to the main menu?");
+                              alert.setContentText("Would you like to proceed to Level " + (level + 1) + " "
+                                                   + "or return to the main menu?");
                               alert.getDialogPane().getStylesheets().add(CSS_PATH);
                               alert.getDialogPane().getStyleClass().add(ALERT_STYLE);
 
@@ -243,8 +242,8 @@ public class LetterRush
                               alert = new Alert(Alert.AlertType.CONFIRMATION);
                               alert.setTitle(BONUS_TITLE);
                               alert.setHeaderText(BONUS_HEADER);
-                              alert.setContentText("You earned extra points! Proceed to Level " + (level + 1) +
-                                                   " or return to the main menu?");
+                              alert.setContentText("You earned extra points! Proceed to Level "
+                                                   + (level + 1) + " or return to the main menu?");
                               alert.getDialogPane().getStylesheets().add(CSS_PATH);
                               alert.getDialogPane().getStyleClass().add(ALERT_STYLE);
 
@@ -282,8 +281,7 @@ public class LetterRush
                               alert = new Alert(Alert.AlertType.INFORMATION);
                               alert.setTitle(CONGRATS_TITLE);
                               alert.setHeaderText(GOAT_MESSAGE);
-                              alert.setContentText("You have completed all levels of LetterRush! Final Score: " +
-                                                   player.getScore());
+                              alert.setContentText("You have completed all levels of LetterRush! Final Score: " + player.getScore());
                               alert.getDialogPane().getStylesheets().add(CSS_PATH);
                               alert.getDialogPane().getStyleClass().add(ALERT_STYLE);
                               alert.showAndWait();
@@ -306,42 +304,40 @@ public class LetterRush
 
         final Pane menuPane;
         menuPane = new Pane();
-        menuPane.setPrefSize(WINDOW_WIDTH,
-                             WINDOW_HEIGHT);
+        menuPane.setPrefSize(WINDOW_WIDTH_PIXELS,
+                             WINDOW_HEIGHT_PIXELS);
         // Score Display
-        scoreText = new Text(SCORE_X,
-                             SCORE_Y,
+        scoreText = new Text(SCORE_X_PIXELS,
+                             SCORE_Y_PIXELS,
                              SCORE_TEXT_PREFIX + player.getScore());
         scoreText.getStyleClass().add(SCORE_TEXT_STYLE);
 
-        bonusScoreText = new Text(BONUS_SCORE_X,
-                                  SCORE_Y,
+        bonusScoreText = new Text(BONUS_SCORE_X_PIXELS,
+                                  SCORE_Y_PIXELS,
                                   BONUS_SCORE_TEXT_PREFIX + player.getBonusPoints());
         bonusScoreText.getStyleClass().add(SCORE_TEXT_STYLE);
 
-        highScoreText = new Text(HIGH_SCORE_X,
-                                 SCORE_Y,
+        highScoreText = new Text(HIGH_SCORE_X_PIXELS,
+                                 SCORE_Y_PIXELS,
                                  HIGH_SCORE_TEXT_PREFIX + player.getHighScore());
         highScoreText.getStyleClass().add(SCORE_TEXT_STYLE);
 
-
         final Text instructionsText;
-        instructionsText= new Text(INSTRUCTIONS_X,
-                                   INSTRUCTIONS_Y,
-                                   INSTRUCTIONS_TEXT);
+        instructionsText = new Text(INSTRUCTIONS_X_PIXELS,
+                                    INSTRUCTIONS_Y_PIXELS,
+                                    INSTRUCTIONS_TEXT);
         instructionsText.getStyleClass().add(INSTRUCTIONS_TEXT_STYLE);
 
-
-        final Button startButton = createButton(BUTTON_START_X,
-                                                BUTTON_Y,
-                                                BUTTON_WIDTH,
-                                                BUTTON_HEIGHT,
+        final Button startButton = createButton(BUTTON_START_X_PIXELS,
+                                                BUTTON_Y_PIXELS,
+                                                BUTTON_WIDTH_PIXELS,
+                                                BUTTON_HEIGHT_PIXELS,
                                                 BUTTON_START_TEXT,
                                                 this::startGame);
-        final Button returnButton = createButton(BUTTON_RETURN_X,
-                                                 BUTTON_Y,
-                                                 BUTTON_WIDTH,
-                                                 BUTTON_HEIGHT,
+        final Button returnButton = createButton(BUTTON_RETURN_X_PIXELS,
+                                                 BUTTON_Y_PIXELS,
+                                                 BUTTON_WIDTH_PIXELS,
+                                                 BUTTON_HEIGHT_PIXELS,
                                                  RETURN_BUTTON,
                                                  () ->
                                                  {
@@ -357,8 +353,8 @@ public class LetterRush
                                       returnButton);
 
         menuScene = new Scene(menuPane,
-                              WINDOW_WIDTH,
-                              WINDOW_HEIGHT);
+                              WINDOW_WIDTH_PIXELS,
+                              WINDOW_HEIGHT_PIXELS);
         menuScene.getStylesheets().add(CSS_PATH);
 
         stage.setTitle(TITLE_MENU);
@@ -412,33 +408,35 @@ public class LetterRush
         System.out.println("Starting new game. Player collectedTarget: " + player.getCollectedTarget());
 
         root = new Pane();
-        root.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+        root.setPrefSize(WINDOW_WIDTH_PIXELS,
+                         WINDOW_HEIGHT_PIXELS);
         root.getStyleClass().add(GAME_PANE_STYLE);
         applyTheme();
 
-        root.getChildren().addAll(engine.getGamePane(), ui.getUIPane());
+        root.getChildren().addAll(engine.getGamePane(),
+                                  ui.getUIPane());
 
         final Button restartButton;
-        restartButton= new Button(BUTTON_RESTART_TEXT);
+        restartButton = new Button(BUTTON_RESTART_TEXT);
 
-        restartButton.setLayoutX(RESTART_BUTTON_X);
-        restartButton.setLayoutY(WINDOW_HEIGHT - GAME_BUTTON_Y_OFFSET);
+        restartButton.setLayoutX(RESTART_BUTTON_X_PIXELS);
+        restartButton.setLayoutY(WINDOW_HEIGHT_PIXELS - GAME_BUTTON_Y_OFFSET_PIXELS);
         restartButton.getStyleClass().add(GAME_BUTTON_STYLE);
         restartButton.setOnAction(event -> resetGame());
 
         final Button quitButton;
-        quitButton= new Button(BUTTON_QUIT_TEXT);
+        quitButton = new Button(BUTTON_QUIT_TEXT);
 
-        quitButton.setLayoutX(QUIT_BUTTON_X);
-        quitButton.setLayoutY(WINDOW_HEIGHT - GAME_BUTTON_Y_OFFSET);
+        quitButton.setLayoutX(QUIT_BUTTON_X_PIXELS);
+        quitButton.setLayoutY(WINDOW_HEIGHT_PIXELS - GAME_BUTTON_Y_OFFSET_PIXELS);
         quitButton.getStyleClass().add(GAME_BUTTON_STYLE);
         quitButton.setOnAction(event -> stopGame());
 
         final Button themeButton;
         themeButton = new Button(BUTTON_THEME_TEXT);
 
-        themeButton.setLayoutX(THEME_BUTTON_X);
-        themeButton.setLayoutY(WINDOW_HEIGHT - GAME_BUTTON_Y_OFFSET);
+        themeButton.setLayoutX(THEME_BUTTON_X_PIXELS);
+        themeButton.setLayoutY(WINDOW_HEIGHT_PIXELS - GAME_BUTTON_Y_OFFSET_PIXELS);
         themeButton.getStyleClass().add(GAME_BUTTON_STYLE);
         themeButton.setOnAction(event -> changeTheme());
 
@@ -446,10 +444,9 @@ public class LetterRush
                                   quitButton,
                                   themeButton);
 
-
         gameScene = new Scene(root,
-                              WINDOW_WIDTH,
-                              WINDOW_HEIGHT);
+                              WINDOW_WIDTH_PIXELS,
+                              WINDOW_HEIGHT_PIXELS);
         gameScene.getStylesheets().add(CSS_PATH);
 
         gameScene.setOnMouseMoved(event -> player.updateCursorPosition(event.getX(),
@@ -491,8 +488,8 @@ public class LetterRush
      */
     private void applyTheme()
     {
-        root.setStyle("-fx-background-image: url('" + THEMES[currentThemeIndex] + "');" +
-                      " -fx-background-size: cover; -fx-background-position: center;");
+        root.setStyle("-fx-background-image: url('" + THEMES[currentThemeIndex] + "');"
+                      + " -fx-background-size: cover; -fx-background-position: center;");
     }
 
     /*
@@ -502,24 +499,26 @@ public class LetterRush
      */
     private void changeTheme()
     {
-        currentThemeIndex = (currentThemeIndex + INCREMENTING_BY_ONE ) % THEMES.length;
+        currentThemeIndex = (currentThemeIndex + INCREMENTING_BY_ONE) % THEMES.length;
         applyTheme();
     }
 
     /*
      * Resets the current game level using the engine, restoring the player's score to the level start.
-     * The method also resets bonus points and player state, and starts the level with a grace period.
      * This method is intended for internal use within the class to handle level resets.
+     * The method also resets bonus points and player state.
      */
     private void resetGame()
     {
 
-        if (levelManager != null)
+        if(levelManager != null)
         {
             player.setScore(scoreAtLevelStart);
             player.setBonusPoints(0);
             player.resetForNewLevel();
-            engine.resetGame(player, ui, levelManager);
+            engine.resetGame(player,
+                             ui,
+                             levelManager);
         }
         else
         {
