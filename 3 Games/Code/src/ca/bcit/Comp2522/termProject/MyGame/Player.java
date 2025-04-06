@@ -259,7 +259,7 @@ public class Player
     {
         return score;
     }
-    
+
     /*
      * Updates the player's cursor position.
      *
