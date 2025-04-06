@@ -19,7 +19,7 @@ public class Player
     private static final int    INITIAL_SCORE_VALUE     = 0;
     private static final int    TARGET_POINTS           = 10;
     private static final int    BONUS_POINTS            = 20;
-    private static final double CURSOR_SIZE             = 10.0;
+    private static final double CURSOR_SIZE_PIXELS       = 10.0;
     private static final String HIGH_SCORE_FILE_PATH    = "Resources/highScore.txt";
     private static final String ERROR_LOADING_MESSAGE   = "Error loading high score: ";
     private static final String ERROR_SAVING_MESSAGE    = "Error saving high score: ";
@@ -58,19 +58,6 @@ public class Player
     }
 
     /**
-     * Updates the player's cursor position.
-     *
-     * @param x the x-coordinate of the cursor
-     * @param y the y-coordinate of the cursor
-     */
-    public final void updateCursorPosition(final double x,
-                                           final double y)
-    {
-        cursorX = x;
-        cursorY = y;
-    }
-
-    /**
      * Resets the player's state for a new level, clearing collected letters
      * and incorrect clicks, but preserving cumulative scores.
      */
@@ -80,7 +67,6 @@ public class Player
         collectedBonus.clear();
         incorrectClicks = INITIAL_SCORE_VALUE;
         bonusWordCompleted = false;
-        // Note: score and bonusPoints are NOT reset here to maintain cumulative scoring
     }
 
     /**
@@ -94,36 +80,6 @@ public class Player
         copy = new ArrayList<>(collectedTarget);
 
         return copy;
-    }
-
-    /**
-     * Returns the x-coordinate of the player's cursor.
-     *
-     * @return the cursor's x-coordinate
-     */
-    final double getCursorX()
-    {
-        return cursorX;
-    }
-
-    /**
-     * Returns the y-coordinate of the player's cursor.
-     *
-     * @return the cursor's y-coordinate
-     */
-    final double getCursorY()
-    {
-        return cursorY;
-    }
-
-    /**
-     * Returns the size of the player's cursor.
-     *
-     * @return the cursor size
-     */
-    final double getCursorSize()
-    {
-        return CURSOR_SIZE;
     }
 
     /**
@@ -147,6 +103,7 @@ public class Player
         this.score = score;
         updateHighScore();
     }
+
 
     /**
      * Handles a letter click, updating collected letters, scores, and incorrect clicks
@@ -198,30 +155,6 @@ public class Player
 
 
     /**
-     * Checks whether the collected characters match the given word exactly.
-     *
-     * @param collected the list of collected characters
-     * @param word the word to compare against
-     * @return true if the collected characters form the word exactly, false otherwise
-     */
-    private boolean hasCompletedWord(final List<Character> collected, final String word)
-    {
-        if (collected.size() != word.length())
-        {
-            return false;
-        }
-
-        final StringBuilder builder = new StringBuilder();
-        for (final char c : collected)
-        {
-            builder.append(c);
-        }
-
-        return builder.toString().equals(word);
-    }
-
-
-    /**
      * Checks if the player has completed the target word by matching the collected characters.
      *
      * @param targetWord the target word to match
@@ -243,62 +176,6 @@ public class Player
         return hasCompletedWord(collectedBonus, bonusWord);
     }
 
-
-    /**
-     * Loads the high score from a file.
-     *
-     * @return the high score, or 0 if loading fails
-     */
-    private int loadHighScore()
-    {
-        try
-        {
-            final List<LetterRushScore> scores;
-            scores = LetterRushScore.readScoresFromFile(HIGH_SCORE_FILE_PATH);
-
-            if (scores.isEmpty())
-            {
-                return INITIAL_SCORE_VALUE;
-            }
-
-            // Get the most recent high score
-            final LetterRushScore latestScore;
-            latestScore = scores.stream()
-                                .max(Comparator.comparing(LetterRushScore::getTimestamp))
-                                .orElse(new LetterRushScore(INITIAL_SCORE_VALUE,
-                                                            INITIAL_SCORE_VALUE,
-                                                            INITIAL_SCORE_VALUE));
-
-            return latestScore.getHighScore();
-        }
-        catch (final IOException e)
-        {
-            System.err.println(ERROR_LOADING_MESSAGE + e.getMessage());
-            return INITIAL_SCORE_VALUE;
-        }
-    }
-
-    /**
-     * Saves the current high score to a file.
-     */
-    private void saveHighScore()
-    {
-        try
-        {
-            final LetterRushScore scoreEntry;
-            scoreEntry = new LetterRushScore(highScore,
-                                             score,
-                                             bonusPoints);
-
-            LetterRushScore.appendScoreToFile(scoreEntry,
-                                              HIGH_SCORE_FILE_PATH);
-        }
-        catch (final IOException e)
-        {
-            System.err.println(ERROR_SAVING_MESSAGE + e.getMessage());
-        }
-    }
-
     /**
      * Updates the high score if the current score is higher.
      */
@@ -316,6 +193,7 @@ public class Player
      * and incorrect clicks.
      *
      * @param targetWord the target word to match
+     * @param bonusWord
      * @return true if the player has failed, false otherwise
      */
     public final boolean hasFailed(final String targetWord,
@@ -381,8 +259,51 @@ public class Player
     {
         return score;
     }
+    
+    /*
+     * Updates the player's cursor position.
+     *
+     * @param x the x-coordinate of the cursor
+     * @param y the y-coordinate of the cursor
+     */
+    final void updateCursorPosition(final double x,
+                                    final double y)
+    {
+        cursorX = x;
+        cursorY = y;
+    }
 
-    /**
+    /*
+     * Returns the x-coordinate of the player's cursor.
+     *
+     * @return the cursor's x-coordinate
+     */
+    final double getCursorX()
+    {
+        return cursorX;
+    }
+
+    /*
+     * Returns the y-coordinate of the player's cursor.
+     *
+     * @return the cursor's y-coordinate
+     */
+    final double getCursorY()
+    {
+        return cursorY;
+    }
+
+    /*
+     * Returns the size of the player's cursor.
+     *
+     * @return the cursor size
+     */
+    final double getCursorSize()
+    {
+        return CURSOR_SIZE_PIXELS;
+    }
+
+    /*
      * Returns the player's bonus points.
      *
      * @return the bonus points
@@ -392,17 +313,7 @@ public class Player
         return bonusPoints;
     }
 
-    /**
-     * Adds points for collecting a target letter.
-     */
-    private void addTargetPoints()
-    {
-        score += TARGET_POINTS;
-        System.out.println("Target Points: " + score);
-        updateHighScore();
-    }
-
-    /**
+    /*
      * Adds points for completing a bonus word.
      */
     final void addBonusPoints()
@@ -418,7 +329,7 @@ public class Player
 
     }
 
-    /**
+    /*
      * Resets the player's state, clearing all scores and collected letters.
      */
     final void reset()
@@ -430,4 +341,93 @@ public class Player
         incorrectClicks = INITIAL_SCORE_VALUE;
         bonusWordCompleted = false;
     }
+
+    /*
+     * Checks whether the collected characters match the given word exactly.
+     *
+     * @param collected the list of collected characters
+     * @param word the word to compare against
+     * @return true if the collected characters form the word exactly, false otherwise
+     */
+    private boolean hasCompletedWord(final List<Character> collected, final String word)
+    {
+        if (collected.size() != word.length())
+        {
+            return false;
+        }
+
+        final StringBuilder builder = new StringBuilder();
+        for (final char c : collected)
+        {
+            builder.append(c);
+        }
+
+        return builder.toString().equals(word);
+    }
+
+    /*
+     * Loads the high score from a file.
+     *
+     * @return the high score, or 0 if loading fails
+     */
+    private int loadHighScore()
+    {
+        try
+        {
+            final List<LetterRushScore> scores;
+            scores = LetterRushScore.readScoresFromFile(HIGH_SCORE_FILE_PATH);
+
+            if (scores.isEmpty())
+            {
+                return INITIAL_SCORE_VALUE;
+            }
+
+            // Get the most recent high score
+            final LetterRushScore latestScore;
+            latestScore = scores.stream()
+                                .max(Comparator.comparing(LetterRushScore::getTimestamp))
+                                .orElse(new LetterRushScore(INITIAL_SCORE_VALUE,
+                                                            INITIAL_SCORE_VALUE,
+                                                            INITIAL_SCORE_VALUE));
+
+            return latestScore.getHighScore();
+        }
+        catch (final IOException e)
+        {
+            System.err.println(ERROR_LOADING_MESSAGE + e.getMessage());
+            return INITIAL_SCORE_VALUE;
+        }
+    }
+
+    /*
+     * Saves the current high score to a file.
+     */
+    private void saveHighScore()
+    {
+        try
+        {
+            final LetterRushScore scoreEntry;
+            scoreEntry = new LetterRushScore(highScore,
+                                             score,
+                                             bonusPoints);
+
+            LetterRushScore.appendScoreToFile(scoreEntry,
+                                              HIGH_SCORE_FILE_PATH);
+        }
+        catch (final IOException e)
+        {
+            System.err.println(ERROR_SAVING_MESSAGE + e.getMessage());
+        }
+    }
+
+    /*
+     * Adds points for collecting a target letter.
+     */
+    private void addTargetPoints()
+    {
+        score += TARGET_POINTS;
+        System.out.println("Target Points: " + score);
+        updateHighScore();
+    }
+
 }
