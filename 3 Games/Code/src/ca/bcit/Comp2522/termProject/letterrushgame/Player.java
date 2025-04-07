@@ -35,9 +35,8 @@ public class Player
     private static final String TOO_MANY_LETTERS_MESSAGE = "Too many letters clicked: ";
     private static final String GREATER_THAN_MESSAGE     = " > ";
     private static final String TARGET_COMPLETED_MESSAGE = "Target word completed, returning false.";
-    private static final String TOO_MANY_CLICKS_MESSAGE  = "Too many incorrect clicks: "; 
+    private static final String TOO_MANY_CLICKS_MESSAGE  = "Too many incorrect clicks: ";
 
-    // Declaring instance variables
     private final List<Character> collectedTarget;
     private final List<Character> collectedBonus;
     private       int             scorePoints;
@@ -58,7 +57,6 @@ public class Player
      */
     public Player()
     {
-        // Initializing instance variables
         this.collectedTarget      = new ArrayList<>();
         this.collectedBonus       = new ArrayList<>();
         this.scorePoints          = INITIAL_SCORE_POINTS;
@@ -129,7 +127,6 @@ public class Player
      */
     public final List<Character> getCollectedTarget()
     {
-        // Declaring and initializing local variable
         final List<Character> copy;
         copy = new ArrayList<>(collectedTarget);
 
@@ -300,7 +297,6 @@ public class Player
             return true;
         }
 
-        // Critical comment: StringBuilder is used here to check collected letters, but result is unused
         final StringBuilder collectedBuilder;
         collectedBuilder = new StringBuilder();
 
@@ -311,7 +307,7 @@ public class Player
         return false;
     }
 
-    /**
+    /*
      * Updates the player’s cursor position to the specified coordinates in pixels.
      * This method sets cursorXPixels and cursorYPixels to the provided values, reflecting the player’s
      * current mouse position in the game window. The cursor position is used to detect collisions
@@ -327,7 +323,7 @@ public class Player
         cursorYPixels = yPixels;
     }
 
-    /**
+    /*
      * Retrieves the x-coordinate of the player’s cursor in pixels.
      * This value represents the horizontal position of the cursor within the game window, updated
      * via updateCursorPosition().
@@ -339,7 +335,7 @@ public class Player
         return cursorXPixels;
     }
 
-    /**
+    /*
      * Retrieves the y-coordinate of the player’s cursor in pixels.
      * This value represents the vertical position of the cursor within the game window, updated
      * via updateCursorPosition().
@@ -351,7 +347,7 @@ public class Player
         return cursorYPixels;
     }
 
-    /**
+    /*
      * Retrieves the fixed size of the player’s cursor in pixels.
      * This constant value (CURSOR_SIZE_PIXELS) defines the cursor’s dimensions, used for collision
      * detection or rendering purposes within the game.
@@ -363,7 +359,7 @@ public class Player
         return CURSOR_SIZE_PIXELS;
     }
 
-    /**
+    /*
      * Retrieves the player’s current bonus points accumulated during the game session.
      * Bonus points are awarded for completing the bonus word and persist across levels until reset.
      *
@@ -374,7 +370,7 @@ public class Player
         return bonusPoints;
     }
 
-    /**
+    /*
      * Awards bonus points to the player for completing a bonus word, if not already awarded.
      * If bonusWordCompleted is false, this method adds BONUS_POINTS_PER_WORD to both scorePoints and
      * bonusPoints, sets bonusWordCompleted to true to prevent duplicate awards, logs the new score,
@@ -392,7 +388,7 @@ public class Player
         }
     }
 
-    /**
+    /*
      * Resets the player’s entire state to initial values, clearing all progress.
      * This method empties the collectedTarget and collectedBonus lists, resets scorePoints,
      * bonusPoints, and incorrectClicksCount to zero, and sets bonusWordCompleted to false.
@@ -408,7 +404,7 @@ public class Player
         bonusWordCompleted   = false;
     }
 
-    /**
+    /*
      * Checks whether the provided list of collected characters exactly matches the given word.
      * This private helper method compares the size of the collected list to the word’s length; if
      * unequal, it returns false. Otherwise, it builds a string from the collected characters and
@@ -427,7 +423,6 @@ public class Player
             return false;
         }
 
-        // Declaring local variable
         final StringBuilder builder;
         builder = new StringBuilder();
 
@@ -439,7 +434,7 @@ public class Player
         return builder.toString().equals(word);
     }
 
-    /**
+    /*
      * Loads the player’s high score from the file specified by HIGH_SCORE_FILE_PATH.
      * This private method reads all score entries using LetterRushScore.readScoresFromFile(), then
      * finds the entry with the latest timestamp using a stream-based max operation with a Comparator.
@@ -452,11 +447,9 @@ public class Player
     {
         try
         {
-            // Declaring local variables
             final List<LetterRushScore> scores;
             final LetterRushScore       latestScore;
 
-            // Loading scores from file
             scores = LetterRushScore.readScoresFromFile(HIGH_SCORE_FILE_PATH);
 
             if(scores.isEmpty())
@@ -464,7 +457,6 @@ public class Player
                 return INITIAL_SCORE_POINTS;
             }
 
-            // Finding latest score
             latestScore = scores.stream().max(Comparator.comparing(LetterRushScore::getTimestamp))
                                 .orElse(new LetterRushScore(INITIAL_SCORE_POINTS,
                                                             INITIAL_SCORE_POINTS,
@@ -479,7 +471,7 @@ public class Player
         }
     }
 
-    /**
+    /*
      * Saves the current high score to the file specified by HIGH_SCORE_FILE_PATH.
      * This private method creates a new LetterRushScore object with the current highScorePoints,
      * scorePoints, and bonusPoints, then appends it to the file using LetterRushScore.appendScoreToFile().
@@ -490,10 +482,7 @@ public class Player
     {
         try
         {
-            // Declaring local variable
             final LetterRushScore scoreEntry;
-
-            // Initializing score entry
             scoreEntry = new LetterRushScore(highScorePoints,
                                              scorePoints,
                                              bonusPoints);
@@ -507,7 +496,7 @@ public class Player
         }
     }
 
-    /**
+    /*
      * Awards points to the player for collecting a letter that matches the target word.
      * This private method increments scorePoints by TARGET_POINTS_PER_LETTER, logs the updated score,
      * and calls updateHighScore() to check if the new score exceeds the high score. It is invoked
