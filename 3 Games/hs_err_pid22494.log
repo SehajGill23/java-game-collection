@@ -16,7 +16,7 @@
 
 ---------------  S U M M A R Y ------------
 
-Command Line: --module-path=/Users/jatindergill/Desktop/BCIT/Semester2/Comp-2522-OOPs /javafx/javafx-sdk-21.0.6/lib --add-modules=javafx.controls,javafx.fxml -Djava.library.path=/Users/jatindergill/Desktop/BCIT/Semester2/Comp-2522-OOPs /javafx/javafx-sdk-21.0.6/lib -javaagent:/Applications/IntelliJ IDEA.app/Contents/lib/idea_rt.jar=57520 -Dfile.encoding=UTF-8 -Dsun.stdout.encoding=UTF-8 -Dsun.stderr.encoding=UTF-8 ca.bcit.Comp2522.termProject.WordGame.Main
+Command Line: --module-path=/Users/jatindergill/Desktop/BCIT/Semester2/Comp-2522-OOPs /javafx/javafx-sdk-21.0.6/lib --add-modules=javafx.controls,javafx.fxml -Djava.library.path=/Users/jatindergill/Desktop/BCIT/Semester2/Comp-2522-OOPs /javafx/javafx-sdk-21.0.6/lib -javaagent:/Applications/IntelliJ IDEA.app/Contents/lib/idea_rt.jar=57520 -Dfile.encoding=UTF-8 -Dsun.stdout.encoding=UTF-8 -Dsun.stderr.encoding=UTF-8 WordGame.ca.bcit.comp2522.termproject.Main
 
 Host: "Mac14,2" arm64, 8 cores, 8G, Darwin 24.3.0, macOS 15.3.2 (24D81)
 Time: Sat Mar 29 02:21:53 2025 PDT elapsed time: 247.666155 seconds (0d 0h 4m 7s)
@@ -1528,7 +1528,7 @@ Dynamic libraries:
 
 VM Arguments:
 jvm_args: --module-path=/Users/jatindergill/Desktop/BCIT/Semester2/Comp-2522-OOPs /javafx/javafx-sdk-21.0.6/lib --add-modules=javafx.controls,javafx.fxml -Djava.library.path=/Users/jatindergill/Desktop/BCIT/Semester2/Comp-2522-OOPs /javafx/javafx-sdk-21.0.6/lib -javaagent:/Applications/IntelliJ IDEA.app/Contents/lib/idea_rt.jar=57520 -Dfile.encoding=UTF-8 -Dsun.stdout.encoding=UTF-8 -Dsun.stderr.encoding=UTF-8 
-java_command: ca.bcit.Comp2522.termProject.WordGame.Main
+java_command: WordGame.ca.bcit.comp2522.termproject.Main
 java_class_path (initial): /Users/jatindergill/Desktop/BCIT/Semester2/Comp-2522-OOPs /Projects/Term Project/3 Games/.idea/out/production/3 Games:/Users/jatindergill/Desktop/BCIT/Semester2/Comp-2522-OOPs /javafx/javafx-sdk-21.0.6/lib/javafx-swt.jar:/Users/jatindergill/Desktop/BCIT/Semester2/Comp-2522-OOPs /javafx/javafx-sdk-21.0.6/lib/javafx.web.jar:/Users/jatindergill/Desktop/BCIT/Semester2/Comp-2522-OOPs /javafx/javafx-sdk-21.0.6/lib/javafx.base.jar:/Users/jatindergill/Desktop/BCIT/Semester2/Comp-2522-OOPs /javafx/javafx-sdk-21.0.6/lib/javafx.fxml.jar:/Users/jatindergill/Desktop/BCIT/Semester2/Comp-2522-OOPs /javafx/javafx-sdk-21.0.6/lib/javafx.media.jar:/Users/jatindergill/Desktop/BCIT/Semester2/Comp-2522-OOPs /javafx/javafx-sdk-21.0.6/lib/javafx.swing.jar:/Users/jatindergill/Desktop/BCIT/Semester2/Comp-2522-OOPs /javafx/javafx-sdk-21.0.6/lib/javafx.controls.jar:/Users/jatindergill/Desktop/BCIT/Semester2/Comp-2522-OOPs /javafx/javafx-sdk-21.0.6/lib/javafx.graphics.jar
 Launcher Type: SUN_STANDARD
 

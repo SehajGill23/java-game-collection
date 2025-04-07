@@ -1,4 +1,4 @@
-package ca.bcit.Comp2522.termProject.NumberGame;
+package ca.bcit.Comp2522.termProject.numbergame;
 
 import java.util.Random;
 

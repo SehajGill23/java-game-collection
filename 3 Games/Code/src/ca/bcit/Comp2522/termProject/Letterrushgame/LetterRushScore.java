@@ -1,4 +1,4 @@
-package ca.bcit.Comp2522.termProject.LetterRushGame;
+package ca.bcit.Comp2522.termProject.Letterrushgame;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

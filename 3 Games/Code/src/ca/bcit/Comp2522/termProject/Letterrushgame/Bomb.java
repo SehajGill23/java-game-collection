@@ -1,4 +1,4 @@
-package ca.bcit.Comp2522.termProject.LetterRushGame;
+package ca.bcit.Comp2522.termProject.Letterrushgame;
 
 /**
  * The Bomb class represents a bomb obstacle in the LetterRush game.

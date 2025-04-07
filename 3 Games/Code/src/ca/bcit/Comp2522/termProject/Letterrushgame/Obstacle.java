@@ -1,4 +1,4 @@
-package ca.bcit.Comp2522.termProject.LetterRushGame;
+package ca.bcit.Comp2522.termProject.Letterrushgame;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -73,7 +73,7 @@ public abstract class Obstacle
         randomizeSpeed();
     }
 
-    /**
+    /*
      * Returns the ImageView node representing the obstacle.
      *
      * @return the ImageView node
@@ -83,7 +83,7 @@ public abstract class Obstacle
         return node;
     }
 
-    /**
+    /*
      * Updates the obstacle's position, handling boundary collisions within the game area.
      *
      * @param width  the width of the game area
@@ -118,7 +118,7 @@ public abstract class Obstacle
         node.setY(y);
     }
 
-    /**
+    /*
      * Checks if the obstacle collides with the player's cursor.
      *
      * @param player the player to check collision against

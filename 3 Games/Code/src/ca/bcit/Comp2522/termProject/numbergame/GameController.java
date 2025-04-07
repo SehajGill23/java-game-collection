@@ -1,4 +1,4 @@
-package ca.bcit.Comp2522.termProject.NumberGame;
+package ca.bcit.Comp2522.termProject.numbergame;
 
 /**
  * Defines the contract for controlling the game flow in a grid-based number placement game.

@@ -1,4 +1,4 @@
-package ca.bcit.Comp2522.termProject.LetterRushGame;
+package ca.bcit.Comp2522.termProject.Letterrushgame;
 
 /**
  * The Missile class represents a missile obstacle in the LetterRush game.

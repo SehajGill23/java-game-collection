@@ -1,4 +1,4 @@
-package ca.bcit.Comp2522.termProject.LetterRushGame;
+package ca.bcit.Comp2522.termProject.Letterrushgame;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,32 +15,32 @@ import java.util.List;
  */
 public class Player
 {
-    private static final int    INITIAL_CLICKS          = 0;
-    private static final int    INITIAL_SCORE_VALUE     = 0;
-    private static final int    TARGET_POINTS           = 10;
-    private static final int    BONUS_POINTS            = 20;
-    private static final double CURSOR_SIZE_PIXELS       = 10.0;
-    private static final String HIGH_SCORE_FILE_PATH    = "Resources/highScore.txt";
-    private static final String ERROR_LOADING_MESSAGE   = "Error loading high score: ";
-    private static final String ERROR_SAVING_MESSAGE    = "Error saving high score: ";
-    private static final String CLICKED_LETTER_MESSAGE  = "Clicked letter: ";
-    private static final String TARGET_SO_FAR_MESSAGE   = " | Collected Target so far: ";
-    private static final String BONUS_SO_FAR_MESSAGE    = " | Collected Bonus so far: ";
-    private static final String HAS_FAILED_MESSAGE      = "hasFailed: ";
-    private static final String TOO_MANY_LETTERS_MSG    = "Too many letters clicked: ";
-    private static final String GREATER_THAN_MESSAGE    = " > ";
-    private static final String TARGET_COMPLETED_MSG    = "Target word completed, returning false.";
-    private static final String TOO_MANY_CLICKS_MSG     = "Too many incorrect clicks: ";
+    private static final int             INITIAL_CLICKS         = 0;
+    private static final int             INITIAL_SCORE_VALUE    = 0;
+    private static final int             TARGET_POINTS          = 10;
+    private static final int             BONUS_POINTS           = 20;
+    private static final double          CURSOR_SIZE_PIXELS     = 10.0;
+    private static final String          HIGH_SCORE_FILE_PATH   = "Resources/highScore.txt";
+    private static final String          ERROR_LOADING_MESSAGE  = "Error loading high score: ";
+    private static final String          ERROR_SAVING_MESSAGE   = "Error saving high score: ";
+    private static final String          CLICKED_LETTER_MESSAGE = "Clicked letter: ";
+    private static final String          TARGET_SO_FAR_MESSAGE  = " | Collected Target so far: ";
+    private static final String          BONUS_SO_FAR_MESSAGE   = " | Collected Bonus so far: ";
+    private static final String          HAS_FAILED_MESSAGE     = "hasFailed: ";
+    private static final String          TOO_MANY_LETTERS_MSG   = "Too many letters clicked: ";
+    private static final String          GREATER_THAN_MESSAGE   = " > ";
+    private static final String          TARGET_COMPLETED_MSG   = "Target word completed, returning false.";
+    private static final String          TOO_MANY_CLICKS_MSG    = "Too many incorrect clicks: ";
+    private final        List<Character> collectedTarget;
+    private final        List<Character> collectedBonus;
 
-    private int                 score;
-    private int                 highScore;
-    private double              cursorX;
-    private double              cursorY;
-    private List<Character>     collectedTarget;
-    private List<Character>     collectedBonus;
-    private int                 bonusPoints;
-    private int                 incorrectClicks;
-    private boolean bonusWordCompleted;
+    private       int             score;
+    private       int             highScore;
+    private       double          cursorX;
+    private       double          cursorY;
+    private       int             bonusPoints;
+    private       int             incorrectClicks;
+    private       boolean         bonusWordCompleted;
 
     /**
      * Constructs a new Player instance, initializing scores, collected letters,
@@ -383,7 +383,6 @@ public class Player
                 return INITIAL_SCORE_VALUE;
             }
 
-            // Get the most recent high score
             final LetterRushScore latestScore;
             latestScore = scores.stream()
                                 .max(Comparator.comparing(LetterRushScore::getTimestamp))

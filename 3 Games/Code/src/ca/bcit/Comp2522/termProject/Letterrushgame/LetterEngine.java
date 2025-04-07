@@ -1,4 +1,4 @@
-package ca.bcit.Comp2522.termProject.LetterRushGame;
+package ca.bcit.Comp2522.termProject.Letterrushgame;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.layout.Pane;
@@ -67,6 +67,7 @@ public class LetterEngine
     private       boolean        bonusFound;
     private       LetterRush     game;
     private       boolean        isGameOver;
+
 
     /**
      * Constructs a new LetterEngine instance with the specified window dimensions.
@@ -240,7 +241,7 @@ public class LetterEngine
                 tooClose = false;
                 x        = Math.random() * (windowWidth - SPAWN_POSITION_OFFSET_PIXELS);
                 y        = Math.random() * (windowHeight - SPAWN_POSITION_OFFSET_PIXELS);
-                for(Letter existing : letters)
+                for(final Letter existing : letters)
                 {
                     double dx = existing.getNode().getX() - x;
                     double dy = existing.getNode().getY() - y;

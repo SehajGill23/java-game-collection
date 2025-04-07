@@ -1,4 +1,4 @@
-package ca.bcit.Comp2522.termProject.WordGame;
+package ca.bcit.Comp2522.termProject.wordgame;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

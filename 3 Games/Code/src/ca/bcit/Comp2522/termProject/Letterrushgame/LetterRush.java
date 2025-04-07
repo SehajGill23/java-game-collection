@@ -1,6 +1,6 @@
-package ca.bcit.Comp2522.termProject.LetterRushGame;
+package ca.bcit.Comp2522.termProject.Letterrushgame;
 
-import ca.bcit.Comp2522.termProject.WordGame.Main;
+import ca.bcit.Comp2522.termProject.wordgame.Main;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -93,7 +93,6 @@ public class LetterRush
     private        Pane         root;
     private        Stage        stage;
     private        Scene        menuScene;
-    private        Scene        gameScene;
     private        Text         scoreText;
     private        Text         bonusScoreText;
     private        Text         highScoreText;
@@ -281,7 +280,8 @@ public class LetterRush
                               alert = new Alert(Alert.AlertType.INFORMATION);
                               alert.setTitle(CONGRATS_TITLE);
                               alert.setHeaderText(GOAT_MESSAGE);
-                              alert.setContentText("You have completed all levels of LetterRush! Final Score: " + player.getScore());
+                              alert.setContentText("You have completed all levels of LetterRush! " +
+                                                   "Final Score: " + player.getScore());
                               alert.getDialogPane().getStylesheets().add(CSS_PATH);
                               alert.getDialogPane().getStyleClass().add(ALERT_STYLE);
                               alert.showAndWait();
@@ -444,9 +444,10 @@ public class LetterRush
                                   quitButton,
                                   themeButton);
 
+        Scene gameScene;
         gameScene = new Scene(root,
-                              WINDOW_WIDTH_PIXELS,
-                              WINDOW_HEIGHT_PIXELS);
+                                    WINDOW_WIDTH_PIXELS,
+                                    WINDOW_HEIGHT_PIXELS);
         gameScene.getStylesheets().add(CSS_PATH);
 
         gameScene.setOnMouseMoved(event -> player.updateCursorPosition(event.getX(),

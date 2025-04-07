@@ -1,4 +1,4 @@
-package ca.bcit.Comp2522.termProject.LetterRushGame;
+package ca.bcit.Comp2522.termProject.Letterrushgame;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,32 +13,34 @@ import java.util.List;
  * @author Sehaj Gill
  * @version 1.0
  */
-public class LevelManager
+final class LevelManager
 {
+    private static final String   WORDS_FILE_PATH         = "/words.txt";
+    private static final String   ERROR_NO_WORDS_LOADED   = "LevelManager: No words loaded from ";
+    private static final String   ERROR_INIT_FAILED       = "LevelManager initialization failed: ";
+    private static final String   SUCCESS_INIT_PREFIX     = "LevelManager initialized with ";
+    private static final String   SUCCESS_INIT_SUFFIX     = " levels";
+    private static final String   ERROR_NO_MORE_LEVELS    = "No more levels available";
+    private static final int      INITIAL_LEVEL_INDEX     = 0;
+    private static final int      OBSTACLE_TYPE_COUNT     = 3;
+    private static final int[]    OBSTACLE_COUNTS         = {9, 12, 15, 18, 21};
+    private static final int[]    WORD_PAIRS_PER_LEVEL    = {6, 7, 8, 9, 12};
+    private static final double   BASE_SPEED_MULTIPLIER   = 1.5;
+    private static final double   SPEED_MULTIPLIER_OFFSET = 1.0;
+    private static final double   NANOSECONDS_PER_SECOND  = 1_000_000_000.0;
+    private static final double[] TIME_LIMITS             = {22.0, 20.0, 16.0, 14.0, 10.0};
+    private static final double   MINIMUM_TIME_LEFT       = 0.0;
+    static final         String   OBSTACLE_TYPE_MISSILE   = "MISSILE";
+    static final         String   OBSTACLE_TYPE_BOMB      = "BOMB";
+    static final         String   OBSTACLE_TYPE_SPIKE     = "SPIKE";
+    private static final String[] OBSTACLE_TYPES          = {OBSTACLE_TYPE_MISSILE,
+                                                             OBSTACLE_TYPE_BOMB,
+                                                             OBSTACLE_TYPE_SPIKE};
 
-    private static final String   WORDS_FILE_PATH        = "/words.txt";
-    private static final String   ERROR_NO_WORDS_LOADED  = "LevelManager: No words loaded from ";
-    private static final String   ERROR_INIT_FAILED      = "LevelManager initialization failed: ";
-    private static final String   SUCCESS_INIT_MESSAGE   = "LevelManager initialized with ";
-    private static final int      OBSTACLE_TYPE_COUNT    = 3;
-    private static final int[]    OBSTACLE_COUNTS        = {9, 12, 15, 18, 21};
-    private static final int[]    LEVEL_LINES            = {6, 7, 8, 9, 12};
-    private static final double   SPEED_FACTOR           = 1.5;
-    private static final double   NANOSECONDS_PER_SECOND = 1_000_000_000.0;
-    private static final double[] TIMERS                 = {22.0, 20.0, 16.0, 14.0, 10.0};
-    static final         String   OBSTACLE_TYPE_MISSILE  = "MISSILE";
-    static final         String   OBSTACLE_TYPE_BOMB     = "BOMB";
-    static final         String   OBSTACLE_TYPE_SPIKE    = "SPIKE";
-    private static final String[] OBSTACLE_TYPES         = {OBSTACLE_TYPE_MISSILE,
-                                                            OBSTACLE_TYPE_BOMB,
-                                                            OBSTACLE_TYPE_SPIKE};
-
-    private       int                currentLevel = 0;
+    private       int                currentLevel = INITIAL_LEVEL_INDEX;
     private       long               startTime;
     private final List<List<String>> levels       = new ArrayList<>();
     private final GameUI             ui;
-
-
 
     /**
      * Constructs a new LevelManager, initializing the levels by loading words from
@@ -52,20 +54,22 @@ public class LevelManager
         this.ui = new GameUI();
         try
         {
-            final List<String> allWords = ui.loadWords(WORDS_FILE_PATH);
-            if(allWords == null || allWords.isEmpty())
+            final List<String> allWords;
+            allWords = ui.loadWords(WORDS_FILE_PATH);
+            if(allWords.isEmpty())
             {
                 System.err.println(ERROR_NO_WORDS_LOADED + WORDS_FILE_PATH);
             }
-            int index = 0;
-            for(final int lines : LEVEL_LINES)
+            int index;
+            index = INITIAL_LEVEL_INDEX;
+            for(final int lines : WORD_PAIRS_PER_LEVEL)
             {
                 levels.add(allWords.subList(index,
                                             Math.min(index + lines,
                                                      allWords.size())));
                 index += lines;
             }
-            System.out.println(SUCCESS_INIT_MESSAGE + levels.size() + " levels");
+            System.out.println(SUCCESS_INIT_PREFIX + levels.size() + SUCCESS_INIT_SUFFIX);
         }
         catch(Exception e)
         {
@@ -85,12 +89,12 @@ public class LevelManager
     {
         if(currentLevel >= levels.size())
         {
-            throw new IllegalStateException("No more levels available");
+            throw new IllegalStateException(ERROR_NO_MORE_LEVELS);
         }
         return new Level(levels.get(currentLevel),
                          OBSTACLE_COUNTS[currentLevel],
-                         TIMERS[currentLevel],
-                         SPEED_FACTOR * (currentLevel + 1));
+                         TIME_LIMITS[currentLevel],
+                         BASE_SPEED_MULTIPLIER * (currentLevel + SPEED_MULTIPLIER_OFFSET));
     }
 
     /*
@@ -100,7 +104,7 @@ public class LevelManager
      */
     int getCurrentLevelNumber()
     {
-        return currentLevel + 1;
+        return currentLevel + (int)SPEED_MULTIPLIER_OFFSET;
     }
 
     /*
@@ -109,7 +113,7 @@ public class LevelManager
      */
     void advanceLevel()
     {
-        if(currentLevel < levels.size() - 1)
+        if(currentLevel < levels.size() - (int)SPEED_MULTIPLIER_OFFSET)
         {
             currentLevel++;
         }
@@ -126,10 +130,11 @@ public class LevelManager
     boolean updateTimer(final long now,
                         final GameUI ui)
     {
-        final double timeLeft = TIMERS[currentLevel] - (now - startTime) / NANOSECONDS_PER_SECOND;
-        ui.updateTimer(Math.max(0,
+        final double timeLeft;
+        timeLeft = TIME_LIMITS[currentLevel] - (now - startTime) / NANOSECONDS_PER_SECOND;
+        ui.updateTimer(Math.max(MINIMUM_TIME_LEFT,
                                 timeLeft));
-        return timeLeft <= 0;
+        return timeLeft <= MINIMUM_TIME_LEFT;
     }
 
     /*
@@ -145,7 +150,7 @@ public class LevelManager
      */
     void resetLevel()
     {
-        currentLevel = 0;
+        currentLevel = INITIAL_LEVEL_INDEX;
     }
 
     /*
@@ -200,7 +205,7 @@ public class LevelManager
             final List<String> config;
             config = new ArrayList<>();
 
-            for(int i = 0; i < obstacleCount; i++)
+            for(int i = INITIAL_LEVEL_INDEX; i < obstacleCount; i++)
             {
                 config.add(OBSTACLE_TYPES[i % OBSTACLE_TYPE_COUNT]);
             }

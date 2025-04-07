@@ -1,4 +1,4 @@
-package ca.bcit.Comp2522.termProject.LetterRushGame;
+package ca.bcit.Comp2522.termProject.Letterrushgame;
 
 import javafx.scene.text.Text;
 
@@ -56,44 +56,6 @@ public class Letter
     }
 
     /**
-     * Gets the JavaFX Text node representing the letter.
-     *
-     * @return the Text node of the letter
-     */
-    public final Text getNode()
-    {
-        return node;
-    }
-
-    /**
-     * Gets the character value of the letter.
-     *
-     * @return the character value (e.g., 'A', 'B', etc.)
-     */
-    final char getValue()
-    {
-        return value;
-    }
-
-    /**
-     * Checks if the letter is locked and cannot move.
-     *
-     * @return true if the letter is locked, false otherwise
-     */
-    final boolean isLocked()
-    {
-        return isLocked;
-    }
-
-    /**
-     * Locks the letter, preventing it from moving.
-     */
-    final void lock()
-    {
-        isLocked = true;
-    }
-
-    /**
      * Updates the letter's position based on its current direction and speed.
      * If the letter is locked, its position does not change. The letter bounces
      * off the boundaries of the game window, defined by the specified width and height.
@@ -132,6 +94,45 @@ public class Letter
     }
 
     /**
+     * Gets the JavaFX Text node representing the letter.
+     *
+     * @return the Text node of the letter
+     */
+    public final Text getNode()
+    {
+        return node;
+    }
+
+    /*
+     * Gets the character value of the letter.
+     *
+     * @return the character value (e.g., 'A', 'B', etc.)
+     */
+    final char getValue()
+    {
+        return value;
+    }
+
+    /*
+     * Checks if the letter is locked and cannot move.
+     *
+     * @return true if the letter is locked, false otherwise
+     */
+    final boolean isLocked()
+    {
+        return isLocked;
+    }
+
+    /*
+     * Locks the letter, preventing it from moving.
+     */
+    final void lock()
+    {
+        isLocked = true;
+    }
+
+
+    /*
      * Randomizes the letter's direction by setting its horizontal and vertical
      * speeds (dx and dy) to random values. The speed is scaled by LETTER_SPEED,
      * and the direction is randomly chosen to be positive or negative.
