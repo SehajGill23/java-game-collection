@@ -73,3 +73,23 @@ High Score: 160
 Current Score: 160
 Bonus Score: 0
 
+Timestamp: 2025-04-07 15:40:24
+High Score: 170
+Current Score: 170
+Bonus Score: 0
+
+Timestamp: 2025-04-07 15:40:25
+High Score: 180
+Current Score: 180
+Bonus Score: 0
+
+Timestamp: 2025-04-07 15:40:27
+High Score: 190
+Current Score: 190
+Bonus Score: 0
+
+Timestamp: 2025-04-07 15:40:28
+High Score: 200
+Current Score: 200
+Bonus Score: 0
+

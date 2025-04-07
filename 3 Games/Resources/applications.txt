@@ -4,7 +4,7 @@ lesson 2:    Inheritance with Obstacle class in class Cactus, Bomb, Missile.
              Exception handling with try-catch in class LetterEngine.
 lesson 3:    Abstract class definition in class Obstacle.
              Final fields for immutability in class LetterEngine.
-lesson 4:    List interface usage in class Player.
+lesson 4:    Implemented Runnable interface  in class LetterRush.
              Inheritance to Parent's class in class Cactus, Bomb, Missile.
 lesson 5:    ArrayList for dynamic storage in class LevelManager.
              Enhanced for loop for iteration in class LetterEngine.
