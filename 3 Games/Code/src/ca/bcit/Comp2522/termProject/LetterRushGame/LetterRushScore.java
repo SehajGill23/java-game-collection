@@ -49,7 +49,7 @@ public class LetterRushScore
     private final int           bonusScore;
     private final LocalDateTime timestamp;
 
-    /**
+    /*
      * Constructs a new LetterRushScore instance with the specified high score, current score,
      * bonus score, and timestamp.
      *
@@ -87,70 +87,6 @@ public class LetterRushScore
              LocalDateTime.now());
     }
 
-    /**
-     * Returns the high score.
-     *
-     * @return the high score
-     */
-    public final int getHighScore()
-    {
-        return highScore;
-    }
-
-    /**
-     * Returns the timestamp when the high score was achieved.
-     *
-     * @return the timestamp
-     */
-    final LocalDateTime getTimestamp()
-    {
-        return timestamp;
-    }
-
-    /**
-     * Returns a string representation of the score entry, including the timestamp,
-     * high score, current score, and bonus score.
-     *
-     * @return a formatted string representing the score entry
-     */
-    @Override
-    public final String toString()
-    {
-        final DateTimeFormatter formatter;
-        formatter = DateTimeFormatter.ofPattern(DATE_TIME_PATTERN);
-
-        return String.format(TIMESTAMP_LABEL + "%s" + NEW_LINE + HIGH_SCORE_LABEL
-                             + "%d" + NEW_LINE + CURRENT_SCORE_LABEL + "%d"
-                             + NEW_LINE + BONUS_SCORE_LABEL + "%d" + NEW_LINE,
-                             timestamp.format(formatter),
-                             highScore,
-                             currentScore,
-                             bonusScore);
-    }
-
-    /**
-     * Appends the specified score entry to the given file.
-     *
-     * @param score    the LetterRushScore object to save
-     * @param filePath the path to the file where the score will be saved
-     * @throws IOException if an error occurs while writing to the file
-     */
-     static void appendScoreToFile(final LetterRushScore score,
-                                        final String filePath) throws IOException
-    {
-        final File scoreFile;
-        scoreFile = new File(filePath);
-
-        try(final BufferedWriter writer = new BufferedWriter(new FileWriter(scoreFile,
-                                                                            true)))
-        {
-            writer.write(score.toString() + NEW_LINE);
-        }
-        catch(final IOException e)
-        {
-            throw new IOException(ERROR_MESSAGE + scoreFile.getAbsolutePath() + ERROR_MESSAGE_PART + e.getMessage());
-        }
-    }
 
     /**
      * Reads all score entries from the specified file and returns them as a list.
@@ -182,7 +118,7 @@ public class LetterRushScore
 
             while((line = reader.readLine()) != null)
             {
-                if(line.trim().isEmpty() && scoreEntry.length() > DEFAULT_SCORE_VALUE)
+                if(line.trim().isEmpty() && !scoreEntry.isEmpty())
                 {
                     scoreList.add(fromString(scoreEntry.toString()));
                     scoreEntry.setLength(DEFAULT_SCORE_VALUE);
@@ -193,7 +129,7 @@ public class LetterRushScore
                 }
             }
 
-            if(scoreEntry.length() > DEFAULT_SCORE_VALUE)
+            if(!scoreEntry.isEmpty())
             {
                 scoreList.add(fromString(scoreEntry.toString()));
             }
@@ -207,6 +143,72 @@ public class LetterRushScore
     }
 
     /**
+     * Returns a string representation of the score entry, including the timestamp,
+     * high score, current score, and bonus score.
+     *
+     * @return a formatted string representing the score entry
+     */
+    @Override
+    public final String toString()
+    {
+        final DateTimeFormatter formatter;
+        formatter = DateTimeFormatter.ofPattern(DATE_TIME_PATTERN);
+
+        return String.format(TIMESTAMP_LABEL + "%s" + NEW_LINE + HIGH_SCORE_LABEL
+                             + "%d" + NEW_LINE + CURRENT_SCORE_LABEL + "%d"
+                             + NEW_LINE + BONUS_SCORE_LABEL + "%d" + NEW_LINE,
+                             timestamp.format(formatter),
+                             highScore,
+                             currentScore,
+                             bonusScore);
+    }
+
+    /**
+     * Returns the high score.
+     *
+     * @return the high score
+     */
+    public final int getHighScore()
+    {
+        return highScore;
+    }
+
+    /*
+     * Appends the specified score entry to the given file.
+     *
+     * @param score    the LetterRushScore object to save
+     * @param filePath the path to the file where the score will be saved
+     * @throws IOException if an error occurs while writing to the file
+     */
+    static void appendScoreToFile(final LetterRushScore score,
+                                  final String filePath) throws IOException
+    {
+        final File scoreFile;
+        scoreFile = new File(filePath);
+
+        try(final BufferedWriter writer = new BufferedWriter(new FileWriter(scoreFile,
+                                                                            true)))
+        {
+            writer.write(score.toString() + NEW_LINE);
+        }
+        catch(final IOException e)
+        {
+            throw new IOException(ERROR_MESSAGE + scoreFile.getAbsolutePath() + ERROR_MESSAGE_PART + e.getMessage());
+        }
+    }
+
+
+    /*
+     * Returns the timestamp when the high score was achieved.
+     *
+     * @return the timestamp
+     */
+    final LocalDateTime getTimestamp()
+    {
+        return timestamp;
+    }
+
+    /*
      * Parses a string representation of a score entry and returns a corresponding LetterRushScore object.
      * If the string is malformed, logs an error and returns a default LetterRushScore object.
      *

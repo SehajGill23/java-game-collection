@@ -63,7 +63,7 @@ public final class Main
         System.out.print(INPUT_PROMPT);
     }
 
-    /**
+    /*
      * Runs the main menu loop, handling user input and launching the selected game mode.
      * Initializes JavaFX for the Number game and manages resource cleanup.
      * This method uses a polling loop with Thread.sleep, which may not be optimal for responsiveness;
@@ -87,7 +87,8 @@ public final class Main
             {
                 if(waitingForConsoleInput)
                 {
-                    final String input = sc.nextLine().trim().toUpperCase();
+                    final String input;
+                    input = sc.nextLine().trim().toUpperCase();
 
                     if(validator.isValidInput(input))
                     {

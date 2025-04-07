@@ -1,60 +1,15 @@
-Timestamp: 2025-04-05 13:39:16
+Timestamp: 2025-04-06 18:50:18
 High Score: 10
 Current Score: 10
 Bonus Score: 0
 
-Timestamp: 2025-04-05 13:39:17
+Timestamp: 2025-04-06 18:50:24
 High Score: 20
 Current Score: 20
 Bonus Score: 0
 
-Timestamp: 2025-04-05 13:39:17
-High Score: 30
-Current Score: 30
-Bonus Score: 0
-
-Timestamp: 2025-04-05 13:39:20
+Timestamp: 2025-04-06 18:50:24
 High Score: 40
 Current Score: 40
-Bonus Score: 0
-
-Timestamp: 2025-04-05 13:39:55
-High Score: 50
-Current Score: 50
-Bonus Score: 0
-
-Timestamp: 2025-04-05 13:39:56
-High Score: 60
-Current Score: 60
-Bonus Score: 0
-
-Timestamp: 2025-04-05 13:39:56
-High Score: 80
-Current Score: 80
 Bonus Score: 20
-
-Timestamp: 2025-04-05 13:39:59
-High Score: 90
-Current Score: 90
-Bonus Score: 0
-
-Timestamp: 2025-04-05 13:40:03
-High Score: 100
-Current Score: 100
-Bonus Score: 0
-
-Timestamp: 2025-04-05 13:40:04
-High Score: 110
-Current Score: 110
-Bonus Score: 0
-
-Timestamp: 2025-04-05 13:40:07
-High Score: 120
-Current Score: 120
-Bonus Score: 0
-
-Timestamp: 2025-04-05 13:40:09
-High Score: 130
-Current Score: 130
-Bonus Score: 0
 

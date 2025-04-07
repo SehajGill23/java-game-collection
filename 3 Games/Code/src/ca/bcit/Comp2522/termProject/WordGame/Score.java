@@ -214,7 +214,7 @@ public final class Score
 
             while((line = reader.readLine()) != null)
             {
-                if(line.trim().isEmpty() && scoreEntry.length() > DEFAULT_ATTEMPT_VALUE)
+                if(line.trim().isEmpty() && !scoreEntry.isEmpty())
                 {
                     scoreList.add(fromString(scoreEntry.toString()));
                     scoreEntry.setLength(DEFAULT_ATTEMPT_VALUE);
@@ -225,7 +225,7 @@ public final class Score
                 }
             }
 
-            if(scoreEntry.length() > DEFAULT_ATTEMPT_VALUE)
+            if(!scoreEntry.isEmpty())
             {
                 scoreList.add(fromString(scoreEntry.toString()));
             }
@@ -247,14 +247,12 @@ public final class Score
      */
     private static Score fromString(final String line)
     {
-        final String[] parts;
-        parts = line.split(NEW_LINE);
+        String[] parts = line.split(NEW_LINE);
 
         if(parts.length != SCORE_ENTRY_LINES)
         {
             System.out.println(INVALID_FORMAT_MSG + parts.length);
             System.out.println(ENTRY_LABEL + line);
-
             return new Score(LocalDateTime.now(),
                              DEFAULT_GAMES_PLAYED,
                              DEFAULT_ATTEMPT_VALUE,
@@ -264,45 +262,46 @@ public final class Score
 
         try
         {
-            final DateTimeFormatter formatter;
-            formatter = DateTimeFormatter.ofPattern(DATE_TIME_PATTERN);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_TIME_PATTERN);
 
-            final LocalDateTime timestamp;
-            timestamp = LocalDateTime.parse(parts[TIMESTAMP_INDEX].split(REGEX_COLON,
-                                                                         SPLIT_LIMIT)
-                                                    [SPLIT_VALUE_INDEX].trim(), formatter);
+            String[]          splitPart = parts[TIMESTAMP_INDEX].split(REGEX_COLON, SPLIT_LIMIT);
 
-            final int gamesPlayed;
-            gamesPlayed = Integer.parseInt(parts[GAMES_PLAYED_INDEX].split(REGEX_COLON,
-                                                                           SPLIT_LIMIT)
-                                                   [SPLIT_VALUE_INDEX].trim());
+            LocalDateTime     timestamp = LocalDateTime.parse(splitPart[SPLIT_VALUE_INDEX]
+                                                                      .trim(), formatter);
+            int gamesPlayed       = Integer.parseInt(parts[GAMES_PLAYED_INDEX]
+                                                             .split(REGEX_COLON, SPLIT_LIMIT)
+                                                             [SPLIT_VALUE_INDEX]
+                                                             .trim());
+            int firstAttempts     = Integer.parseInt(parts[FIRST_ATTEMPTS_INDEX]
+                                                             .split(REGEX_COLON, SPLIT_LIMIT)
+                                                             [SPLIT_VALUE_INDEX]
+                                                             .trim());
+            int secondAttempts    = Integer.parseInt(parts[SECOND_ATTEMPTS_INDEX]
+                                                             .split(REGEX_COLON, SPLIT_LIMIT)
+                                                             [SPLIT_VALUE_INDEX]
+                                                             .trim());
+            int incorrectAttempts = Integer.parseInt(parts[INCORRECT_ATTEMPTS_INDEX]
+                                                             .split(REGEX_COLON, SPLIT_LIMIT)
+                                                             [SPLIT_VALUE_INDEX]
+                                                             .trim());
 
-            final int firstAttempts;
-            firstAttempts = Integer.parseInt(parts[FIRST_ATTEMPTS_INDEX].split(REGEX_COLON,
-                                                                               SPLIT_LIMIT)
-                                                     [SPLIT_VALUE_INDEX].trim());
+            String scorePart = parts[SCORE_INDEX];
+            if(scorePart.startsWith(TOTAL_SCORE_LABEL))
+            {
+                return new Score(timestamp,
+                                 gamesPlayed,
+                                 firstAttempts,
+                                 secondAttempts,
+                                 incorrectAttempts);
+            }
 
-            final int secondAttempts;
-            secondAttempts = Integer.parseInt(parts[SECOND_ATTEMPTS_INDEX].split(REGEX_COLON,
-                                                                                 SPLIT_LIMIT)
-                                                      [SPLIT_VALUE_INDEX].trim());
-
-            final int incorrectAttempts;
-            incorrectAttempts = Integer.parseInt(parts[INCORRECT_ATTEMPTS_INDEX].split(REGEX_COLON,
-                                                                                       SPLIT_LIMIT)
-                                                         [SPLIT_VALUE_INDEX].trim());
-
-            final String scorePart;
-            scorePart = parts[SCORE_INDEX].split(REGEX_COLON,
-                                                 SPLIT_LIMIT)[SPLIT_VALUE_INDEX].trim();
-
-            final int parsedScore;
-            parsedScore = Integer.parseInt(scorePart.replaceAll(REGEX_NON_NUMERIC,
-                                                                ""));
-
-            final int calculatedScore;
-            calculatedScore = firstAttempts * FIRST_ATTEMPT_MULTIPLIER + secondAttempts
-                                                                         * SECOND_ATTEMPT_MULTIPLIER;
+            int parsedScore = Integer.parseInt(scorePart
+                                                       .split(REGEX_COLON, SPLIT_LIMIT)
+                                                       [SPLIT_VALUE_INDEX].trim()
+                                                                          .replaceAll(REGEX_NON_NUMERIC
+                                                                                  , ""));
+            int calculatedScore = firstAttempts * FIRST_ATTEMPT_MULTIPLIER + secondAttempts
+                                                                             * SECOND_ATTEMPT_MULTIPLIER;
 
             if(parsedScore != calculatedScore)
             {
@@ -316,65 +315,15 @@ public final class Score
                              secondAttempts,
                              incorrectAttempts);
         }
-        catch(final Exception e)
+        catch(Exception e)
         {
-            if(parts[SCORE_INDEX].startsWith(TOTAL_SCORE_LABEL))
-            {
-                try
-                {
-                    final DateTimeFormatter formatter;
-                    formatter = DateTimeFormatter.ofPattern(DATE_TIME_PATTERN);
-
-                    final LocalDateTime timestamp;
-                    timestamp = LocalDateTime.parse(parts[TIMESTAMP_INDEX].split(REGEX_COLON,
-                                                                                 SPLIT_LIMIT)
-                                                            [SPLIT_VALUE_INDEX].trim(), formatter);
-
-                    final int gamesPlayed;
-                    gamesPlayed = Integer.parseInt(parts[GAMES_PLAYED_INDEX].split(REGEX_COLON,
-                                                                                   SPLIT_LIMIT)
-                                                           [SPLIT_VALUE_INDEX].trim());
-
-                    final int firstAttempts;
-                    firstAttempts = Integer.parseInt(parts[FIRST_ATTEMPTS_INDEX].split(REGEX_COLON,
-                                                                                       SPLIT_LIMIT)
-                                                             [SPLIT_VALUE_INDEX].trim());
-
-                    final int secondAttempts;
-                    secondAttempts = Integer.parseInt(parts[SECOND_ATTEMPTS_INDEX].split(REGEX_COLON,
-                                                                                         SPLIT_LIMIT)
-                                                              [SPLIT_VALUE_INDEX].trim());
-
-                    final int incorrectAttempts;
-                    incorrectAttempts = Integer.parseInt(parts[INCORRECT_ATTEMPTS_INDEX].split(REGEX_COLON,
-                                                                                               SPLIT_LIMIT)
-                                                                 [SPLIT_VALUE_INDEX].trim());
-
-                    return new Score(timestamp,
-                                     gamesPlayed,
-                                     firstAttempts,
-                                     secondAttempts,
-                                     incorrectAttempts);
-                }
-                catch(final Exception ex)
-                {
-                    System.out.println(ERROR_PARSING_OLD_MSG + ex.getMessage());
-
-                    return new Score(LocalDateTime.now(),
-                                     DEFAULT_GAMES_PLAYED,
-                                     DEFAULT_ATTEMPT_VALUE,
-                                     DEFAULT_ATTEMPT_VALUE,
-                                     DEFAULT_ATTEMPT_VALUE);
-                }
-            }
-
-            System.out.println(ERROR_PARSING_MSG + e.getMessage());
-
+            System.out.println(ERROR_PARSING_OLD_MSG + e.getMessage());
             return new Score(LocalDateTime.now(),
                              DEFAULT_GAMES_PLAYED,
                              DEFAULT_ATTEMPT_VALUE,
                              DEFAULT_ATTEMPT_VALUE,
                              DEFAULT_ATTEMPT_VALUE);
         }
+
     }
 }

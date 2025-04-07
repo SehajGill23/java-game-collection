@@ -14,14 +14,12 @@ import javafx.scene.text.Text;
  */
 public class Letter
 {
-    // Constants
     private static final double LETTER_SPEED     = 3.0;
     private static final double LETTER_SIZE      = 20.0;
     private static final int    DIRECTION_RANGE  = 2;
     private static final int    DIRECTION_OFFSET = 1;
     private static final int    MIN_POSITION     = 0;
 
-    // Instance fields
     private final Text    node;
     private final char    value;
     private final boolean isTarget;

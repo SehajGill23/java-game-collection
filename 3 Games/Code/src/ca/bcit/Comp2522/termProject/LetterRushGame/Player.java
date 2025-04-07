@@ -222,7 +222,7 @@ public class Player
      * and incorrect clicks.
      *
      * @param targetWord the target word to match
-     * @param bonusWord
+     * @param bonusWord the bonus word to match
      * @return true if the player has failed, false otherwise
      */
     public final boolean hasFailed(final String targetWord,
@@ -355,7 +355,9 @@ public class Player
             return false;
         }
 
-        final StringBuilder builder = new StringBuilder();
+        final StringBuilder builder;
+        builder = new StringBuilder();
+
         for (final char c : collected)
         {
             builder.append(c);

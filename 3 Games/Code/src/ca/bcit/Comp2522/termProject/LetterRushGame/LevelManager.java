@@ -33,10 +33,11 @@ public class LevelManager
                                                             OBSTACLE_TYPE_BOMB,
                                                             OBSTACLE_TYPE_SPIKE};
 
-    private final List<List<String>> levels       = new ArrayList<>();
     private       int                currentLevel = 0;
     private       long               startTime;
+    private final List<List<String>> levels       = new ArrayList<>();
     private final GameUI             ui;
+
 
 
     /**
@@ -196,7 +197,9 @@ public class LevelManager
          */
         List<String> getObstacleConfig()
         {
-            final List<String> config = new ArrayList<>();
+            final List<String> config;
+            config = new ArrayList<>();
+
             for(int i = 0; i < obstacleCount; i++)
             {
                 config.add(OBSTACLE_TYPES[i % OBSTACLE_TYPE_COUNT]);
