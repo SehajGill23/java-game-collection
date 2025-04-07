@@ -1,4 +1,4 @@
-package ca.bcit.Comp2522.termProject.Letterrushgame;
+package ca.bcit.Comp2522.termProject.letterrushgame;
 
 import ca.bcit.Comp2522.termProject.wordgame.Main;
 import javafx.application.Platform;

@@ -1,4 +1,4 @@
-package ca.bcit.Comp2522.termProject.Letterrushgame;
+package ca.bcit.Comp2522.termProject.letterrushgame;
 
 import javafx.scene.text.Text;
 
@@ -22,11 +22,11 @@ public class Letter
 
     private final Text    node;
     private final char    value;
-    private final boolean isTarget;
-    private final boolean isBonus;
+    private final boolean target;
+    private final boolean bonus;
     private       double  dx;
     private       double  dy;
-    private       boolean isLocked;
+    private       boolean locked;
 
     /**
      * Constructs a new Letter with the specified character value, position, and properties.
@@ -36,22 +36,22 @@ public class Letter
      * @param value    the character value of the letter (e.g., 'A', 'B', etc.)
      * @param x        the initial x-coordinate of the letter
      * @param y        the initial y-coordinate of the letter
-     * @param isTarget true if the letter is part of the target word, false otherwise
-     * @param isBonus  true if the letter is part of the bonus word, false otherwise
+     * @param target true if the letter is part of the target word, false otherwise
+     * @param bonus  true if the letter is part of the bonus word, false otherwise
      */
     public Letter(final char value,
                   final double x,
                   final double y,
-                  final boolean isTarget,
-                  final boolean isBonus)
+                  final boolean target,
+                  final boolean bonus)
     {
         this.value = value;
         this.node  = new Text(String.valueOf(value));
         this.node.setX(x);
         this.node.setY(y);
-        this.isTarget = isTarget;
-        this.isBonus  = isBonus;
-        this.isLocked = false;
+        this.target   = target;
+        this.bonus  = bonus;
+        this.locked = false;
         randomizeDirection();
     }
 
@@ -66,7 +66,7 @@ public class Letter
     public void updatePosition(final int width,
                                final int height)
     {
-        if(isLocked)
+        if(locked)
         {
             return;
         }
@@ -118,9 +118,9 @@ public class Letter
      *
      * @return true if the letter is locked, false otherwise
      */
-    final boolean isLocked()
+    final boolean lockedLetter()
     {
-        return isLocked;
+        return locked;
     }
 
     /*
@@ -128,7 +128,7 @@ public class Letter
      */
     final void lock()
     {
-        isLocked = true;
+        locked = true;
     }
 
 

@@ -1,4 +1,4 @@
-package ca.bcit.Comp2522.termProject.Letterrushgame;
+package ca.bcit.Comp2522.termProject.letterrushgame;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -181,7 +181,7 @@ public class Player
                                   final String targetWord,
                                   final String bonusWord)
     {
-        if (letter.isLocked())
+        if (letter.lockedLetter())
         {
             return;
         }

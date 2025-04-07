@@ -1,3 +1,4 @@
+import ca.bcit.Comp2522.termProject.wordgame.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
