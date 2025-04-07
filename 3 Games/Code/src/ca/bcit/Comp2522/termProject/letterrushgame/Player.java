@@ -7,13 +7,33 @@ import java.util.List;
 
 /**
  * Represents a player in the LetterRush game, managing their gameplay state and statistics.
- * This class tracks the player’s current score, high score, bonus points, cursor position in pixels,
- * collected letters for target and bonus words, and the number of incorrect clicks. It provides
- * methods to update these attributes based on gameplay events, such as clicking letters, completing
- * words, or resetting levels. Additionally, it handles persistence of the high score by loading from
- * and saving to a file, ensuring the player’s best performance is preserved across sessions. The
- * player’s cursor is modeled with a fixed size in pixels, and their progress is evaluated against
- * target and bonus words to determine success or failure conditions.
+ * This class meticulously tracks various aspects of the player's performance, including their
+ * current score, the highest score achieved across all sessions, bonus points earned, the
+ * current position of their cursor within the game window (in pixels), the letters they have
+ * successfully collected towards forming the target and bonus words, and a count of their
+ * incorrect letter selections.
+ *
+ * <p>The Player class provides a comprehensive set of methods to update these attributes in
+ * response to different gameplay events. These include actions such as clicking on letters,
+ * successfully completing target or bonus words, and the need to reset the player's progress
+ * at the start of a new level.
+ *
+ * <p>A crucial responsibility of this class is the management of the player's high score.
+ * It includes functionality to persistently store the high score to a file, ensuring that the
+ * player's best performance is remembered between game sessions. Upon initialization, the
+ * Player attempts to load the high score from this file. If loading fails (e.g., the file
+ * does not exist or is corrupted), the high score is defaulted to zero.
+ *
+ * <p>The player's interaction with the game is partly modeled through their cursor, which is
+ * treated as a point in the game window with a defined size in pixels. Collision detection
+ * with interactive elements (like letters and obstacles) often involves the cursor's position
+ * and size.
+ *
+ * <p>The class also implements logic to evaluate the player's progress against the target
+ * and bonus words provided by the game. This evaluation determines if the player has successfully
+ * completed a word, which can lead to score increases, bonus rewards, or progression to the
+ * next level. Conversely, it also tracks errors (incorrect clicks) which can contribute to
+ * a level failure condition.
  *
  * @author Sehaj Gill
  * @version 1.0
@@ -48,12 +68,29 @@ public class Player
     private       boolean         bonusWordCompleted;
 
     /**
-     * Constructs a new Player instance, initializing all gameplay-related attributes to their starting values.
-     * The player begins with zero points for score, high score (loaded from file), and bonus points, with empty
-     * lists for collected target and bonus letters. The cursor position is initialized to (0,0) pixels, and the
-     * number of incorrect clicks is set to zero. The bonus word completion flag is set to false, indicating no
-     * bonus word has been completed yet. The high score is retrieved from a file using loadHighScore(), defaulting
-     * to zero if loading fails. This constructor prepares the player for a fresh game session.
+     * Constructs a new {@code Player} object. This constructor initializes the player's
+     * gameplay state to its default starting configuration. Specifically:
+     * <ul>
+     * <li>A new empty {@link ArrayList} is created to store the characters collected
+     * towards the target word ({@code collectedTarget}).</li>
+     * <li>Similarly, a new empty {@link ArrayList} is created for characters collected
+     * towards the bonus word ({@code collectedBonus}).</li>
+     * <li>The player's current score ({@code scorePoints}) is initialized to zero
+     * ({@link #INITIAL_SCORE_POINTS}).</li>
+     * <li>The player's high score ({@code highScorePoints}) is loaded from persistent
+     * storage using the {@link #loadHighScore()} method. If no high score is found
+     * or an error occurs during loading, it defaults to zero.</li>
+     * <li>The initial position of the player's cursor ({@code cursorXPixels} and
+     * {@code cursorYPixels}) is set to (0.0, 0.0).</li>
+     * <li>The player's bonus points ({@code bonusPoints}) are initialized to zero
+     * ({@link #INITIAL_SCORE_POINTS}).</li>
+     * <li>The count of incorrect letter clicks ({@code incorrectClicksCount}) is set to zero
+     * ({@link #INITIAL_CLICKS_COUNT}).</li>
+     * <li>A flag indicating whether the bonus word has been completed ({@code bonusWordCompleted})
+     * is set to {@code false}.</li>
+     * </ul>
+     * This constructor ensures that a new player starts with a clean slate, ready for a new game session
+     * with their previously achieved high score loaded.
      */
     public Player()
     {
@@ -69,11 +106,13 @@ public class Player
     }
 
     /**
-     * Retrieves the number of incorrect clicks made by the player during the current level attempt.
-     * Incorrect clicks occur when the player selects a letter that does not belong to the target word,
-     * and this count is used to evaluate failure conditions. The value is reset when starting a new level.
+     * Retrieves the number of incorrect letter clicks the player has made during the current
+     * level. An incorrect click is recorded when the player selects a letter that is not part
+     * of the current target word. This count is a factor in determining if the player has failed
+     * the level.
      *
-     * @return the number of incorrect clicks as an integer
+     * @return an integer representing the number of incorrect clicks. This value is reset at the
+     * beginning of each new level.
      */
     public final int getIncorrectClicks()
     {
@@ -81,11 +120,12 @@ public class Player
     }
 
     /**
-     * Retrieves the player’s highest score achieved across all game sessions, stored persistently in a file.
-     * This value is updated whenever the current score exceeds the previous high score and is loaded from
-     * file during player construction. It represents the player’s best performance to date.
+     * Retrieves the player's all-time highest score achieved in the game. This score is loaded
+     * from persistent storage when the {@code Player} object is created and is updated whenever
+     * the player's current score surpasses it. It represents the player's best performance across
+     * all game sessions.
      *
-     * @return the high score in points as an integer
+     * @return an integer representing the player's high score in points.
      */
     public final int getHighScore()
     {
@@ -93,11 +133,11 @@ public class Player
     }
 
     /**
-     * Retrieves the player’s current score accumulated during the game session, including points from
-     * target letters and bonus words. This score resets to zero when the game is fully restarted and
-     * increases with successful letter clicks or bonus word completions.
+     * Retrieves the player's current score in the ongoing game session. This score is accumulated
+     * by correctly clicking letters of the target word and by completing bonus words. It is reset
+     * to zero when a new game is started.
      *
-     * @return the current score in points as an integer
+     * @return an integer representing the player's current score in points.
      */
     public final int getScore()
     {
@@ -105,10 +145,11 @@ public class Player
     }
 
     /**
-     * Resets the player’s state for a new level attempt while preserving cumulative scores.
-     * This method clears the lists of collected target and bonus letters, resets the incorrect clicks
-     * count to zero, and sets the bonus word completion flag to false. The current score, high score,
-     * and bonus points remain unchanged, allowing the player to continue accumulating points across levels.
+     * Resets the player's progress for the start of a new level. This method clears any letters
+     * collected towards the target and bonus words, resets the count of incorrect clicks to zero,
+     * and marks the bonus word as not yet completed. Importantly, this method does not reset the
+     * player's current score, high score, or bonus points, allowing for score accumulation across
+     * multiple levels.
      */
     public final void resetForNewLevel()
     {
@@ -119,11 +160,12 @@ public class Player
     }
 
     /**
-     * Provides a copy of the list of characters collected by the player toward the target word.
-     * The returned list is a new instance to prevent external modification of the player’s internal state.
-     * These characters are accumulated as the player clicks letters matching the target word during gameplay.
+     * Returns a new {@link List} containing the characters the player has collected so far that
+     * match letters in the target word. The returned list is a copy, ensuring that external
+     * modifications do not affect the player's internal state.
      *
-     * @return a new List of Character objects representing the collected target letters
+     * @return a new {@link List} of {@link Character} objects representing the collected target letters.
+     * The order of characters in the list reflects the order in which they were collected.
      */
     public final List<Character> getCollectedTarget()
     {
@@ -134,12 +176,13 @@ public class Player
     }
 
     /**
-     * Sets the player’s bonus points to the specified value and updates the high score if necessary.
-     * This method assigns the provided bonus points directly, replacing the previous value, and triggers
-     * an update to the high score file if the total score (including bonus points) exceeds the current
-     * high score. It is typically called when resetting or manually adjusting bonus points.
+     * Sets the player's bonus points to a specified value. This method directly updates the
+     * {@code bonusPoints} attribute and then calls {@link #updateHighScore()} to check if the
+     * total score (current score + bonus points) now exceeds the current high score, potentially
+     * updating it in persistent storage. This method is typically used when the game state needs
+     * to be restored or when bonus points are awarded outside the normal bonus word completion process.
      *
-     * @param bonusPointsCount the number of bonus points to set, in points
+     * @param bonusPointsCount the new value for the player's bonus points.
      */
     public final void setBonusPoints(final int bonusPointsCount)
     {
@@ -148,12 +191,13 @@ public class Player
     }
 
     /**
-     * Sets the player’s current score to the specified value and updates the high score if necessary.
-     * This method directly assigns the provided score, replacing the previous value, and checks if the
-     * new score exceeds the current high score, triggering a file update if so. It is used to manually
-     * adjust the score, such as during game resets or external updates.
+     * Sets the player's current score to a specified value. This method directly updates the
+     * {@code scorePoints} attribute and then calls {@link #updateHighScore()} to check if the
+     * new score exceeds the current high score, potentially updating it in persistent storage.
+     * This method is used when the game state needs to be restored or when the score is adjusted
+     * outside the normal gameplay events (e.g., for testing purposes).
      *
-     * @param scorePointsCount the number of score points to set, in points
+     * @param scorePointsCount the new value for the player's current score.
      */
     public final void setScore(final int scorePointsCount)
     {
@@ -162,11 +206,10 @@ public class Player
     }
 
     /**
-     * Updates the player’s high score if the current score exceeds the existing high score.
-     * This method compares the current scorePoints to highScorePoints; if the former is greater,
-     * it updates highScorePoints to match scorePoints and saves the new high score to the file
-     * specified by HIGH_SCORE_FILE_PATH. This ensures the player’s best performance is persistently
-     * recorded across game sessions.
+     * Updates the player's high score if their current score (including any accumulated bonus points)
+     * is greater than the currently recorded high score. If an update occurs, the new high score is
+     * also saved to persistent storage using the {@link #saveHighScore()} method. This ensures that
+     * the player's best performance is tracked and saved across game sessions.
      */
     public void updateHighScore()
     {
@@ -178,14 +221,15 @@ public class Player
     }
 
     /**
-     * Determines whether the player has successfully completed the target word by matching the collected
-     * target letters against the provided target word. This method delegates to hasCompletedWord() to
-     * compare the collectedTarget list with the targetWord string, returning true if they match exactly
-     * in both content and length (case-sensitive). Completion of the target word typically advances
-     * the player to the next level or ends the current level successfully.
+     * Checks if the player has successfully completed the target word by comparing the letters
+     * they have collected ({@code collectedTarget}) with the letters of the {@code targetWord}.
+     * Completion is determined by an exact, case-sensitive match in both the sequence and the
+     * number of characters. This method delegates the actual comparison to the private helper
+     * method {@link #hasCompletedWord(List, String)}.
      *
-     * @param targetWord the target word string to match against the collected target letters
-     * @return true if the collected target letters form the target word exactly, false otherwise
+     * @param targetWord the target word string to check against the collected letters.
+     * @return {@code true} if the collected target letters exactly form the {@code targetWord},
+     * {@code false} otherwise.
      */
     public final boolean hasCompletedTargetWord(final String targetWord)
     {
@@ -194,14 +238,15 @@ public class Player
     }
 
     /**
-     * Determines whether the player has successfully completed the bonus word by matching the collected
-     * bonus letters against the provided bonus word. This method delegates to hasCompletedWord() to
-     * compare the collectedBonus list with the bonusWord string, returning true if they match exactly
-     * in both content and length (case-sensitive). Completing the bonus word awards additional points
-     * and enhances the player’s score without necessarily ending the level.
+     * Checks if the player has successfully completed the bonus word by comparing the letters
+     * they have collected ({@code collectedBonus}) with the letters of the {@code bonusWord}.
+     * Completion requires an exact, case-sensitive match in both the sequence and the number
+     * of characters. This method delegates the comparison to the private helper method
+     * {@link #hasCompletedWord(List, String)}.
      *
-     * @param bonusWord the bonus word string to match against the collected bonus letters
-     * @return true if the collected bonus letters form the bonus word exactly, false otherwise
+     * @param bonusWord the bonus word string to check against the collected bonus letters.
+     * @return {@code true} if the collected bonus letters exactly form the {@code bonusWord},
+     * {@code false} otherwise.
      */
     public final boolean hasCompletedBonusWord(final String bonusWord)
     {
@@ -210,17 +255,34 @@ public class Player
     }
 
     /**
-     * Processes a letter click event, updating the player’s state based on the clicked letter and the
-     * target and bonus words. If the letter is already locked, the method exits immediately. Otherwise,
-     * it locks the letter, retrieves its character value, and checks if it belongs to the targetWord or
-     * bonusWord. If it matches the targetWord, the letter is added to collectedTarget and target points
-     * are awarded; if not, incorrectClicksCount is incremented. If it matches the bonusWord, it’s added
-     * to collectedBonus. The method logs the click event and checks for bonus word completion, awarding
-     * bonus points if achieved. This method drives the core interaction mechanic of the game.
+     * Processes a click event on a letter in the game. This method updates the player's state
+     * based on whether the clicked letter belongs to the current target word or the bonus word.
      *
-     * @param letter     the Letter object clicked by the player
-     * @param targetWord the target word string to match against for scoring
-     * @param bonusWord  the bonus word string to match against for bonus points
+     * <p>First, it checks if the clicked {@link Letter} is already locked (i.e., previously clicked).
+     * If it is, the method returns immediately, preventing the same letter from being processed multiple times.
+     *
+     * <p>If the letter is not locked, it is immediately locked to prevent further interaction. The
+     * character value of the clicked letter is then retrieved.
+     *
+     * <p>The clicked letter's value is checked against the {@code targetWord}. If it is found within
+     * the {@code targetWord}, the character is added to the {@code collectedTarget} list, and the
+     * player's score is increased by {@link #TARGET_POINTS_PER_LETTER} via the {@link #addTargetPoints()}
+     * method. If the clicked letter is not in the {@code targetWord}, the {@code incorrectClicksCount}
+     * is incremented.
+     *
+     * <p>Similarly, the clicked letter's value is checked against the {@code bonusWord}. If it is found,
+     * the character is added to the {@code collectedBonus} list.
+     *
+     * <p>For debugging and feedback purposes, the method prints information about the clicked letter
+     * and the current state of the collected target and bonus letters to the console.
+     *
+     * <p>Finally, the method checks if the player has now completed the {@code bonusWord} using the
+     * {@link #hasCompletedBonusWord(String)} method. If the bonus word is completed, the player is
+     * awarded bonus points via the {@link #addBonusPoints()} method.
+     *
+     * @param letter      the {@link Letter} object that was clicked by the player.
+     * @param targetWord  the current target word for the level.
+     * @param bonusWord   the current bonus word for the level.
      */
     public final void clickLetter(final Letter letter,
                                   final String targetWord,
@@ -263,17 +325,28 @@ public class Player
     }
 
     /**
-     * Evaluates whether the player has failed the current level based on their collected letters and
-     * incorrect clicks. Failure occurs if: (1) the number of collected target letters exceeds the
-     * target word’s length, (2) the number of collected bonus letters exceeds the bonus word’s length,
-     * or (3) the number of incorrect clicks equals or exceeds the length of either word. If the target
-     * or bonus word is completed correctly, the method returns false (no failure). The method logs
-     * the specific failure condition for debugging purposes. This check determines if the player must
-     * restart the level due to errors.
+     * Determines if the player has failed the current level based on several criteria:
+     * <ul>
+     * <li>If the number of correctly collected letters for the target word exceeds the length
+     * of the target word.</li>
+     * <li>If the number of correctly collected letters for the bonus word exceeds the length
+     * of the bonus word.</li>
+     * <li>If the number of incorrect letter clicks made by the player is equal to or greater
+     * than the length of either the target word or the bonus word.</li>
+     * </ul>
      *
-     * @param targetWord the target word string to evaluate against collected target letters
-     * @param bonusWord  the bonus word string to evaluate against collected bonus letters
-     * @return true if the player has failed the level, false otherwise
+     * <p>The method also checks if the player has successfully completed either the target word or
+     * the bonus word. If either is completed, the player is considered not to have failed (returns {@code false}),
+     * regardless of the other failure conditions. This is because completing a word typically signifies
+     * success, even if errors were made along the way.
+     *
+     * <p>For debugging purposes, if a failure condition is met (and neither word is completed), a
+     * message indicating the reason for failure is printed to the console.
+     *
+     * @param targetWord the target word for the current level.
+     * @param bonusWord  the bonus word for the current level.
+     * @return {@code true} if the player has failed the level according to the defined criteria,
+     * {@code false} otherwise.
      */
     public final boolean hasFailed(final String targetWord,
                                    final String bonusWord)
@@ -308,13 +381,13 @@ public class Player
     }
 
     /*
-     * Updates the player’s cursor position to the specified coordinates in pixels.
-     * This method sets cursorXPixels and cursorYPixels to the provided values, reflecting the player’s
-     * current mouse position in the game window. The cursor position is used to detect collisions
-     * with game elements like letters or obstacles.
+     * Updates the current position of the player's cursor within the game window.
+     * The cursor's position is represented by its x and y coordinates in pixels.
+     * This method is typically called in response to mouse movement events, allowing
+     * the game to track the player's interaction with on-screen elements.
      *
-     * @param xPixels the x-coordinate of the cursor in pixels
-     * @param yPixels the y-coordinate of the cursor in pixels
+     * @param xPixels the new x-coordinate of the cursor in pixels.
+     * @param yPixels the new y-coordinate of the cursor in pixels.
      */
     final void updateCursorPosition(final double xPixels,
                                     final double yPixels)
@@ -324,11 +397,10 @@ public class Player
     }
 
     /*
-     * Retrieves the x-coordinate of the player’s cursor in pixels.
-     * This value represents the horizontal position of the cursor within the game window, updated
-     * via updateCursorPosition().
+     * Retrieves the current y-coordinate of the player's cursor in pixels.
+     * This value represents the vertical position of the cursor within the game window.
      *
-     * @return the cursor’s x-coordinate in pixels as a double
+     * @return a double representing the cursor's current y-coordinate in pixels.
      */
     final double getCursorX()
     {
@@ -336,11 +408,10 @@ public class Player
     }
 
     /*
-     * Retrieves the y-coordinate of the player’s cursor in pixels.
-     * This value represents the vertical position of the cursor within the game window, updated
-     * via updateCursorPosition().
+     * Retrieves the current y-coordinate of the player's cursor in pixels.
+     * This value represents the vertical position of the cursor within the game window.
      *
-     * @return the cursor’s y-coordinate in pixels as a double
+     * @return a double representing the cursor's current y-coordinate in pixels.
      */
     final double getCursorY()
     {
@@ -348,11 +419,11 @@ public class Player
     }
 
     /*
-     * Retrieves the fixed size of the player’s cursor in pixels.
-     * This constant value (CURSOR_SIZE_PIXELS) defines the cursor’s dimensions, used for collision
-     * detection or rendering purposes within the game.
+     * Returns the size of the player's cursor in pixels. The cursor is treated as a
+     * square with sides of this length. This size is used in collision detection
+     * with other game elements, such as letters and obstacles.
      *
-     * @return the cursor size in pixels as a double
+     * @return a double representing the size (width and height) of the cursor in pixels.
      */
     final double getCursorSize()
     {
@@ -360,10 +431,11 @@ public class Player
     }
 
     /*
-     * Retrieves the player’s current bonus points accumulated during the game session.
-     * Bonus points are awarded for completing the bonus word and persist across levels until reset.
+     * Retrieves the total bonus points accumulated by the player during the current
+     * game session. Bonus points are typically awarded for completing bonus words
+     * and are added to the player's overall score.
      *
-     * @return the bonus points in points as an integer
+     * @return an integer representing the player's current bonus points.
      */
     final int getBonusPoints()
     {
@@ -371,10 +443,13 @@ public class Player
     }
 
     /*
-     * Awards bonus points to the player for completing a bonus word, if not already awarded.
-     * If bonusWordCompleted is false, this method adds BONUS_POINTS_PER_WORD to both scorePoints and
-     * bonusPoints, sets bonusWordCompleted to true to prevent duplicate awards, logs the new score,
-     * and updates the high score. This enhances the player’s total score for finding the hidden bonus word.
+     * Awards bonus points to the player for successfully completing a bonus word.
+     * This method adds a predefined number of points ({@link #BONUS_POINTS_PER_WORD})
+     * to both the player's current score and their bonus points total. To prevent
+     * awarding bonus points multiple times for the same bonus word completion, it
+     * checks a flag ({@code bonusWordCompleted}). If the bonus word has not been
+     * completed yet, the points are awarded, the flag is set to {@code true}, the
+     * new score is logged to the console, and the high score is updated.
      */
     final void addBonusPoints()
     {
@@ -389,10 +464,11 @@ public class Player
     }
 
     /*
-     * Resets the player’s entire state to initial values, clearing all progress.
-     * This method empties the collectedTarget and collectedBonus lists, resets scorePoints,
-     * bonusPoints, and incorrectClicksCount to zero, and sets bonusWordCompleted to false.
-     * The high score remains unchanged, as it is preserved across resets. Used for a full game restart.
+     * Resets the player's state to its initial configuration, effectively starting
+     * a new game. This method clears all collected target and bonus letters, resets
+     * the current score, bonus points, and incorrect click count to zero, and marks
+     * the bonus word as not completed. The high score achieved in previous sessions
+     * is preserved and is not reset by this method.
      */
     final void reset()
     {
@@ -405,15 +481,14 @@ public class Player
     }
 
     /*
-     * Checks whether the provided list of collected characters exactly matches the given word.
-     * This private helper method compares the size of the collected list to the word’s length; if
-     * unequal, it returns false. Otherwise, it builds a string from the collected characters and
-     * checks for an exact, case-sensitive match with the word. Used by hasCompletedTargetWord() and
-     * hasCompletedBonusWord() to verify word completion.
+     * Checks if a given list of collected characters exactly forms a specified word.
+     * The comparison is case-sensitive, and the collected list must have the same
+     * number of characters as the word.
      *
-     * @param collectedList the list of Character objects collected by the player
-     * @param word          the word string to compare against
-     * @return true if the collected characters form the word exactly, false otherwise
+     * @param collectedList a {@link List} of {@link Character} objects collected by the player.
+     * @param word          the {@link String} representing the word to check against.
+     * @return {@code true} if the collected characters, in order, form the exact word,
+     * {@code false} otherwise.
      */
     private boolean hasCompletedWord(final List<Character> collectedList,
                                      final String word)
@@ -435,13 +510,16 @@ public class Player
     }
 
     /*
-     * Loads the player’s high score from the file specified by HIGH_SCORE_FILE_PATH.
-     * This private method reads all score entries using LetterRushScore.readScoresFromFile(), then
-     * finds the entry with the latest timestamp using a stream-based max operation with a Comparator.
-     * If the file is empty or an IOException occurs, it returns INITIAL_SCORE_POINTS (0). The loaded
-     * high score initializes the player’s highScorePoints during construction or updates.
+     * Loads the player's high score from persistent storage. This method reads all
+     * recorded scores from the file specified by {@link #HIGH_SCORE_FILE_PATH} using
+     * the {@link LetterRushScore#readScoresFromFile(String)} method. It then determines
+     * the highest score among all loaded entries, typically by finding the score with
+     * the most recent timestamp. If no scores are found in the file or if an
+     * {@link IOException} occurs during the reading process, the method returns the
+     * initial score value ({@link #INITIAL_SCORE_POINTS}), effectively defaulting to zero.
      *
-     * @return the high score in points as an integer, or 0 if loading fails
+     * @return an integer representing the player's high score loaded from the file,
+     * or {@link #INITIAL_SCORE_POINTS} if loading fails or no scores are found.
      */
     private int loadHighScore()
     {
@@ -472,11 +550,14 @@ public class Player
     }
 
     /*
-     * Saves the current high score to the file specified by HIGH_SCORE_FILE_PATH.
-     * This private method creates a new LetterRushScore object with the current highScorePoints,
-     * scorePoints, and bonusPoints, then appends it to the file using LetterRushScore.appendScoreToFile().
-     * If an IOException occurs, it logs an error message but does not throw an exception, ensuring the
-     * game can continue running despite file issues.
+     * Saves the player's current high score to persistent storage. This method creates
+     * a new {@link LetterRushScore} object containing the current high score, the player's
+     * current score, and their bonus points. It then appends this score entry to the file
+     * specified by {@link #HIGH_SCORE_FILE_PATH} using the
+     * {@link LetterRushScore#appendScoreToFile(LetterRushScore, String)} method. If an
+     * {@link IOException} occurs during the saving process, an error message is printed
+     * to the standard error stream, but the exception is not re-thrown, ensuring the
+     * game can continue to run even if saving the high score fails.
      */
     private void saveHighScore()
     {
@@ -497,10 +578,12 @@ public class Player
     }
 
     /*
-     * Awards points to the player for collecting a letter that matches the target word.
-     * This private method increments scorePoints by TARGET_POINTS_PER_LETTER, logs the updated score,
-     * and calls updateHighScore() to check if the new score exceeds the high score. It is invoked
-     * within clickLetter() when a target letter is successfully clicked.
+     * Awards points to the player for correctly clicking a letter that belongs to
+     * the target word. This method increments the player's current score ({@code scorePoints})
+     * by a predefined number of points per letter ({@link #TARGET_POINTS_PER_LETTER}).
+     * It also logs the updated score to the console for feedback and calls the
+     * {@link #updateHighScore()} method to check if the new score has surpassed the
+     * current high score.
      */
     private void addTargetPoints()
     {
