@@ -220,10 +220,13 @@ final class GameUI
     List<String> loadWords(final String pathToFile)
     {
         final List<String> wordList;
-        wordList = new ArrayList<>();
+        BufferedReader reader;
 
-        try(BufferedReader reader = new BufferedReader
-                (new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream(pathToFile)))))
+        wordList = new ArrayList<>();
+        reader = new BufferedReader
+                (new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream(pathToFile))));
+
+        try(reader)
         {
 
             String tempLine;

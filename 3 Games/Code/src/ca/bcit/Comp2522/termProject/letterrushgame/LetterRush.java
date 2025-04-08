@@ -12,12 +12,12 @@ import javafx.stage.Stage;
 
 /**
  * The {@code LetterRush} class represents the main game controller for the
- * LetterRush game. It orchestrates the various components of the game,
+ * LetterRush game. It organizes the various components of the game,
  * including the game engine, player, user interface, and level management.
  * This class is responsible for initializing these components, managing the
  * game flow (from the main menu to gameplay and game overstates), and
  * handling user interactions such as starting a new game, restarting a level,
- * quitting the game, and changing the visual theme. It leverages JavaFX for
+ * quitting the game, and changing the visual theme. It uses JavaFX for
  * its graphical user interface and manages the transitions between different
  * scenes (menu and game). The class also handles alerts for game over
  * conditions, level completion, bonus word discovery, and overall game victory.
@@ -104,6 +104,7 @@ public final class LetterRush implements Runnable
                                                                  "/background3.png",
                                                                  "/background4.png"};
     private              boolean  isRunning                   = false;
+
 
     private static LetterRush   instance;
     private final  LetterEngine engine;
@@ -618,18 +619,21 @@ public final class LetterRush implements Runnable
         highScoreText.getStyleClass().add(SCORE_TEXT_STYLE);
 
         final Text instructionsText;
+        final Button startButton;
+        final Button returnButton;
+
         instructionsText = new Text(INSTRUCTIONS_X_PIXELS,
                                     INSTRUCTIONS_Y_PIXELS,
                                     INSTRUCTIONS_TEXT);
         instructionsText.getStyleClass().add(INSTRUCTIONS_TEXT_STYLE);
 
-        final Button startButton = createButton(BUTTON_START_X_PIXELS,
+        startButton = createButton(BUTTON_START_X_PIXELS,
                                                 BUTTON_Y_PIXELS,
                                                 BUTTON_WIDTH_PIXELS,
                                                 BUTTON_HEIGHT_PIXELS,
                                                 BUTTON_START_TEXT,
                                                 this::startGame);
-        final Button returnButton = createButton(BUTTON_RETURN_X_PIXELS,
+        returnButton = createButton(BUTTON_RETURN_X_PIXELS,
                                                  BUTTON_Y_PIXELS,
                                                  BUTTON_WIDTH_PIXELS,
                                                  BUTTON_HEIGHT_PIXELS,
@@ -705,12 +709,12 @@ public final class LetterRush implements Runnable
      * @return a configured {@code Button} instance with the specified position,
      * dimensions, text, style, and action.
      */
-    private Button createButton(double x,
-                                double y,
-                                double width,
-                                double height,
-                                String text,
-                                Runnable action)
+    private Button createButton(final double x,
+                                final double y,
+                                final double width,
+                                final double height,
+                                final String text,
+                                final Runnable action)
     {
         final Button button;
         button = new Button(text);
@@ -818,6 +822,11 @@ public final class LetterRush implements Runnable
      */
     private void startGame()
     {
+        final Button restartButton;
+        final Button quitButton;
+        final Button themeButton;
+        Scene gameScene;
+
         player.reset();
         System.out.println("\n----Starting new game----\n");
 
@@ -830,35 +839,31 @@ public final class LetterRush implements Runnable
         root.getChildren().addAll(engine.getGamePane(),
                                   ui.getUIPane());
 
-        final Button restartButton;
         restartButton = new Button(BUTTON_RESTART_TEXT);
 
         restartButton.setLayoutX(RESTART_BUTTON_X_PIXELS);
         restartButton.setLayoutY(WINDOW_HEIGHT_PIXELS - GAME_BUTTON_Y_OFFSET_PIXELS);
         restartButton.getStyleClass().add(GAME_BUTTON_STYLE);
-        restartButton.setOnAction(event -> resetGame());
+        restartButton.setOnAction(_ -> resetGame());
 
-        final Button quitButton;
         quitButton = new Button(BUTTON_QUIT_TEXT);
 
         quitButton.setLayoutX(QUIT_BUTTON_X_PIXELS);
         quitButton.setLayoutY(WINDOW_HEIGHT_PIXELS - GAME_BUTTON_Y_OFFSET_PIXELS);
         quitButton.getStyleClass().add(GAME_BUTTON_STYLE);
-        quitButton.setOnAction(event -> stopGame());
+        quitButton.setOnAction(_ -> stopGame());
 
-        final Button themeButton;
         themeButton = new Button(BUTTON_THEME_TEXT);
 
         themeButton.setLayoutX(THEME_BUTTON_X_PIXELS);
         themeButton.setLayoutY(WINDOW_HEIGHT_PIXELS - GAME_BUTTON_Y_OFFSET_PIXELS);
         themeButton.getStyleClass().add(GAME_BUTTON_STYLE);
-        themeButton.setOnAction(event -> changeTheme());
+        themeButton.setOnAction(_-> changeTheme());
 
         root.getChildren().addAll(restartButton,
                                   quitButton,
                                   themeButton);
 
-        Scene gameScene;
         gameScene = new Scene(root,
                               WINDOW_WIDTH_PIXELS,
                               WINDOW_HEIGHT_PIXELS);
@@ -876,7 +881,7 @@ public final class LetterRush implements Runnable
 
         stage.setTitle(TITLE);
         stage.setScene(gameScene);
-        stage.setOnCloseRequest(event -> stopGame());
+        stage.setOnCloseRequest(_ -> stopGame());
         stage.show();
 
         if(levelManager != null)
@@ -982,7 +987,7 @@ public final class LetterRush implements Runnable
         if(levelManager != null)
         {
             player.setScore(scoreAtLevelStart);
-            player.setBonusPoints(0);
+            player.setBonusPoints(INITIAL_SCORE);
             player.resetForNewLevel();
             engine.resetGame(player,
                              ui,

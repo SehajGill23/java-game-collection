@@ -3,7 +3,7 @@ package ca.bcit.Comp2522.termProject.letterrushgame;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-/*
+/**
  * The Obstacle class is an abstract base class for obstacles in the LetterRush game.
  * It defines common properties and behaviors for obstacles, such as position, movement,
  * and collision detection with the player. Subclasses of Obstacle will implement
@@ -193,24 +193,25 @@ abstract class Obstacle
      */
     final boolean collidesWith(final Player player)
     {
+        final double distance;
+        final double cursorCenterX;
         final double obstacleCenterX;
+        final double collisionDistance;
+        final double obstacleCenterY;
+        final double cursorCenterY;
+
         obstacleCenterX = node.getX() + HALF_WIDTH;
 
-        final double obstacleCenterY;
         obstacleCenterY = node.getY() + HALF_HEIGHT;
 
-        final double cursorCenterX;
         cursorCenterX = player.getCursorX();
 
-        final double cursorCenterY;
         cursorCenterY = player.getCursorY();
 
-        final double distance;
         distance = Math.sqrt(Math.pow(obstacleCenterX - cursorCenterX,
                                       SPEED_RANGE_MULTIPLIER) + Math.pow(obstacleCenterY - cursorCenterY,
                                                                          SPEED_RANGE_MULTIPLIER));
 
-        final double collisionDistance;
         collisionDistance = HALF_WIDTH + (player.getCursorSize() / SPEED_RANGE_MULTIPLIER);
 
         return distance <= collisionDistance;

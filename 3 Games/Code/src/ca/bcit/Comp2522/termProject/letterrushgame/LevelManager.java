@@ -3,7 +3,7 @@ package ca.bcit.Comp2522.termProject.letterrushgame;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
+/**
  * Manages the levels in the LetterRush game, including level progression, timers,
  * and obstacle configurations. The LevelManager loads words from a file, organizes
  * them into levels, and provides access to the current level's configuration, such as

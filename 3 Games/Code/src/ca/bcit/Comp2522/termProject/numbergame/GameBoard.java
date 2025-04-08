@@ -1,5 +1,6 @@
 package ca.bcit.Comp2522.termProject.numbergame;
-/*
+
+/**
  * Represents the core game board logic for a grid-based game, providing common functionality
  * while leaving specific win/loss conditions and placement rules to its subclasses.
  * This abstract class initializes a 4x5 integer grid, intended to hold the game's elements.

@@ -186,25 +186,31 @@ public class LetterRushScore
      */
     public static List<LetterRushScore> readScoresFromFile(final String filePath) throws IOException
     {
-        final List<LetterRushScore> scoreList = new ArrayList<>();
-        final File scoreFile = new File(filePath);
+        final List<LetterRushScore> scoreList;
+        final BufferedReader reader;
+        final File scoreFile;
+
+        scoreList = new ArrayList<>();
+        scoreFile = new File(filePath);
 
         if (!scoreFile.exists())
         {
             return scoreList;
         }
+        reader = Files.newBufferedReader(scoreFile.toPath(), StandardCharsets.UTF_8);
 
-        try (final BufferedReader reader = Files.newBufferedReader(scoreFile.toPath(),
-                                                                   StandardCharsets.UTF_8))
+        try (reader)
         {
             String line;
-            final StringBuilder scoreEntry = new StringBuilder();
+            final StringBuilder scoreEntry;
+            scoreEntry = new StringBuilder();
 
             while ((line = reader.readLine()) != null)
             {
                 if (line.trim().isEmpty() && !scoreEntry.isEmpty())
                 {
-                    final LetterRushScore score = fromString(scoreEntry.toString());
+                    final LetterRushScore score;
+                    score = fromString(scoreEntry.toString());
                     if (score != null)
                     {
                         scoreList.add(score);
@@ -219,7 +225,8 @@ public class LetterRushScore
 
             if (!scoreEntry.isEmpty())
             {
-                final LetterRushScore score = fromString(scoreEntry.toString());
+                final LetterRushScore score;
+                score = fromString(scoreEntry.toString());
                 if (score != null)
                 {
                     scoreList.add(score);
@@ -305,17 +312,20 @@ public class LetterRushScore
     static void appendScoreToFile(final LetterRushScore score,
                                   final String filePath) throws IOException
     {
+        final BufferedWriter writer;
         final File scoreFile;
-        scoreFile = new File(filePath);
 
-        try(final BufferedWriter writer = new BufferedWriter(new FileWriter(scoreFile,
-                                                                            true)))
+        scoreFile = new File(filePath);
+        writer  = new BufferedWriter(new FileWriter(scoreFile,
+                                                  true));
+        try(writer)
         {
             writer.write(score.toString() + NEW_LINE);
         }
         catch(final IOException e)
         {
-            throw new IOException(ERROR_MESSAGE + scoreFile.getAbsolutePath() + ERROR_MESSAGE_PART + e.getMessage());
+            throw new IOException(ERROR_MESSAGE + scoreFile.getAbsolutePath() +
+                                  ERROR_MESSAGE_PART + e.getMessage());
         }
     }
 
@@ -425,23 +435,24 @@ public class LetterRushScore
         try
         {
             final DateTimeFormatter formatter;
-            formatter = DateTimeFormatter.ofPattern(DATE_TIME_PATTERN);
-
             final LocalDateTime timestamp;
-            timestamp = LocalDateTime.parse(parts[TIMESTAMP_INDEX].split( SPLIT_COLON,
+            final int highScore;
+            final int currentScore;
+            final int bonusScore;
+
+            formatter    = DateTimeFormatter.ofPattern(DATE_TIME_PATTERN);
+
+            timestamp    = LocalDateTime.parse(parts[TIMESTAMP_INDEX].split( SPLIT_COLON,
                                                                          SPLIT_LIMIT)[SPLIT_VALUE_INDEX].trim(),
                                             formatter);
 
-            final int highScore;
-            highScore = Integer.parseInt(parts[HIGH_SCORE_INDEX].split( SPLIT_COLON,
+            highScore    = Integer.parseInt(parts[HIGH_SCORE_INDEX].split( SPLIT_COLON,
                                                                        SPLIT_LIMIT)[SPLIT_VALUE_INDEX].trim());
 
-            final int currentScore;
             currentScore = Integer.parseInt(parts[CURRENT_SCORE_INDEX].split( SPLIT_COLON,
                                                                              SPLIT_LIMIT)[SPLIT_VALUE_INDEX].trim());
 
-            final int bonusScore;
-            bonusScore = Integer.parseInt(parts[BONUS_SCORE_INDEX].split( SPLIT_COLON,
+            bonusScore   = Integer.parseInt(parts[BONUS_SCORE_INDEX].split( SPLIT_COLON,
                                                                          SPLIT_LIMIT)[SPLIT_VALUE_INDEX].trim());
 
             return new LetterRushScore(highScore,

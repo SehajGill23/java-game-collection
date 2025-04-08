@@ -1,6 +1,6 @@
 package ca.bcit.Comp2522.termProject.letterrushgame;
 
-/*
+/**
  * Represents a missile obstacle in the LetterRush game, extending the
  * {@code Obstacle} class to define a specific type of fast-moving hazard.
  * The missile is distinguished by a unique image sourced from a resource

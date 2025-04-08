@@ -9,7 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-/*
+/**
  * Test class for the LetterRush game, focusing on core logic and interactions
  * between Player, Letter, Obstacle, LetterEngine, and LetterRush.
  * Avoids JavaFX-specific operations and tests high score persistence.
@@ -86,13 +86,6 @@ class LetterRushTest
     private LetterRush letterRush;
 
 
-    /*
-     * Sets up the test environment before each test case.
-     * Clears the high score file to ensure a clean state and initializes
-     * the Player and LetterRush instances.
-     *
-     * @throws IOException if an error occurs while clearing the high score file.
-     */
     @BeforeEach
     void setUp() throws IOException
     {
@@ -104,10 +97,6 @@ class LetterRushTest
         letterRush = new LetterRush();
     }
 
-    /*
-     * Tests the scenario where the player clicks on letters that form the target word.
-     * Verifies that the collected letters, score, and target word completion status are correctly updated.
-     */
     @Test
     void testPlayerClickLetterTargetWord()
     {
@@ -177,11 +166,6 @@ class LetterRushTest
                    TARGET_WORD_COMPLETED_MESSAGE);
     }
 
-    /**
-     * Tests the handling of incorrect clicks by the player.
-     * Verifies that the incorrect click counter is incremented and the player fails
-     * after a certain number of incorrect attempts.
-     */
     @Test
     void testPlayerClickLetterBonusWord()
     {
@@ -234,10 +218,6 @@ class LetterRushTest
                      SCORE_40_POINTS_MESSAGE);
     }
 
-    /**
-     * Tests the movement of a letter within the game window boundaries.
-     * Verifies that the letter's position changes upon update and stays within the defined width.
-     */
     @Test
     void testPlayerIncorrectClicks()
     {
@@ -303,10 +283,6 @@ class LetterRushTest
     }
 
 
-    /**
-     * Tests the game reset logic within LetterRush, specifically focusing on score management
-     * between different levels without relying on JavaFX calls.
-     */
     @Test
     void testLetterMovement()
     {

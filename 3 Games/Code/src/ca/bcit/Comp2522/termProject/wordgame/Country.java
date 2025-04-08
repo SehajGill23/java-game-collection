@@ -2,7 +2,7 @@ package ca.bcit.Comp2522.termProject.wordgame;
 
 import java.util.Random;
 
-/*
+/**
  * The {@code Country} class represents a country in the Geography Trivia Game.
  * <p>
  * It encapsulates information about a specific country, including its name,

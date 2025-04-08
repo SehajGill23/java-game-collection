@@ -2,7 +2,7 @@ package ca.bcit.Comp2522.termProject.numbergame;
 
 import java.util.Random;
 
-/*
+/**
  * Implements the Ascending Order Number Placement Game on a 4x5 grid.
  * Players must strategically place randomly generated numbers into the grid
  * such that the numbers are in ascending order from left to right, top to bottom.

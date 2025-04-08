@@ -1,6 +1,6 @@
 package ca.bcit.Comp2522.termProject.letterrushgame;
 
-/*
+/**
  * Represents a bomb obstacle in the LetterRush game, extending the
  * {@code Obstacle} class to define a specific type of explosive hazard.
  * The bomb is characterized by a distinct image loaded from a resource

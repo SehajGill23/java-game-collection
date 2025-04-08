@@ -1,0 +1,56 @@
+
+Best Experience with AI:
+One of my best experiences with AI while writing this code was how it helped me set up a logical base structure. At the
+beginning, I uploaded the PDF instructions for WordGame, NumberGame, and LetterRush into ChatGPT. Even though the
+instructions were pretty straightforward, I asked it to create a clear outline of tasks for each game. ChatGPT broke
+things down really well—like word matching for WordGame and scoring logic for NumberGame. While implementing WordGame
+I had a huge bug in which I wasn't getting accurate high score from the text file, score.txt, such as upon creating
+a new high score it would say "No new high score at this time". I tried debugging and after struggling with it for a
+couple of hours, I gave up. I thought about pasting that class into ChatGPT to find out where the bug lies, GPT advised
+ me to do further debugging and gave me instructions to do so. Eventually I was able to find where the issue was
+arising from, the numbers from the text file were not able to parse into integer properly, hence messing up the whole
+logic, giving inaccurate results.
+
+For the Custom Game, though coming up with a unique idea for the custom game was a bit tough with AI, once I had my
+idea, I was able to bring it to life with its help. For example, I wanted to add letter animations in my game and GPT
+introduced me to AnimationTimer, an abstract class, and explained it in a really simple way. As AnimationTimer is not
+the part of course outline under javaFX, I was wondering if I could use it, upon asking Jason about this I got approved
+by him on its implementation. ChatGPT showed me how I could use it to refresh the screen and move letters smoothly.
+That was a game-changer—once I understood how it worked, I felt way more confident adding animated features.
+
+AI also helped with small improvements, like handling key events better and simplifying the game loop and logic.
+Overall, while expressing creative ideas to AI was a bit tricky, its technical guidance made my code much cleaner, more
+organized, and more functional than it would’ve been otherwise. Lastly, AI also helped me double-check the style
+requirements. I made a checklist based on the style instructions provided by Jason, then pasted parts of my code into
+ChatGPT and asked if it matched the checklist. That really helped me feel confident about my final version.
+
+
+
+Worst Experience with AI:
+One of my worst experience with AI came when, I was Initially thinking about the idea of what game to make. I gave it a
+prompt "give me an idea of a unique game that is a mixture of 2 existing games, which makes it more fun". However, the
+ideas given by ChatGPT was very vague, were hard to visualize and lacked creativity. After giving multiple prompts I
+realized AI struggles to generate truly unique and creative concepts. Although, it can copy extremely well because of
+its vast knowledge, but falls short on original creation. Eventually out of nowhere, an idea of collecting words
+clicked into my mind, maybe because I tested word game recently, and came up with the idea of making letterRush, where
+you use your cursor, to play with it.
+
+While beginning to implement LetterRush game, I wrote the logic of the game in a Word document first, just to get
+everything clear in my mind. After finishing that, I asked ChatGPT if the same logic could be built using JavaFX. It
+said yes—but then completely changed the logic on its own. I had to go back and forth with it, writing around four
+different prompts just to make it understand what I was actually trying to do. Even then, I had to guide it with
+specific details to keep it on track. Though ChatGPT helped me a lot throughout this project—as I mentioned earlier in
+my best experiences—I also had some frustrating moments. One of the worst was with the scoring logic. I had it working
+around 90% correctly, but the bonus points weren’t adding up right. I asked ChatGPT to help figure out the issue since
+I couldn’t spot it myself. It gave me an updated version of the class and pointed out a few possible issues. But after
+implementing those changes, the score system dropped from 90% to around 60% functionality.I ended up discarding that
+commit from Git and told ChatGPT to slow down and go step by step to find the issue more carefully.
+
+Eventually, I got to a point where I thought the scoring logic was finally solid—it seemed to work 94% of the time. But
+I was wrong. The logic held up only until I restarted the game using a restart button I had added in the game menu or
+tried to proceed to the next level. After restarting, an alert message I had set to pop up when the player hits an
+obstacle started triggering randomly. I brought up the new issue to ChatGPT, but it wasn’t able to properly solve it.
+In the end, I had to sit down and rewrite the entire scoring logic by myself. Now, thankfully, it works properly.
+
+
+

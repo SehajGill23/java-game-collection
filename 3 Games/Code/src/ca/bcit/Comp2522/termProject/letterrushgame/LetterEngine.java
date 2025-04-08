@@ -6,7 +6,7 @@ import javafx.scene.layout.Pane;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
+/**
  * Manages the core game mechanics for the LetterRush game, acting as the
  * primary engine driving all gameplay functionality. This class is responsible
  * for initializing and managing game levels, spawning letters
@@ -165,8 +165,8 @@ class LetterEngine
      * <p>First, the provided {@link Player} instance ({@code playerInstance}) and
      * {@link LevelManager} instance ({@code levelManagerInstance}) are assigned
      * to the corresponding fields of this {@code LetterEngine}. These instances
-     * are crucial for tracking the player's progress and managing the level-specific
-     * data and timing.
+     * are really important for tracking the player's progress and managing the
+     * level-specific data and timing.
      *
      * <p>Next, a critical check is performed to ensure that the {@code levelManager}
      * instance is not null. If it is null, an error message ({@code LEVEL_MANAGER_NULL_ERROR_MESSAGE})
@@ -246,8 +246,9 @@ class LetterEngine
 
         try
         {
-            player.setBonusPoints(INITIAL_INDEX);
             final LevelManager.Level level;
+
+            player.setBonusPoints(INITIAL_INDEX);
             level = levelManager.getCurrentLevel();
             spawnLetters(uiInstance);
             spawnObstacles(level);
@@ -405,6 +406,7 @@ class LetterEngine
         final List<String> levelWords;
         final String       pair;
         final String[]     words;
+        final String allLetters;
 
         levelWords = levelManager.getCurrentLevel().getWordPairs();
         pair       = levelWords.get((int) (Math.random() * levelWords.size()));
@@ -414,7 +416,6 @@ class LetterEngine
         System.out.println(TARGET_WORD_LOG_PREFIX + targetWord);
 
         bonusWord = words.length > BONUS_WORD_INDEX ? words[BONUS_WORD_INDEX] : EMPTY_STRING;
-        final String allLetters;
         allLetters = (targetWord + bonusWord).toUpperCase();
 
         for(final char valueChar : allLetters.toCharArray())
@@ -623,7 +624,6 @@ class LetterEngine
         };
         timer.start();
     }
-
 
     /*
      * Updates the game state during each frame of the game loop, managing

@@ -1,6 +1,6 @@
 package ca.bcit.Comp2522.termProject.letterrushgame;
 
-/*
+/**
  * Represents a cactus obstacle in the LetterRush game, extending the
  * {@code Obstacle} class to define a specific type of hazard. The cactus
  * is characterized by a unique image loaded from a resource file
