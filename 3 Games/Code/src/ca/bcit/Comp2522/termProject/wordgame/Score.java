@@ -13,9 +13,40 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The Score class represents a player's score in the Geography Trivia Game.
- * It stores the score, attempt counts, games played, and a timestamp, and provides
- * methods to calculate the average score, save scores to a file, and read scores from a file.
+ * The {@code Score} class plays a crucial role in the Geography Trivia Game by recording and managing a player's
+ * performance in a single game session. It goes beyond just storing the final score; it captures a detailed breakdown
+ * of the game, including the timing, the player's progress over multiple games, and their success rates on different
+ * attempts. This information is vital for providing feedback to the player and tracking their improvement.
+ * <p>
+ * At its core, a {@code Score} object holds specific statistics about one completed game. This includes: the exact
+ *  {@link LocalDateTime} when the game ended, the total number of games the player has played up to this point,
+ * the number of questions answered correctly on the first attempt (indicating strong initial knowledge), the number
+ * answered correctly on the second attempt (showing learning or recall after a first miss), and the number of questions
+ * that remained unanswered correctly after both attempts. Based on these attempt counts, the class calculates a
+ * final score for the game, giving more weight to first-attempt successes.
+ * </p>
+ * <p>
+ * A key feature of the {@code Score} class is its ability to save and load game records from a file named "score.txt".
+ * The {@link #appendScoreToFile(Score, String)} method takes a {@code Score} object and writes its details to the end
+ * of this file, ensuring that each game's outcome is preserved. Conversely, the {@link #readScoresFromFile(String)}
+ * method reads the contents of "score.txt" and converts each saved game record back into a {@code Score} object,
+ * allowing the game to access historical performance data. This is essential for features like calculating average
+ * scores and determining if a player has achieved a new high score. The class includes error handling to manage
+ * potential issues during file reading and writing.
+ * </p>
+ * <p>
+ * Once a {@code Score} object is created, its data remains constant. This immutability ensures that the recorded
+ * performance of a game cannot be accidentally changed, providing a reliable record of the player's efforts.
+ * </p>
+ * <p>
+ * Internally, the {@code Score} class uses several predefined constants to manage how scores are calculated, how the
+ * data is formatted when saved to the file, and what messages to display if errors or inconsistencies are found.
+ * The {@link #fromString(String)} method is particularly important as it handles the process of taking a line (or
+ * set of lines) read from the "score.txt" file and converting it back into a usable {@code Score} object.
+ * This method also includes checks to validate the data read from the file, ensuring that it's in the expected format
+ * and that the calculated score based on attempts matches the score that was saved. Warnings are generated if
+ * discrepancies are detected, helping to maintain the integrity of the score data.
+ * </p>
  *
  * @author Sehaj Gill
  * @version 1.0
@@ -66,14 +97,16 @@ public final class Score
     private final LocalDateTime timestamp;
 
     /**
-     * Constructs a new Score instance with the specified timestamp and game statistics.
-     * This constructor is primarily used for testing purposes.
+     * Creates a new {@code Score} object with specific details about a game, including the time it was played.
+     * This constructor is primarily used when loading scores from the "score.txt" file or for testing purposes where
+     * a specific timestamp is needed. The total score for the game is automatically calculated based on the number
+     * of correct first and second attempts.
      *
-     * @param timestamp         the timestamp of the score
-     * @param totalGamesPlayed  the total number of games played
-     * @param firstAttempts     the number of correct answers on the first attempt
-     * @param secondAttempts    the number of correct answers on the second attempt
-     * @param incorrectAttempts the number of incorrect answers after two attempts
+     * @param timestamp         The exact date and time when the game session ended.
+     * @param totalGamesPlayed  The total number of games the player has played up to this point.
+     * @param firstAttempts     The number of questions the player answered correctly on their first try.
+     * @param secondAttempts    The number of questions the player answered correctly on their second try.
+     * @param incorrectAttempts The number of questions the player did not answer correctly within two attempts.
      */
     public Score(final LocalDateTime timestamp,
                  final int totalGamesPlayed,
@@ -91,14 +124,14 @@ public final class Score
     }
 
     /**
-     * Constructs a new Score instance with the specified game statistics and the current timestamp.
-     * This constructor is used by the application to record a new score.
+     * Creates a new {@code Score} object for a game that has just been played. It automatically records the current
+     * date and time when the game ends. The total score and other statistics are provided as arguments.
      *
-     * @param score             the total score for the game
-     * @param firstAttempts     the number of correct answers on the first attempt
-     * @param secondAttempts    the number of correct answers on the second attempt
-     * @param incorrectAttempts the number of incorrect answers after two attempts
-     * @param totalGamesPlayed  the total number of games played
+     * @param score             The total score achieved in the game.
+     * @param firstAttempts     The number of correct answers on the first attempt.
+     * @param secondAttempts    The number of correct answers on the second attempt.
+     * @param incorrectAttempts The number of incorrect answers after two attempts.
+     * @param totalGamesPlayed  The total number of games played by the user after this game.
      */
     public Score(final int score,
                  final int firstAttempts,
@@ -115,9 +148,9 @@ public final class Score
     }
 
     /**
-     * Returns the total score for the game.
+     * Returns the total score obtained in the game session represented by this {@code Score} object.
      *
-     * @return the total score
+     * @return The total score as an integer.
      */
     public int getScore()
     {
@@ -125,10 +158,11 @@ public final class Score
     }
 
     /*
-     * Calculates and returns the average score per game.
-     * If no games have been played, returns 0.
+     * Calculates and returns the average score per game played by the user. This is computed by dividing the total
+     * score across all recorded games by the total number of games played. It handles the case where no games have
+     * been played to avoid division by zero.
      *
-     * @return the average score per game
+     * @return The average score per game as a double. Returns 0.0 if no games have been played.
      */
     double getAverageScore()
     {
@@ -136,11 +170,13 @@ public final class Score
                DEFAULT_ATTEMPT_VALUE : (double) score / totalGamesPlayed;
     }
 
+
     /**
-     * Returns a string representation of the score, including the timestamp, games played,
-     * attempt counts, and total score.
+     * Formats the score information into a string that is suitable for saving to the "score.txt" file.
+     * It includes the timestamp, total games played, counts of correct first and second attempts, incorrect attempts,
+     * and the final score, each labeled for easy parsing later.
      *
-     * @return a formatted string representing the score
+     * @return A formatted string representing the score details.
      */
     @Override
     public String toString()
@@ -161,11 +197,12 @@ public final class Score
     }
 
     /**
-     * Appends the specified score to the given file.
+     * Appends the details of the given {@code Score} object to the "score.txt" file. This method is used to save
+     * the results of a new game. It handles potential errors that might occur while writing to the file.
      *
-     * @param score    the Score object to save
-     * @param filePath the path to the file where the score will be saved
-     * @throws IOException if an error occurs while writing to the file
+     * @param score    The {@code Score} object to be saved.
+     * @param filePath The path to the "score.txt" file.
+     * @throws IOException If an error occurs during file writing.
      */
     public static void appendScoreToFile(final Score score,
                                                final String filePath) throws IOException
@@ -185,19 +222,27 @@ public final class Score
     }
 
     /**
-     * Reads all scores from the specified file and returns them as a list.
-     * If the file does not exist, returns an empty list.
+     * Reads all score records from the file at the specified path and returns them as a list
+     * of {@code Score} objects. If the file does not exist, an empty list is returned without
+     * throwing an exception. This method handles potential {@link IOException} during file reading.
+     * Each score record in the file is expected to be formatted according to the {@link #toString()}
+     * method, with each attribute on a new line and separated by labels.
      *
-     * @param filePath the path to the file containing the scores
-     * @return a list of Score objects read from the file
-     * @throws IOException if an error occurs while reading the file
+     * @param filePath the path to the file containing the saved score records.
+     * @return a {@link List} of {@code Score} objects read from the file. Returns an empty list
+     * if the file does not exist or if no valid score entries are found.
+     * @throws IOException if an error occurs while reading from the file, such as file access
+     * issues or read permissions. The exception will contain a descriptive
+     * error message including the file path and the original error.
      */
     public static List<Score> readScoresFromFile(final String filePath) throws IOException
     {
+        String        line;
+        final StringBuilder scoreEntry;
         final List<Score> scoreList;
-        scoreList = new ArrayList<>();
-
         final File scoreFile;
+
+        scoreList = new ArrayList<>();
         scoreFile = new File(filePath);
 
         if(!scoreFile.exists())
@@ -208,8 +253,7 @@ public final class Score
         try(final BufferedReader reader = Files.newBufferedReader(scoreFile.toPath(),
                                                                   StandardCharsets.UTF_8))
         {
-            String        line;
-            StringBuilder scoreEntry;
+
             scoreEntry = new StringBuilder();
 
             while((line = reader.readLine()) != null)
@@ -239,15 +283,33 @@ public final class Score
     }
 
     /**
-     * Parses a string representation of a score and returns a corresponding Score object.
-     * If the string is malformed, logs an error and returns a default Score object.
+     * Parses a string representation of a score entry and returns a corresponding {@code Score} object.
+     * The string is expected to be formatted with each score attribute on a new line, preceded by a label.
+     * If the string does not conform to the expected format, an error message is logged to the console,
+     * and a default {@code Score} object (with current timestamp and default values) is returned.
+     * This method also performs a consistency check by recalculating the score based on the attempt counts
+     * and comparing it with the parsed score, issuing a warning if they do not match.
      *
-     * @param line the string representation of the score
-     * @return a Score object parsed from the string, or a default Score if parsing fails
+     * @param line the string representation of the score entry to be parsed.
+     * @return a {@code Score} object parsed from the string. If parsing fails due to format issues,
+     * a default {@code Score} object is returned.
      */
     private static Score fromString(final String line)
     {
-        String[] parts = line.split(NEW_LINE);
+        final int               gamesPlayed;
+        final int               firstAttempts;
+        final int               secondAttempts;
+        final int               incorrectAttempts;
+        final int               parsedScore;
+        final int               calculatedScore;
+        final String            scorePart;
+        final String[]          parts;
+        final String[]          splitPart;
+        final DateTimeFormatter formatter;
+        final LocalDateTime     timestamp;
+
+
+        parts = line.split(NEW_LINE);
 
         if(parts.length != SCORE_ENTRY_LINES)
         {
@@ -262,30 +324,30 @@ public final class Score
 
         try
         {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_TIME_PATTERN);
+             formatter       = DateTimeFormatter.ofPattern(DATE_TIME_PATTERN);
 
-            String[]          splitPart = parts[TIMESTAMP_INDEX].split(REGEX_COLON, SPLIT_LIMIT);
+             splitPart       = parts[TIMESTAMP_INDEX].split(REGEX_COLON, SPLIT_LIMIT);
 
-            LocalDateTime     timestamp = LocalDateTime.parse(splitPart[SPLIT_VALUE_INDEX]
+             timestamp       = LocalDateTime.parse(splitPart[SPLIT_VALUE_INDEX]
                                                                       .trim(), formatter);
-            int gamesPlayed       = Integer.parseInt(parts[GAMES_PLAYED_INDEX]
+             gamesPlayed     = Integer.parseInt(parts[GAMES_PLAYED_INDEX]
                                                              .split(REGEX_COLON, SPLIT_LIMIT)
                                                              [SPLIT_VALUE_INDEX]
                                                              .trim());
-            int firstAttempts     = Integer.parseInt(parts[FIRST_ATTEMPTS_INDEX]
+            firstAttempts    = Integer.parseInt(parts[FIRST_ATTEMPTS_INDEX]
                                                              .split(REGEX_COLON, SPLIT_LIMIT)
                                                              [SPLIT_VALUE_INDEX]
                                                              .trim());
-            int secondAttempts    = Integer.parseInt(parts[SECOND_ATTEMPTS_INDEX]
+            secondAttempts   = Integer.parseInt(parts[SECOND_ATTEMPTS_INDEX]
                                                              .split(REGEX_COLON, SPLIT_LIMIT)
                                                              [SPLIT_VALUE_INDEX]
                                                              .trim());
-            int incorrectAttempts = Integer.parseInt(parts[INCORRECT_ATTEMPTS_INDEX]
+           incorrectAttempts = Integer.parseInt(parts[INCORRECT_ATTEMPTS_INDEX]
                                                              .split(REGEX_COLON, SPLIT_LIMIT)
                                                              [SPLIT_VALUE_INDEX]
                                                              .trim());
 
-            String scorePart = parts[SCORE_INDEX];
+            scorePart = parts[SCORE_INDEX];
             if(scorePart.startsWith(TOTAL_SCORE_LABEL))
             {
                 return new Score(timestamp,
@@ -295,12 +357,12 @@ public final class Score
                                  incorrectAttempts);
             }
 
-            int parsedScore = Integer.parseInt(scorePart
+             parsedScore = Integer.parseInt(scorePart
                                                        .split(REGEX_COLON, SPLIT_LIMIT)
                                                        [SPLIT_VALUE_INDEX].trim()
                                                                           .replaceAll(REGEX_NON_NUMERIC
                                                                                   , ""));
-            int calculatedScore = firstAttempts * FIRST_ATTEMPT_MULTIPLIER + secondAttempts
+            calculatedScore = firstAttempts * FIRST_ATTEMPT_MULTIPLIER + secondAttempts
                                                                              * SECOND_ATTEMPT_MULTIPLIER;
 
             if(parsedScore != calculatedScore)

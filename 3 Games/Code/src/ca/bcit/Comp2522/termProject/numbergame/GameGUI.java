@@ -18,25 +18,36 @@ import java.util.Objects;
 /**
  * Manages the JavaFX-based user interface for the 20-Number Challenge game using a 4x5 grid.
  * <p>
- * This class extends {@code javafx.application.Application} and is the primary entry point for
- * the graphical user interface of the number game. It orchestrates the creation and management
- * of all visual components, including the game board represented by a grid of buttons,
- * informational labels that display the current game status and instructions, and a button
- * that allows the player to return to the main game menu.
+ * This class extends {@code javafx.application.Application} and serves as the visual
+ * representation of the 20-Number Challenge game. It is responsible for constructing
+ * and updating the graphical elements that the user interacts with to play the game.
+ * These elements include a grid of buttons representing the game board, labels that
+ * provide feedback and instructions to the player, and a button to navigate back to
+ * the main game menu.
  * </p>
  * <p>
- * The {@code GameGUI} class interacts closely with the {@link GameController} to handle the
- * underlying game logic. When a player interacts with the UI, such as clicking on a grid button,
- * this class communicates the action to the controller and subsequently updates the UI based
- * on the controller's response. This ensures that the visual state of the game accurately
- * reflects the internal game state.
+ * The {@code GameGUI} acts as a mediator between the user's actions and the underlying
+ * game logic, which is handled by the {@link GameController}. When a user clicks on a
+ * button in the grid, this class captures the event and communicates the player's
+ * intended move (the row and column of the clicked button) to the controller. Based on
+ * the controller's evaluation of the move, the {@code GameGUI} updates the visual
+ * state of the game, such as changing the text on the buttons to reflect placed numbers
+ * or displaying messages about the game's status.
  * </p>
  * <p>
- * Additionally, this class is responsible for providing feedback to the player through UI updates
- * and alert dialogs. For instance, it displays messages indicating whether a move was valid,
- * informs the player when the game is over (either by winning or losing), and presents options
- * to either try the game again or quit and return to the menu. Styling for the UI is managed
- * through an external CSS file, which is loaded and applied to the scene and alert dialogs.
+ * Error handling and user feedback are also key responsibilities of this class. It
+ * validates the loading of the CSS stylesheet to ensure proper styling of the UI.
+ * Furthermore, it displays alert dialogs to inform the player about significant game
+ * events, such as winning, losing due to no valid moves, or attempting to place a
+ * number out of sequence. These alerts often provide options for the player to either
+ * try the game again or to quit and return to the main menu. The score is also displayed
+ * at the end of the game.
+ * </p>
+ * <p>
+ * The layout of the game UI is structured using JavaFX layout panes like {@code BorderPane},
+ * {@code GridPane}, and {@code HBox} to organize the game board, labels, and buttons
+ * effectively within the application window. The visual appearance is further enhanced
+ * through CSS styling applied to the scene and alert dialogs.
  * </p>
  *
  * @author Sehaj Gill
@@ -55,6 +66,7 @@ public class GameGUI extends Application
     private static final int    GRID_BUTTON_SIZE            = 60;
     private static final int    GRID_BUTTON_SPACING         = 10;
     private static final int    GRID_ELEMENT_GAP            = 5;
+    private static final int    CURRENT_BASE_INDEX          = 0;
     private static final Insets LABEL_PADDING               = new Insets(10);
     private static final String DISPLAY_EMPTY_GRID_SLOT     = "[]";
     private static final String GAME_STATUS_WIN             = "win";
@@ -92,11 +104,13 @@ public class GameGUI extends Application
     /*
      * Constructor for initializing the {@code GameGUI} with a {@link GameController}
      * instance to handle the game logic and a {@link GameMenu} instance for navigation.
-     * This constructor sets up the necessary dependencies for the UI to interact with
-     * the game's rules and the application's menu system.
+     * This constructor establishes the necessary links between the UI and the game's
+     * core functionalities and the application's overall menu system.
      *
-     * @param controller The {@code GameController} that provides the game's rules and state.
-     * @param gameMenu   The {@code GameMenu} instance to facilitate navigation back to the menu.
+     * @param controller The {@code GameController} that provides the game's rules, state,
+     * and move validation logic.
+     * @param gameMenu   The {@code GameMenu} instance that allows the game UI to trigger
+     * a return to the main application menu.
      */
     GameGUI(GameController controller,
             GameMenu gameMenu)
@@ -109,9 +123,20 @@ public class GameGUI extends Application
 
     /**
      * Starts the JavaFX application, setting up the primary stage with the game's user interface.
-     * This method is the entry point for the UI and is called by the JavaFX runtime. It initializes
-     * the main window, sets up the visual components of the game (grid, labels, buttons), applies
-     * styling, and sets the initial game state by calling {@link #resetGame()}.
+     * This method is the main entry point for the UI and is called by the JavaFX runtime. It performs
+     * the following steps:
+     * <ol>
+     * <li>Creates the main window ({@code Stage}).</li>
+     * <li>Sets up the primary layout using {@code BorderPane} to organize different UI sections.</li>
+     * <li>Loads and applies CSS styling to the scene using {@link #validateCss(String)}.</li>
+     * <li>Creates a {@code GridPane} to represent the 4x5 game board and populates it with {@code Button} objects.</li>
+     * <li>Initializes the {@code Label} for displaying instructions/status and the {@code Button} for quitting.</li>
+     * <li>Sets up event handlers for the grid buttons to detect player moves ({@link #handleButtonClick(int, int)}).</li>
+     * <li>Arranges the grid, labels, and the quit button within the {@code BorderPane}.</li>
+     * <li>Sets the minimum dimensions and title of the primary stage.</li>
+     * <li>Displays the game window to the user.</li>
+     * <li>Calls {@link #resetGame()} to initialize the game state and UI.</li>
+     * </ol>
      *
      * @param primaryStage the primary stage for the game window, provided by the JavaFX runtime.
      */
@@ -144,9 +169,9 @@ public class GameGUI extends Application
         gridPane.setPadding(LABEL_PADDING);
         gridButtons = new Button[GRID_ROWS][GRID_COLS];
 
-        for (int i = 0; i < GRID_ROWS; i++)
+        for (int i =  CURRENT_BASE_INDEX; i < GRID_ROWS; i++)
         {
-            for (int j = 0; j < GRID_COLS; j++)
+            for (int j =  CURRENT_BASE_INDEX; j < GRID_COLS; j++)
             {
                 final int row;
                 final int col;
@@ -201,12 +226,13 @@ public class GameGUI extends Application
     /*
      * Validates the provided CSS file path by attempting to locate the resource.
      * If the CSS file is not found, a warning message is printed to the error stream.
-     * This method is used to ensure that the styling for the UI and alert dialogs
-     * can be applied. If the CSS file is missing, the application will proceed without it,
-     * but a warning will be logged to inform the developers.
+     * This method is crucial for ensuring that the visual styling of the game is applied.
+     * It checks if the CSS file exists in the application's resources and, if not,
+     * logs a warning indicating that the UI will proceed without the intended styling.
      *
      * @param context A string describing the context where the CSS is being used (e.g., "scene", "alert").
-     * @return The external form of the CSS file path if found, otherwise {@code null}.
+     * This helps in providing more informative warnings if the CSS is missing.
+     * @return The external form of the CSS file path if the resource is found; otherwise, {@code null}.
      */
     static String validateCss(String context)
     {
@@ -227,8 +253,9 @@ public class GameGUI extends Application
      * provided by the {@link GameController}. Empty slots are displayed with the
      * default {@link #DISPLAY_EMPTY_GRID_SLOT}, while filled slots show the placed number.
      * Buttons corresponding to filled slots are disabled to prevent further interaction.
-     * This method iterates through the 2D array representing the game grid and updates
-     * the text and disabled state of each corresponding button in the UI.
+     * This method iterates through the 2D array representing the game grid obtained from
+     * the controller and updates the text and disabled status of each button in the UI
+     * to reflect the underlying game state.
      */
     private void updateGridDisplay()
     {
@@ -236,9 +263,9 @@ public class GameGUI extends Application
         grid = controller.getGrid();
         currentNumberLabel.setText(LABEL_SELECT_SLOT);
 
-        for (int i = 0; i < GRID_ROWS; i++)
+        for (int i = CURRENT_BASE_INDEX; i < GRID_ROWS; i++)
         {
-            for (int j = 0; j < GRID_COLS; j++)
+            for (int j = CURRENT_BASE_INDEX; j < GRID_COLS; j++)
             {
                 if (grid[i][j] == INVALID_PLACEMENT)
                 {
@@ -272,9 +299,9 @@ public class GameGUI extends Application
         gameOver = true;
         statusLabel.setText(LABEL_GAME_OVER);
 
-        for (int i = 0; i < GRID_ROWS; i++)
+        for (int i = CURRENT_BASE_INDEX; i < GRID_ROWS; i++)
         {
-            for (int j = 0; j < GRID_COLS; j++)
+            for (int j = CURRENT_BASE_INDEX; j < GRID_COLS; j++)
             {
                 gridButtons[i][j].setDisable(true);
             }
