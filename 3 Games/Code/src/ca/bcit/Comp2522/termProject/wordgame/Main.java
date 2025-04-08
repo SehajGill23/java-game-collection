@@ -123,7 +123,7 @@ public final class Main
                     {
                         Thread.sleep(SLEEP_DURATION_MS);
                     }
-                    catch(InterruptedException e)
+                    catch(final InterruptedException e)
                     {
                         Thread.currentThread().interrupt();
                     }

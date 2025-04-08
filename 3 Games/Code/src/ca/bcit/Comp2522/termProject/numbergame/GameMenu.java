@@ -56,7 +56,7 @@ public class GameMenu extends Application
      * @param primaryStage the main stage for the JavaFX application, provided by the runtime.
      */
     @Override
-    public void start(Stage primaryStage)
+    public void start(final Stage primaryStage)
     {
         mainStage = primaryStage;
         initializeMenu(primaryStage);
@@ -70,7 +70,7 @@ public class GameMenu extends Application
      *
      * @param stage the primary stage of the application on which the menu is displayed.
      */
-    private void initializeMenu(Stage stage)
+    private void initializeMenu(final Stage stage)
     {
         VBox root;
         Scene scene;

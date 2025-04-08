@@ -225,7 +225,8 @@ class Validation
             Score.appendScoreToFile(currentScore,
                                     SCORE_FILE_PATH);
         }
-        catch(IOException e)
+        catch(final
+        IOException e)
         {
             System.out.println("Error: Unable to save score to " + SCORE_FILE_PATH + ": " + e.getMessage());
         }
@@ -244,7 +245,7 @@ class Validation
         {
             scoreList = Score.readScoresFromFile(SCORE_FILE_PATH);
         }
-        catch(IOException e)
+        catch(final IOException e)
         {
             System.out.println("Error reading score file: " + e.getMessage());
             return new Score( INITIAL_SCORE ,

@@ -101,7 +101,7 @@ class WordGame
      * @throws RuntimeException if country data cannot be loaded
      */
     WordGame(final String resourceDir,
-             List<String> fileNames)
+             final List<String> fileNames)
     {
         world = new World(resourceDir,
                           fileNames);

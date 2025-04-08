@@ -185,7 +185,7 @@ public class World
                     }
                 }
             }
-            catch(IOException e)
+            catch(final IOException e)
             {
                 System.out.printf(ERROR_READING_FILE + NEW_LINE,
                                   filename,

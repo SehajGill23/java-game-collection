@@ -377,7 +377,7 @@ public final class Score
                              secondAttempts,
                              incorrectAttempts);
         }
-        catch(Exception e)
+        catch(final Exception e)
         {
             System.out.println(ERROR_PARSING_OLD_MSG + e.getMessage());
             return new Score(LocalDateTime.now(),

@@ -112,8 +112,8 @@ public class GameGUI extends Application
      * @param gameMenu   The {@code GameMenu} instance that allows the game UI to trigger
      * a return to the main application menu.
      */
-    GameGUI(GameController controller,
-            GameMenu gameMenu)
+    GameGUI(final GameController controller,
+           final GameMenu gameMenu)
     {
         this.controller = controller;
         this.gameMenu = gameMenu;
@@ -141,7 +141,7 @@ public class GameGUI extends Application
      * @param primaryStage the primary stage for the game window, provided by the JavaFX runtime.
      */
     @Override
-    public void start(Stage primaryStage)
+    public void start(final Stage primaryStage)
     {
         GridPane gridPane;
         BorderPane labelPane;
@@ -234,7 +234,7 @@ public class GameGUI extends Application
      * This helps in providing more informative warnings if the CSS is missing.
      * @return The external form of the CSS file path if the resource is found; otherwise, {@code null}.
      */
-    static String validateCss(String context)
+    static String validateCss(final String context)
     {
         String cssPath;
         cssPath = GameGUI.class.getResource(CSS_FILE_PATH) != null
@@ -289,7 +289,7 @@ public class GameGUI extends Application
      *
      * @param message the game over message to display in the alert.
      */
-    private void showGameOver(String message)
+    private void showGameOver(final String message)
     {
         Alert gameOverAlert;
         ButtonType tryAgainButtonType;

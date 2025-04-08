@@ -79,7 +79,7 @@ final class LevelManager
                 index += lines;
             }
         }
-        catch(Exception e)
+        catch(final Exception e)
         {
             System.err.println(ERROR_INIT_FAILED + e.getMessage());
         }

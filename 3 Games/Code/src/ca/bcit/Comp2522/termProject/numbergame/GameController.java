@@ -42,8 +42,8 @@ public interface GameController
      * was already occupied. The game state may or may not have changed.</li>
      * </ul>
      */
-    int placeNumber(int row,
-                    int col);
+    int placeNumber(final int row,
+                    final int col);
 
     /**
      * Checks if the game has reached a terminal state (either won or lost).
@@ -91,8 +91,8 @@ public interface GameController
      * @param col the column index (0-based) of the position to check for validity.
      * @return {@code true} if the placement is valid, {@code false} otherwise.
      */
-    boolean isValidPlacement(int row,
-                             int col);
+    boolean isValidPlacement(final int row,
+                             final int col);
 
     /**
      * Determines the current status of the game based on the game state.

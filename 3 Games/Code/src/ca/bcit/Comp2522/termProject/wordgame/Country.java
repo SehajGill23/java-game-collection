@@ -44,7 +44,6 @@ final class Country
      * @param capitalCityName the name of the country's capital city. Must not be null or empty.
      * @param facts           an array of facts about the country. Must not be null and must contain at least one fact.
      * @param random          a {@link Random} instance to be used for selecting random facts. Must not be null.
-     * @throws IllegalArgumentException if any of the following conditions are true:
      * <ul>
      * <li>{@code countryName} is null or empty.</li>
      * <li>{@code capitalCityName} is null or empty.</li>

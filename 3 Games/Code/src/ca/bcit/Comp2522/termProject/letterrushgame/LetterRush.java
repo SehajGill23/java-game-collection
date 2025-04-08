@@ -247,8 +247,8 @@ public final class LetterRush implements Runnable
      * the reason for the player's loss in the current level
      * (e.g., "You hit an obstacle!" or "Time ran out!").
      */
-    void showLossAlert(String header,
-                       String content)
+    void showLossAlert(final String header,
+                       final String content)
     {
         Platform.runLater(() ->
                           {
@@ -351,7 +351,7 @@ public final class LetterRush implements Runnable
      * completed. This number is used in the alert's header to inform
      * the player of their achievement.
      */
-    void showWinAlert(int level)
+    void showWinAlert(final int level)
     {
         Platform.runLater(() ->
                           {
@@ -437,7 +437,7 @@ public final class LetterRush implements Runnable
      * was found. This information is used in the alert's content
      * to inform the player about the progression of the game.
      */
-    void showBonusAlert(int level)
+    void showBonusAlert(final int level)
     {
         Platform.runLater(() ->
                           {
@@ -1083,7 +1083,7 @@ public final class LetterRush implements Runnable
                                                       ui,
                                                       levelManager));
         }
-        catch(InterruptedException e)
+        catch(final InterruptedException e)
         {
             e.printStackTrace();
         }

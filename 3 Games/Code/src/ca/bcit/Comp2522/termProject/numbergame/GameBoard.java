@@ -89,8 +89,8 @@ abstract class GameBoard
      * @return {@code true} if the specified position is a valid place to put a number,
      * {@code false} otherwise.
      */
-    public abstract boolean isValidPlacement(int row,
-                                             int col);
+    public abstract boolean isValidPlacement( final int row,
+                                              final int col);
 
     /**
      * Places a given {@code number} into the game grid at the specified {@code row}
@@ -104,7 +104,7 @@ abstract class GameBoard
      * @param col    the column index (0-based) where the number should be placed.
      * @param number the integer number to be placed in the grid.
      */
-    public abstract void placeNumberInGrid(int row,
-                                           int col,
-                                           int number);
+    public abstract void placeNumberInGrid(final int row,
+                                           final int col,
+                                           final int number);
 }
