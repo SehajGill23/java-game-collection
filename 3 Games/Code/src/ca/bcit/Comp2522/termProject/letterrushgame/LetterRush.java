@@ -88,6 +88,7 @@ public final class LetterRush implements Runnable
     private static final String   BONUS_HEADER                = "Bonus Word Found! Extra Points!";
     private static final String   PROCEED_BUTTON              = "Proceed";
     private static final String   RETURN_BUTTON               = "Return to Main Menu";
+    private static final String   NULL_LEVEL_MANAGER          = "levelManager is null";
     private static final String   GOAT_MESSAGE                = "You are the GOAT 🐐, You've Won the Game! 🥳";
     private static final String   INSTRUCTIONS_TEXT           = """
                                                                 Instructions:
@@ -818,7 +819,7 @@ public final class LetterRush implements Runnable
     private void startGame()
     {
         player.reset();
-        System.out.println("Starting new game. Player collectedTarget: " + player.getCollectedTarget());
+        System.out.println("\n----Starting new game----\n");
 
         root = new Pane();
         root.setPrefSize(WINDOW_WIDTH_PIXELS,
@@ -889,7 +890,7 @@ public final class LetterRush implements Runnable
         }
         else
         {
-            System.err.println("Cannot start game: levelManager is null");
+            System.err.println("Cannot start game: " + NULL_LEVEL_MANAGER);
             showLossAlert(ERROR_HEADER,
                           ERROR_MESSAGE);
         }
@@ -989,7 +990,7 @@ public final class LetterRush implements Runnable
         }
         else
         {
-            System.err.println("Cannot reset game: levelManager is null");
+            System.err.println("Cannot reset game: " + NULL_LEVEL_MANAGER);
         }
 
     }
@@ -1040,7 +1041,7 @@ public final class LetterRush implements Runnable
     private void stopGame()
     {
         isRunning = false;
-        System.out.println("Stopping game. Player collectedTarget: " + player.getCollectedTarget());
+        System.out.println("\nStopping game...");
         scoreText.setText(SCORE_TEXT_PREFIX + player.getScore());
         bonusScoreText.setText(BONUS_SCORE_TEXT_PREFIX + player.getBonusPoints());
         highScoreText.setText(HIGH_SCORE_TEXT_PREFIX + player.getHighScore());

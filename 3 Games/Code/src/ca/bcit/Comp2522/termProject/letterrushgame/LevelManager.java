@@ -18,8 +18,6 @@ final class LevelManager
     private static final String   WORDS_FILE_PATH         = "/words.txt";
     private static final String   ERROR_NO_WORDS_LOADED   = "LevelManager: No words loaded from ";
     private static final String   ERROR_INIT_FAILED       = "LevelManager initialization failed: ";
-    private static final String   SUCCESS_INIT_PREFIX     = "LevelManager initialized with ";
-    private static final String   SUCCESS_INIT_SUFFIX     = " levels";
     private static final String   ERROR_NO_MORE_LEVELS    = "No more levels available";
     private static final int      INITIAL_LEVEL_INDEX     = 0;
     private static final int      OBSTACLE_TYPE_COUNT     = 3;
@@ -80,7 +78,6 @@ final class LevelManager
                                                      allWords.size())));
                 index += lines;
             }
-            System.out.println(SUCCESS_INIT_PREFIX + levels.size() + SUCCESS_INIT_SUFFIX);
         }
         catch(Exception e)
         {

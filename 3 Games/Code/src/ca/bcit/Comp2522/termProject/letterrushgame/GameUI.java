@@ -37,12 +37,14 @@ final class GameUI
     private static final int    TARGET_Y_PIXELS    = 90;
     private static final int    UI_LAYOUT_X_PIXELS = 10;
     private static final int    UI_LAYOUT_Y_PIXELS = 10;
+    private static final String DEFAULT_TIMER      = "30.0";
     private static final String SCORE_PREFIX       = "Score: ";
     private static final String LEVEL_PREFIX       = "Level: ";
     private static final String TIME_PREFIX        = "Time: ";
     private static final String TARGET_PREFIX      = "Target: ";
     private static final String UI_PANE_STYLE      = "ui-pane";
     private static final String UI_TEXT_STYLE      = "ui-text";
+    private static final String NUMBER_FORMAT      = "%.1f";
 
     private final Pane uiPane;
     private final Text scoreText;
@@ -76,7 +78,7 @@ final class GameUI
         this.uiPane         = new Pane();
         this.scoreText      = new Text(SCORE_PREFIX + "0");
         this.levelText      = new Text(LEVEL_PREFIX + "1");
-        this.timerText      = new Text(TIME_PREFIX + "30.0");
+        this.timerText      = new Text(TIME_PREFIX + DEFAULT_TIMER);
         this.targetWordText = new Text(TARGET_PREFIX);
 
         this.uiPane.setPrefSize(UI_WIDTH_PIXELS,
@@ -152,11 +154,32 @@ final class GameUI
      * composed of {@code TARGET_PREFIX} followed by the provided {@code targetWord}
      * (e.g., "Target: APPLE"), informing the player of their current objective.
      * It ensures the UI reflects the active target word for the level or game state.
+     * <p>
+     * If the {@code targetWord} or the UI component {@code targetWordText} is null,
+     * the method will log an error message to avoid a NullPointerException.
      *
      * @param targetWord the target word string to display
      */
     void updateTargetWord(final String targetWord)
     {
+        final boolean targetWordNull;
+        final boolean targetWordTextNull;
+
+        targetWordNull = (targetWord == null);
+        targetWordTextNull = (targetWordText == null);
+
+        if (targetWordNull)
+        {
+            System.out.println("Target word is null");
+            return;
+        }
+
+        if (targetWordTextNull)
+        {
+            System.out.println("UI text field targetWordText is null");
+            return;
+        }
+
         targetWordText.setText(TARGET_PREFIX + targetWord);
     }
 
@@ -172,7 +195,7 @@ final class GameUI
      */
     void updateTimer(final double timeSeconds)
     {
-        timerText.setText(String.format(TIME_PREFIX + "%.1f",
+        timerText.setText(String.format(TIME_PREFIX + NUMBER_FORMAT,
                                         timeSeconds));
     }
 
@@ -202,7 +225,6 @@ final class GameUI
         try(BufferedReader reader = new BufferedReader
                 (new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream(pathToFile)))))
         {
-            final String currentLine;
 
             String tempLine;
             while((tempLine = reader.readLine()) != null)

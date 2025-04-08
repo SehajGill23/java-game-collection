@@ -12,10 +12,10 @@ import java.util.Random;
 public class AscendingOrderGame extends GameBoard implements GameController
 {
 
-    protected int[][] grid;
-    protected int[]   numbers;
-    protected int     currentIndex;
-    private   int     gamesPlayed;
+    private   int[][] grid;
+    private int[] numbers;
+    private int   currentIndex;
+    private int   gamesPlayed;
     private   int     gamesWon;
     private   int     totalPlacements;
 
@@ -51,7 +51,7 @@ public class AscendingOrderGame extends GameBoard implements GameController
     private static final String SCORE_PER_GAME          = " per game.";
 
 
-    public AscendingOrderGame()
+    AscendingOrderGame()
     {
         grid            = new int[ROWS][COLS];
         numbers         = new int[TOTAL_NUMBERS];
