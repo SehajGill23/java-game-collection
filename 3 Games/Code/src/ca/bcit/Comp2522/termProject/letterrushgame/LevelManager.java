@@ -1,4 +1,4 @@
-package ca.bcit.Comp2522.termProject.letterrushgame;
+package ca.bcit.comp2522.termproject.letterrushgame;
 
 import java.util.ArrayList;
 import java.util.List;

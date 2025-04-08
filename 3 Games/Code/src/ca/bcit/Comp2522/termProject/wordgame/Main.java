@@ -1,7 +1,7 @@
-package ca.bcit.Comp2522.termProject.wordgame;
+package ca.bcit.comp2522.termproject.wordgame;
 
-import ca.bcit.Comp2522.termProject.letterrushgame.LetterRush;
-import ca.bcit.Comp2522.termProject.numbergame.GameMenu;
+import ca.bcit.comp2522.termproject.letterrushgame.LetterRush;
+import ca.bcit.comp2522.termproject.numbergame.GameMenu;
 
 import java.util.Scanner;
 

@@ -1,4 +1,4 @@
-package ca.bcit.Comp2522.termProject.letterrushgame;
+package ca.bcit.comp2522.termproject.letterrushgame;
 
 /**
  * Represents a bomb obstacle in the LetterRush game, extending the

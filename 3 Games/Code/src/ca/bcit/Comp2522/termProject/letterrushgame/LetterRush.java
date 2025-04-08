@@ -1,6 +1,6 @@
-package ca.bcit.Comp2522.termProject.letterrushgame;
+package ca.bcit.comp2522.termproject.letterrushgame;
 
-import ca.bcit.Comp2522.termProject.wordgame.Main;
+import ca.bcit.comp2522.termproject.wordgame.Main;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;

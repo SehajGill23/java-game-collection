@@ -1,6 +1,6 @@
-package ca.bcit.Comp2522.termProject.numbergame;
+package ca.bcit.comp2522.termproject.numbergame;
 
-import ca.bcit.Comp2522.termProject.wordgame.Main;
+import ca.bcit.comp2522.termproject.wordgame.Main;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;

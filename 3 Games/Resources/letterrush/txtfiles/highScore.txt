@@ -1,15 +1,35 @@
-Timestamp: 2025-04-08 16:15:09
+Timestamp: 2025-04-08 16:52:33
 High Score: 10
 Current Score: 10
 Bonus Score: 0
 
-Timestamp: 2025-04-08 16:15:10
+Timestamp: 2025-04-08 16:52:35
 High Score: 20
 Current Score: 20
 Bonus Score: 0
 
-Timestamp: 2025-04-08 16:15:11
+Timestamp: 2025-04-08 16:52:37
 High Score: 30
 Current Score: 30
+Bonus Score: 0
+
+Timestamp: 2025-04-08 16:52:43
+High Score: 40
+Current Score: 40
+Bonus Score: 0
+
+Timestamp: 2025-04-08 16:52:47
+High Score: 50
+Current Score: 50
+Bonus Score: 0
+
+Timestamp: 2025-04-08 16:52:49
+High Score: 60
+Current Score: 60
+Bonus Score: 0
+
+Timestamp: 2025-04-08 16:52:51
+High Score: 70
+Current Score: 70
 Bonus Score: 0
 

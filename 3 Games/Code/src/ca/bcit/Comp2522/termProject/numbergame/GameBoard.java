@@ -1,4 +1,4 @@
-package ca.bcit.Comp2522.termProject.numbergame;
+package ca.bcit.comp2522.termproject.numbergame;
 
 /**
  * Represents the core game board logic for a grid-based game, providing common functionality
