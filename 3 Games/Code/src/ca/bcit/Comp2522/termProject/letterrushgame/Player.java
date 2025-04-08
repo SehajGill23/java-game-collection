@@ -45,7 +45,7 @@ public class Player
     private static final int    TARGET_POINTS_PER_LETTER = 10;
     private static final int    BONUS_POINTS_PER_WORD    = 20;
     private static final double CURSOR_SIZE_PIXELS       = 10.0;
-    private static final String HIGH_SCORE_FILE_PATH     = "Resources/highScore.txt";
+    private static final String HIGH_SCORE_FILE_PATH     = "Resources/letterrush/txtfiles/highScore.txt";
     private static final String ERROR_LOADING_MESSAGE    = "Error loading high score: ";
     private static final String ERROR_SAVING_MESSAGE     = "Error saving high score: ";
     private static final String CLICKED_LETTER_MESSAGE   = "Clicked letter: ";

@@ -86,7 +86,7 @@ class Validation
     private static final int         INITIAL_SECOND_ATTEMPT    = 0;
     private static final int         INITIAL_INCORRECT_ATTEMPT = 0;
     private static final int         INITIAL_GAME_PlAY         = 1;
-    private static final String      SCORE_FILE_PATH           = "Resources/score.txt";
+    private static final String      SCORE_FILE_PATH           = "Resources/wordgame/textfiles/score.txt";
     private static final String      WORD_GAME_MODE            = "W";
     private static final String      NUMBER_GAME_MODE          = "N";
     private static final String      CUSTOM_GAME_MODE          = "M";

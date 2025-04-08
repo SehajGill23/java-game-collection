@@ -10,6 +10,14 @@
       <sourceFolder url="file://$MODULE_DIR$/Code/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/Test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/Resources/letterrush" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/Resources/letterrush/css" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/Resources/letterrush/images" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/Resources/letterrush/txtfiles" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/Resources/numbergame" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/Resources/numbergame/css" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/Resources/wordgame" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/Resources/wordgame/textfiles" type="java-resource" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

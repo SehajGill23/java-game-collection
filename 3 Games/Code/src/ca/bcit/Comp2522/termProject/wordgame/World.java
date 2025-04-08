@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+
 /**
  * The {@code World} class is responsible for managing the collection of countries used in the
  * Geography Trivia Game. It handles the crucial task of loading country-specific information
@@ -57,7 +58,7 @@ public class World
 {
     private static final String CAPITAL_SEPARATOR        = ":";
     private static final String FACT_SEPARATOR           = "\n";
-    private static final String RESOURCES_DIRECTORY      = "Resources";
+    private static final String RESOURCES_DIRECTORY      = "Resources/wordgame/textfiles";
     private static final String FILE_EXTENSION           = ".txt";
     private static final char   FIRST_LETTER             = 'a';
     private static final char   LAST_LETTER              = 'z';

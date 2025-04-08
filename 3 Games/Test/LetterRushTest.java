@@ -45,7 +45,7 @@ class LetterRushTest
     private static final int    SCORE_30_POINTS                 = 30;
     private static final String TARGET_WORD_HEN                 = "HEN";
     private static final String BONUS_WORD_HUN                  = "HUN";
-    private static final String SCORE_FILE                      = "Resources/highScore.txt";
+    private static final String SCORE_FILE                      = "highScore.txt";
     private static final String COLLECTED_1_LETTER_MESSAGE      = "Should have collected 1 letter for target word.";
     private static final String FIRST_LETTER_H_MESSAGE          = "First collected letter should be 'H'.";
     private static final String SCORE_10_POINTS_MESSAGE         = "Score should be 10 points (1 letter * 10 points).";

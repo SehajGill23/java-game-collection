@@ -2,7 +2,6 @@
     -fx-background-color: linear-gradient(to bottom, #2D2926FF, #4A4440FF); /* Black gradient background */
 }
 
-/* Styling for the action buttons (used in GameMenu and GameGUI) */
 .action-button {
     -fx-background-color: #f36960 !important; /* Cherry Tomato background for buttons */
     -fx-text-fill: #FFFFFF !important; /* White text for contrast */
