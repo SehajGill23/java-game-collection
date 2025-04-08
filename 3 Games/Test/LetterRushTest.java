@@ -2,15 +2,14 @@ import ca.bcit.Comp2522.termProject.letterrushgame.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-/**
+/*
  * Test class for the LetterRush game, focusing on core logic and interactions
  * between Player, Letter, Obstacle, LetterEngine, and LetterRush.
  * Avoids JavaFX-specific operations and tests high score persistence.
@@ -57,9 +56,7 @@ class LetterRushTest
     private static final String THIRD_LETTER_N_MESSAGE          = "Third collected letter should be 'N'.";
     private static final String SCORE_30_POINTS_MESSAGE         = "Score should be 30 points (3 letters * 10 points).";
     private static final String TARGET_WORD_COMPLETED_MESSAGE   = "Target word 'HEN' should be completed.";
-    private static final String SCORE_10_NO_BONUS_MESSAGE       = "Score should be 10 points (no additional points yet).";
     private static final String BONUS_WORD_COMPLETED_MESSAGE    = "Bonus word 'HUN' should be completed.";
-    private static final String SCORE_40_POINTS_MESSAGE         = "Score should be 40 points (H: 10 + N: 10 + bonus: 40).";
     private static final String NO_LETTERS_COLLECTED_MESSAGE    = "No letters should be collected for target word.";
     private static final String INCORRECT_CLICKS_1_MESSAGE      = "Incorrect clicks should be 1.";
     private static final String SCORE_0_POINTS_MESSAGE          = "Score should be 0 (no correct letters).";
@@ -73,16 +70,29 @@ class LetterRushTest
     private static final String X_NOT_EXCEED_WIDTH_MESSAGE      = "Letter X position should not exceed (width - SIZE).";
     private static final String SCORE_60_POINTS_MESSAGE         = "Score should be 60 points before reset.";
     private static final String SCORE_RESET_40_POINTS_MESSAGE   = "Score should reset to 40 points (start of level 2).";
-    private static final String HIGH_SCORE_50_POINTS_MESSAGE    = "High score should be 50 points after loading from file.";
     private static final String HIGH_SCORE_75_POINTS_MESSAGE    = "High score should now be 75 points.";
     private static final String THREE_ENTRIES_MESSAGE           = "There should be 3 high score entries in the file.";
     private static final String HIGHEST_SCORE_50_POINTS_MESSAGE = "The highest score should be 50 points.";
-    private static final String EMPTY_FILE_MESSAGE              = "Reading from an empty high score file should return " +
-                                                                  "an empty list.";
+    private static final String SCORE_40_POINTS_MESSAGE         = "Score should be 40 points (H: 10 + N: 10 +" +
+                                                                  " bonus: 40).";
+    private static final String HIGH_SCORE_50_POINTS_MESSAGE    = "High score should be 50 points after loading from" +
+                                                                  " file.";
+    private static final String EMPTY_FILE_MESSAGE              = "Reading from an empty high score file should return "
+                                                                  + "an empty list.";
+    private static final String SCORE_10_NO_BONUS_MESSAGE       = "Score should be 10 points (no additional " +
+                                                                  "points yet).";
 
     private Player     player;
     private LetterRush letterRush;
 
+
+    /*
+     * Sets up the test environment before each test case.
+     * Clears the high score file to ensure a clean state and initializes
+     * the Player and LetterRush instances.
+     *
+     * @throws IOException if an error occurs while clearing the high score file.
+     */
     @BeforeEach
     void setUp() throws IOException
     {
@@ -94,6 +104,10 @@ class LetterRushTest
         letterRush = new LetterRush();
     }
 
+    /*
+     * Tests the scenario where the player clicks on letters that form the target word.
+     * Verifies that the collected letters, score, and target word completion status are correctly updated.
+     */
     @Test
     void testPlayerClickLetterTargetWord()
     {
@@ -163,6 +177,11 @@ class LetterRushTest
                    TARGET_WORD_COMPLETED_MESSAGE);
     }
 
+    /**
+     * Tests the handling of incorrect clicks by the player.
+     * Verifies that the incorrect click counter is incremented and the player fails
+     * after a certain number of incorrect attempts.
+     */
     @Test
     void testPlayerClickLetterBonusWord()
     {
@@ -215,6 +234,10 @@ class LetterRushTest
                      SCORE_40_POINTS_MESSAGE);
     }
 
+    /**
+     * Tests the movement of a letter within the game window boundaries.
+     * Verifies that the letter's position changes upon update and stays within the defined width.
+     */
     @Test
     void testPlayerIncorrectClicks()
     {
@@ -279,6 +302,11 @@ class LetterRushTest
                    PLAYER_FAILED_MESSAGE);
     }
 
+
+    /**
+     * Tests the game reset logic within LetterRush, specifically focusing on score management
+     * between different levels without relying on JavaFX calls.
+     */
     @Test
     void testLetterMovement()
     {

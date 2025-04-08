@@ -18,6 +18,6 @@ lesson 9:    JavaFX Scene, button controls in class LetterRush.
              Event handling and Platform.runLater() in class Letter.
 lesson 10:   JUnit framework for testing in class LetterRushTest.
              Positive and negative testing in LetterRushTest class.
-lesson 11:   Singleton pattern for level management in class LevelManager.
-             Object references for method parameters in class LetterEngine.
+lesson 11:   LetterRush class partially implements the Singleton pattern.
+             but does not use it exactly in the strict, traditional sense.
 lesson 12:   Thread.sleep() in class Main and LetterRush for delay.
