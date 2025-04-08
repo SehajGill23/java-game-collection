@@ -80,9 +80,9 @@ public final class Letter
 
     /**
      * Updates the letter’s position based on its current direction and speed
-     * within the game window. If the letter is locked (see
-     * {@link #lock()}, this method exits immediately without altering its
-     * position, preserving its current location. For an unlocked letter, the
+     * within the game window. If the letter is locked {@link #lock()},
+     * this method exits immediately without altering its position,
+     * preserving its current location. For an unlocked letter, the
      * method calculates a new position by adding the horizontal speed
      * ({@code dxPixels}) to the current x-coordinate and the vertical speed
      * ({@code dyPixels}) to the current y-coordinate. The letter bounces off the

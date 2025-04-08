@@ -523,3 +523,17 @@ Correct Second Attempts: 0
 Incorrect Attempts: 10
 Score: 0 points
 
+Date and Time: 2025-04-07 20:27:31
+Games Played: 1
+Correct First Attempts: 0
+Correct Second Attempts: 0
+Incorrect Attempts: 10
+Score: 0 points
+
+Date and Time: 2025-04-07 20:28:13
+Games Played: 4
+Correct First Attempts: 0
+Correct Second Attempts: 0
+Incorrect Attempts: 10
+Score: 0 points
+
