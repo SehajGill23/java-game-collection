@@ -19,78 +19,14 @@ import java.util.List;
  */
 class LetterRushTest
 {
-    private static final int    LETTER_X_POSITION_1_PIXELS      = 100;
-    private static final int    LETTER_Y_POSITION_1_PIXELS      = 100;
-    private static final int    LETTER_X_POSITION_2_PIXELS      = 150;
-    private static final int    LETTER_Y_POSITION_2_PIXELS      = 150;
-    private static final int    LETTER_X_POSITION_3_PIXELS      = 200;
-    private static final int    LETTER_Y_POSITION_3_PIXELS      = 200;
-    private static final int    EXPECTED_COUNT_1                = 1;
-    private static final int    SCORE_PER_LETTER_POINTS         = 10;
-    private static final int    EXPECTED_COUNT_2                = 2;
-    private static final int    SCORE_FOR_TWO_LETTERS_POINTS    = 20;
-    private static final int    EXPECTED_COUNT_3                = 3;
-    private static final int    SCORE_FOR_THREE_LETTERS_POINTS  = 30;
-    private static final int    SCORE_WITH_BONUS_POINTS         = 40;
-    private static final int    INITIAL_VALUE                   = 0;
-    private static final int    INITIAL_LETTER_POSITION_PIXELS  = 50;
-    private static final int    WINDOW_WIDTH_PIXELS             = 1000;
-    private static final int    WINDOW_HEIGHT_PIXELS            = 500;
-    private static final int    OUT_OF_BOUNDS_X_PIXELS          = -10;
-    private static final int    OUT_OF_BOUNDS_OFFSET_PIXELS     = 10;
-    private static final int    LETTER_SIZE_PIXELS              = 20;
-    private static final int    SCORE_AFTER_LEVEL_2_POINTS      = 60;
-    private static final int    HIGH_SCORE_50_POINTS            = 50;
-    private static final int    HIGH_SCORE_75_POINTS            = 75;
-    private static final int    SCORE_30_POINTS                 = 30;
-    private static final String TARGET_WORD_HEN                 = "HEN";
-    private static final String BONUS_WORD_HUN                  = "HUN";
-    private static final String SCORE_FILE                      = "Resources/letterrush/txtfiles/highScore.txt";
-    private static final String COLLECTED_1_LETTER_MESSAGE      = "Should have collected 1 letter for target word.";
-    private static final String FIRST_LETTER_H_MESSAGE          = "First collected letter should be 'H'.";
-    private static final String SCORE_10_POINTS_MESSAGE         = "Score should be 10 points (1 letter * 10 points).";
-    private static final String COLLECTED_2_LETTERS_MESSAGE     = "Should have collected 2 letters for target word.";
-    private static final String SECOND_LETTER_E_MESSAGE         = "Second collected letter should be 'E'.";
-    private static final String SCORE_20_POINTS_MESSAGE         = "Score should be 20 points (2 letters * 10 points).";
-    private static final String COLLECTED_3_LETTERS_MESSAGE     = "Should have collected 3 letters for target word.";
-    private static final String THIRD_LETTER_N_MESSAGE          = "Third collected letter should be 'N'.";
-    private static final String SCORE_30_POINTS_MESSAGE         = "Score should be 30 points (3 letters * 10 points).";
-    private static final String TARGET_WORD_COMPLETED_MESSAGE   = "Target word 'HEN' should be completed.";
-    private static final String BONUS_WORD_COMPLETED_MESSAGE    = "Bonus word 'HUN' should be completed.";
-    private static final String NO_LETTERS_COLLECTED_MESSAGE    = "No letters should be collected for target word.";
-    private static final String INCORRECT_CLICKS_1_MESSAGE      = "Incorrect clicks should be 1.";
-    private static final String SCORE_0_POINTS_MESSAGE          = "Score should be 0 (no correct letters).";
-    private static final String INCORRECT_CLICKS_2_MESSAGE      = "Incorrect clicks should be 2.";
-    private static final String NOT_FAILED_YET_MESSAGE          = "Player should not have failed yet (2 < 3).";
-    private static final String INCORRECT_CLICKS_3_MESSAGE      = "Incorrect clicks should be 3.";
-    private static final String PLAYER_FAILED_MESSAGE           = "Player should have failed (3 incorrect clicks).";
-    private static final String X_POSITION_CHANGED_MESSAGE      = "Letter X position should have changed.";
-    private static final String Y_POSITION_CHANGED_MESSAGE      = "Letter Y position should have changed.";
-    private static final String X_NOT_LESS_THAN_ZERO_MESSAGE    = "Letter X position should not be less than 0.";
-    private static final String X_NOT_EXCEED_WIDTH_MESSAGE      = "Letter X position should not exceed (width - SIZE).";
-    private static final String SCORE_60_POINTS_MESSAGE         = "Score should be 60 points before reset.";
-    private static final String SCORE_RESET_40_POINTS_MESSAGE   = "Score should reset to 40 points (start of level 2).";
-    private static final String HIGH_SCORE_75_POINTS_MESSAGE    = "High score should now be 75 points.";
-    private static final String THREE_ENTRIES_MESSAGE           = "There should be 3 high score entries in the file.";
-    private static final String HIGHEST_SCORE_50_POINTS_MESSAGE = "The highest score should be 50 points.";
-    private static final String SCORE_40_POINTS_MESSAGE         = "Score should be 40 points (H: 10 + N: 10 +" +
-                                                                  " bonus: 40).";
-    private static final String HIGH_SCORE_50_POINTS_MESSAGE    = "High score should be 50 points after loading from" +
-                                                                  " file.";
-    private static final String EMPTY_FILE_MESSAGE              = "Reading from an empty high score file should return "
-                                                                  + "an empty list.";
-    private static final String SCORE_10_NO_BONUS_MESSAGE       = "Score should be 10 points (no additional " +
-                                                                  "points yet).";
-
     private Player     player;
     private LetterRush letterRush;
-
 
     @BeforeEach
     void setUp() throws IOException
     {
         // Clear the high score file before each test to ensure no leftover data
-        new FileWriter(SCORE_FILE,
+        new FileWriter("Resources/letterrush/txtfiles/highScore.txt",
                        false).close();
 
         player     = new Player();
@@ -107,63 +43,63 @@ class LetterRushTest
         String bonusWord;
 
         letterH    = new Letter('H',
-                                LETTER_X_POSITION_1_PIXELS,
-                                LETTER_Y_POSITION_1_PIXELS,
+                                100,
+                                100,
                                 true,
                                 false);
         letterE    = new Letter('E',
-                                LETTER_X_POSITION_2_PIXELS,
-                                LETTER_Y_POSITION_2_PIXELS,
+                                150,
+                                150,
                                 true,
                                 false);
         letterN    = new Letter('N',
-                                LETTER_X_POSITION_3_PIXELS,
-                                LETTER_Y_POSITION_3_PIXELS,
+                                200,
+                                200,
                                 true,
                                 false);
-        targetWord = TARGET_WORD_HEN;
-        bonusWord  = BONUS_WORD_HUN;
+        targetWord = "HEN";
+        bonusWord  = "HUN";
 
         player.clickLetter(letterH,
                            targetWord,
                            bonusWord);
-        assertEquals(EXPECTED_COUNT_1,
+        assertEquals(1,
                      player.getCollectedTarget().size(),
-                     COLLECTED_1_LETTER_MESSAGE);
+                     "Should have collected 1 letter for target word.");
         assertEquals('H',
                      player.getCollectedTarget().getFirst(),
-                     FIRST_LETTER_H_MESSAGE);
-        assertEquals(SCORE_PER_LETTER_POINTS,
+                     "First collected letter should be 'H'.");
+        assertEquals(10,
                      player.getScore(),
-                     SCORE_10_POINTS_MESSAGE);
+                     "Score should be 10 points (1 letter * 10 points).");
 
         player.clickLetter(letterE,
                            targetWord,
                            bonusWord);
-        assertEquals(EXPECTED_COUNT_2,
+        assertEquals(2,
                      player.getCollectedTarget().size(),
-                     COLLECTED_2_LETTERS_MESSAGE);
+                     "Should have collected 2 letters for target word.");
         assertEquals('E',
-                     player.getCollectedTarget().get(EXPECTED_COUNT_1),
-                     SECOND_LETTER_E_MESSAGE);
-        assertEquals(SCORE_FOR_TWO_LETTERS_POINTS,
+                     player.getCollectedTarget().get(1),
+                     "Second collected letter should be 'E'.");
+        assertEquals(20,
                      player.getScore(),
-                     SCORE_20_POINTS_MESSAGE);
+                     "Score should be 20 points (2 letters * 10 points).");
 
         player.clickLetter(letterN,
                            targetWord,
                            bonusWord);
-        assertEquals(EXPECTED_COUNT_3,
+        assertEquals(3,
                      player.getCollectedTarget().size(),
-                     COLLECTED_3_LETTERS_MESSAGE);
+                     "Should have collected 3 letters for target word.");
         assertEquals('N',
-                     player.getCollectedTarget().get(EXPECTED_COUNT_2),
-                     THIRD_LETTER_N_MESSAGE);
-        assertEquals(SCORE_FOR_THREE_LETTERS_POINTS,
+                     player.getCollectedTarget().get(2),
+                     "Third collected letter should be 'N'.");
+        assertEquals(30,
                      player.getScore(),
-                     SCORE_30_POINTS_MESSAGE);
+                     "Score should be 30 points (3 letters * 10 points).");
         assertTrue(player.hasCompletedTargetWord(targetWord),
-                   TARGET_WORD_COMPLETED_MESSAGE);
+                   "Target word 'HEN' should be completed.");
     }
 
     @Test
@@ -176,46 +112,46 @@ class LetterRushTest
         String bonusWord;
 
         letterH    = new Letter('H',
-                                LETTER_X_POSITION_1_PIXELS,
-                                LETTER_Y_POSITION_1_PIXELS,
+                                100,
+                                100,
                                 true,
                                 true);
         letterU    = new Letter('U',
-                                LETTER_X_POSITION_2_PIXELS,
-                                LETTER_Y_POSITION_2_PIXELS,
+                                150,
+                                150,
                                 false,
                                 true);
         letterN    = new Letter('N',
-                                LETTER_X_POSITION_3_PIXELS,
-                                LETTER_Y_POSITION_3_PIXELS,
+                                200,
+                                200,
                                 true,
                                 true);
-        targetWord = TARGET_WORD_HEN;
-        bonusWord  = BONUS_WORD_HUN;
+        targetWord = "HEN";
+        bonusWord  = "HUN";
 
         // Click letters to form "HUN"
         player.clickLetter(letterH,
                            targetWord,
                            bonusWord);
-        assertEquals(SCORE_PER_LETTER_POINTS,
+        assertEquals(10,
                      player.getScore(),
-                     SCORE_10_POINTS_MESSAGE);
+                     "Score should be 10 points (1 letter * 10 points).");
 
         player.clickLetter(letterU,
                            targetWord,
                            bonusWord);
-        assertEquals(SCORE_PER_LETTER_POINTS,
+        assertEquals(10,
                      player.getScore(),
-                     SCORE_10_NO_BONUS_MESSAGE);
+                     "Score should be 10 points (no additional points yet).");
 
         player.clickLetter(letterN,
                            targetWord,
                            bonusWord);
         assertTrue(player.hasCompletedBonusWord(bonusWord),
-                   BONUS_WORD_COMPLETED_MESSAGE);
-        assertEquals(SCORE_WITH_BONUS_POINTS,
+                   "Bonus word 'HUN' should be completed.");
+        assertEquals(40,
                      player.getScore(),
-                     SCORE_40_POINTS_MESSAGE);
+                     "Score should be 40 points (H: 10 + N: 10 + bonus: 40).");
     }
 
     @Test
@@ -228,60 +164,59 @@ class LetterRushTest
         String bonusWord;
 
         letterX    = new Letter('X',
-                                LETTER_X_POSITION_1_PIXELS,
-                                LETTER_Y_POSITION_1_PIXELS,
+                                100,
+                                100,
                                 false,
                                 false);
         letterY    = new Letter('Y',
-                                LETTER_X_POSITION_2_PIXELS,
-                                LETTER_Y_POSITION_2_PIXELS,
+                                150,
+                                150,
                                 false,
                                 false);
         letterZ    = new Letter('Z',
-                                LETTER_X_POSITION_3_PIXELS,
-                                LETTER_Y_POSITION_3_PIXELS,
+                                200,
+                                200,
                                 false,
                                 false);
-        targetWord = TARGET_WORD_HEN;
-        bonusWord  = BONUS_WORD_HUN;
+        targetWord = "HEN";
+        bonusWord  = "HUN";
 
         // Click incorrect letter 'X'
         player.clickLetter(letterX,
                            targetWord,
                            bonusWord);
-        assertEquals(INITIAL_VALUE,
+        assertEquals(0,
                      player.getCollectedTarget().size(),
-                     NO_LETTERS_COLLECTED_MESSAGE);
-        assertEquals(EXPECTED_COUNT_1,
+                     "No letters should be collected for target word.");
+        assertEquals(1,
                      player.getIncorrectClicks(),
-                     INCORRECT_CLICKS_1_MESSAGE);
-        assertEquals(INITIAL_VALUE,
+                     "Incorrect clicks should be 1.");
+        assertEquals(0,
                      player.getScore(),
-                     SCORE_0_POINTS_MESSAGE);
+                     "Score should be 0 (no correct letters).");
 
         // Click a different incorrect letter 'Y'
         player.clickLetter(letterY,
                            targetWord,
                            bonusWord);
-        assertEquals(EXPECTED_COUNT_2,
+        assertEquals(2,
                      player.getIncorrectClicks(),
-                     INCORRECT_CLICKS_2_MESSAGE);
+                     "Incorrect clicks should be 2.");
         assertFalse(player.hasFailed(targetWord,
                                      bonusWord),
-                    NOT_FAILED_YET_MESSAGE);
+                    "Player should not have failed yet (2 < 3).");
 
         // Click another incorrect letter 'Z'
         player.clickLetter(letterZ,
                            targetWord,
                            bonusWord);
-        assertEquals(EXPECTED_COUNT_3,
+        assertEquals(3,
                      player.getIncorrectClicks(),
-                     INCORRECT_CLICKS_3_MESSAGE);
+                     "Incorrect clicks should be 3.");
         assertTrue(player.hasFailed(targetWord,
                                     bonusWord),
-                   PLAYER_FAILED_MESSAGE);
+                   "Player should have failed (3 incorrect clicks).");
     }
-
 
     @Test
     void testLetterMovement()
@@ -291,12 +226,12 @@ class LetterRushTest
         int    height;
 
         letter = new Letter('A',
-                            INITIAL_LETTER_POSITION_PIXELS,
-                            INITIAL_LETTER_POSITION_PIXELS,
+                            50,
+                            50,
                             true,
                             false);
-        width  = WINDOW_WIDTH_PIXELS;
-        height = WINDOW_HEIGHT_PIXELS;
+        width  = 1000;
+        height = 500;
 
         // Move within bounds
         double initialX;
@@ -307,111 +242,111 @@ class LetterRushTest
                               height);
         assertNotEquals(initialX,
                         letter.getNode().getX(),
-                        X_POSITION_CHANGED_MESSAGE);
+                        "Letter X position should have changed.");
         assertNotEquals(initialY,
                         letter.getNode().getY(),
-                        Y_POSITION_CHANGED_MESSAGE);
+                        "Letter Y position should have changed.");
 
         // Move to boundary (x < 0)
-        letter.getNode().setX(OUT_OF_BOUNDS_X_PIXELS);
+        letter.getNode().setX(-10);
         letter.updatePosition(width,
                               height);
-        assertTrue(letter.getNode().getX() >= INITIAL_VALUE,
-                   X_NOT_LESS_THAN_ZERO_MESSAGE);
+        assertTrue(letter.getNode().getX() >= 0,
+                   "Letter X position should not be less than 0.");
 
         // Move to boundary (x > width - SIZE)
-        letter.getNode().setX(width + OUT_OF_BOUNDS_OFFSET_PIXELS);
+        letter.getNode().setX(width + 10);
         letter.updatePosition(width,
                               height);
-        assertTrue(letter.getNode().getX() <= width - LETTER_SIZE_PIXELS,
-                   X_NOT_EXCEED_WIDTH_MESSAGE);
+        assertTrue(letter.getNode().getX() <= width - 20,
+                   "Letter X position should not exceed (width - SIZE).");
     }
 
     @Test
     void testLetterRushResetGame()
     {
         // Set initial state
-        letterRush.scoreAtLevelStart = INITIAL_VALUE; // Set initial score
-        player.setScore(SCORE_WITH_BONUS_POINTS); // Earn 40 points in level 1
+        letterRush.scoreAtLevelStart = 0; // Set initial score
+        player.setScore(40); // Earn 40 points in level 1
 
         // Simulate proceeding to level 2
         player.resetForNewLevel();
         letterRush.scoreAtLevelStart = player.getScore(); // 40
-        player.setScore(SCORE_AFTER_LEVEL_2_POINTS); // Earn 20 more points in level 2
-        assertEquals(SCORE_AFTER_LEVEL_2_POINTS,
+        player.setScore(60); // Earn 20 more points in level 2
+        assertEquals(60,
                      player.getScore(),
-                     SCORE_60_POINTS_MESSAGE);
+                     "Score should be 60 points before reset.");
 
         // Simulate resetGame() logic without calling JavaFX methods
         player.setScore(letterRush.scoreAtLevelStart);
-        player.setBonusPoints(INITIAL_VALUE);
+        player.setBonusPoints(0);
         player.resetForNewLevel();
-        assertEquals(SCORE_WITH_BONUS_POINTS,
+        assertEquals(40,
                      player.getScore(),
-                     SCORE_RESET_40_POINTS_MESSAGE);
+                     "Score should reset to 40 points (start of level 2).");
     }
 
     @Test
     void testHighScorePersistence() throws IOException
     {
-        player.setScore(HIGH_SCORE_50_POINTS);
+        player.setScore(50);
         player.updateHighScore();
 
         Player newPlayer;
         newPlayer = new Player();
-        assertEquals(HIGH_SCORE_50_POINTS,
+        assertEquals(50,
                      newPlayer.getHighScore(),
-                     HIGH_SCORE_50_POINTS_MESSAGE);
+                     "High score should be 50 points after loading from file.");
 
-        newPlayer.setScore(HIGH_SCORE_75_POINTS);
+        newPlayer.setScore(75);
         newPlayer.updateHighScore();
 
         List<LetterRushScore> scores;
         int                   highScore;
-        scores    = LetterRushScore.readScoresFromFile(SCORE_FILE);
-        highScore = scores.stream().mapToInt(LetterRushScore::getHighScore).max().orElse(INITIAL_VALUE);
-        assertEquals(HIGH_SCORE_75_POINTS,
+        scores    = LetterRushScore.readScoresFromFile("Resources/letterrush/txtfiles/highScore.txt");
+        highScore = scores.stream().mapToInt(LetterRushScore::getHighScore).max().orElse(0);
+        assertEquals(75,
                      highScore,
-                     HIGH_SCORE_75_POINTS_MESSAGE);
+                     "High score should now be 75 points.");
     }
 
     @Test
     void testMultipleHighScoreEntries() throws IOException
     {
-        player.setScore(SCORE_30_POINTS);
+        player.setScore(30);
         player.updateHighScore();
 
-        player.setScore(SCORE_WITH_BONUS_POINTS);
+        player.setScore(40);
         player.updateHighScore();
 
-        player.setScore(HIGH_SCORE_50_POINTS);
+        player.setScore(50);
         player.updateHighScore();
 
         List<LetterRushScore> scores;
-        scores = LetterRushScore.readScoresFromFile(SCORE_FILE);
-        assertEquals(EXPECTED_COUNT_3,
+        scores = LetterRushScore.readScoresFromFile("Resources/letterrush/txtfiles/highScore.txt");
+        assertEquals(3,
                      scores.size(),
-                     THREE_ENTRIES_MESSAGE);
+                     "There should be 3 high score entries in the file.");
 
         int highScore;
-        highScore = scores.stream().mapToInt(LetterRushScore::getHighScore).max().orElse(INITIAL_VALUE);
-        assertEquals(HIGH_SCORE_50_POINTS,
+        highScore = scores.stream().mapToInt(LetterRushScore::getHighScore).max().orElse(0);
+        assertEquals(50,
                      highScore,
-                     HIGHEST_SCORE_50_POINTS_MESSAGE);
+                     "The highest score should be 50 points.");
     }
 
     @Test
     void testEmptyHighScoreFile() throws IOException
     {
         List<LetterRushScore> scores;
-        scores = LetterRushScore.readScoresFromFile(SCORE_FILE);
+        scores = LetterRushScore.readScoresFromFile("Resources/letterrush/txtfiles/highScore.txt");
         assertTrue(scores.isEmpty(),
-                   EMPTY_FILE_MESSAGE);
+                   "Reading from an empty high score file should return an empty list.");
     }
 
     @AfterEach
     void tearDown()
     {
-        new File(SCORE_FILE).delete();
+        new File("Resources/letterrush/txtfiles/highScore.txt").delete();
     }
 }

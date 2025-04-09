@@ -602,7 +602,6 @@ public final class LetterRush implements Runnable
         menuPane = new Pane();
         menuPane.setPrefSize(WINDOW_WIDTH_PIXELS,
                              WINDOW_HEIGHT_PIXELS);
-        // Score Display
         scoreText = new Text(SCORE_X_PIXELS,
                              SCORE_Y_PIXELS,
                              SCORE_TEXT_PREFIX + player.getScore());
