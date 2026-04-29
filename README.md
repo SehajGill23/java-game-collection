@@ -1,12 +1,12 @@
 # 3 Games
 
-A Java term project containing three playable games launched from one main menu:
+Three playable games made in Java, launched from one main menu:
 
 - **Word Game**: a console-based geography trivia game.
 - **Number Game**: a JavaFX grid game where numbers must be placed in ascending order.
 - **Letter Rush**: a JavaFX word-building game with moving obstacles, levels, scoring, themes, and high-score tracking.
 
-The project was built for BCIT COMP 2522 and uses object-oriented Java design with separate packages for each game mode.
+The project uses object-oriented Java design with separate packages for each game mode.
 
 ## Demo Video
 
